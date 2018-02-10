@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Just Search Portal</title> 
+<link rel="shortcut icon" type="image/x-icon" href="data:image/x-icon;,">
+<meta id="viewport" name="viewport">
+<script type="text/javascript">
+// Mobile viewport hack, from: 
+// https://stackoverflow.com/a/39642318
+function apply_viewport() {    
+  var ww = window.screen.width;
+  var mw = 450;
+  var viewport_meta_tag = document.getElementById('viewport');
+  if( ww < mw) { 
+    var ratio = ww / mw;
+    viewport_meta_tag.setAttribute('content', 'initial-scale=' + ratio + ', maximum-scale=' + ratio + ', minimum-scale=' + ratio + ', user-scalable=no, width=' + mw);
+  }    
+}
+window.addEventListener('resize', function(){ apply_viewport(); });
+apply_viewport();
+
+// Inline favicon technique from:
+// https://stackoverflow.com/a/5568484
+
+var favIcon = "\
+iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABj0lEQVQ4y5WSsU4iURSGv3sv6FDgA1i\
+QaLOikcTOcmMpUl4TMfEB9gkoMLGg4Al8g53CKSHWFlvYmVgw05nQagUmzAIzd4sZLiCDuqc4zTnnyz\
+n/+YU2KADvfqdEtFlHbuxjzBEAQjwRT251zX9kTQhtUF6nfIzM/0I6dQCikY8qlG3XdNDUtaCdBZBJT\
+ofj0CUK68j3KuZ1l+mgSTTyyW21vM5eI3MDOpULlOMShy5i2NSnL/3FBq9bOUc5LtHIR75XP9YlgjMA\
+DN2PRQB99nxHHLqoQpnI2V49YSaYHK4VinjcS/bNl1YBQjwlwq3S510b+2tLlo75mdXg3e+U7JZm0s/\
+4gnhYp3QyXGyhCmXi0M3yQ+qDvQa5rVZyb+jaqjFHiXgjHzP5DYD66y6KLawTu5VzMNdLBpoB43EPkb\
++cbbL4bguY29nZtmrL4aM+felbLyxCU8gS4LNYOjOF6OrzlTq4Se38RRz8ePvTC4pj5OZJcnzusBcUx\
+98atq6sBW2mg+bKF/jPmL1b14L2P96CtjFufhdDAAAAAElFTkSuQmCC";
+
+var docHead = document.getElementsByTagName('head')[0];
+var newLink = document.createElement('link');
+newLink.rel = 'shortcut icon';
+newLink.type = 'image/x-icon';
+newLink.href = 'data:image/png;base64,'+favIcon;
+docHead.appendChild(newLink);
+</script>
+
+<style>
+html, body {
+	height: 100%;
+	margin: 0;
+	font-family: helvetica, sans-serif;
+}
+
+.container {
+	min-width: 380px;
+	width: auto !important;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+}
+
+.footer {
+	width: fill;
+	margin: 0 20px;
+	border-top: 2px solid #a0a0a0;
+	text-align: center;
+}
+
+.footer p {
+	font-size: 11pt;
+	margin:0.6em 0 0.8em 0;
+}
+
+.centerContainer {
+	margin: auto;
+	text-align: center;
+}
+
+.centerbox {
+	max-width: 45em;
+	margin: auto;
+	text-align: center;
+}
+
+.title {
+	font-weight: bold;
+	font-size: 50pt;
+	color: #d7d7d7;
+	margin: 8px 0 15px 0;
+}
+
+.btn {
+	background-color: #a7e7a7;
+	border: 2px solid #a0a0a0;
+	color: black;
+	width: 150px;
+	height: 40px;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	font-size: 15px;
+	margin: 10px;
+	cursor: pointer;
+}
+
+.btnDefault {
+	border: 3px solid #404040;
+}
+
+.searchInput {
+	width: 80%;
+	margin: 20px 0 35px 0;
+	font-size: 16pt;
+}
+
+.checkbox {
+	color: #303030;
+	margin: 20px;
+}
+
+label, input[type=checkbox] {
+	cursor: pointer;
+}
+</style>
+</head>
+
+<body>
+	<div class="container">
+		<div class="centerContainer">
+		<div class="centerbox">
+			<p class="title">Just Search</p>
+			<form id="searchForm" autocomplete="off">			
+			<input type="search" id="query" class="searchInput" placeholder="Type query here" autocomplete="off" autofocus />			
+			</form>
+
+			<div id="engines"></div>
+			
+			<div class="checkbox">
+				<label><input type="checkbox" id="setDefaults" onClick="checkClick()">Toggle default search engines (activated by Enter)</label>
+			</div>
+			
+			<div class="checkbox">
+				<label><input type="checkbox" id="newTab" onClick="checkClick()">Open in new tab</label>
+			</div>
+		</div>
+		</div>
+		<div class="footer">
+			<p>Just Search Portal - Without distractions - Respecting privacy - <a href="https://github.com/larspontoppidan/just-search-portal">GitHub</a> - <a href="http://www.larsee.com/blog/tag/just-search-portal.html">About</a></p>
+		</div>
+	</div>
+	<script>
+		var searchEngines = [
+				{
+					name : "startpage",
+					url : "https://startpage.com/do/search?language=english&cat=web&query=$QUERY"
+				}, {
+					name : "DuckDuckGo",
+					url : "https://duckduckgo.com/?q=$QUERY"
+				}, {
+					name : "Bing",
+					url : "http://www.bing.com/search?q=$QUERY"
+				}, {
+					name : "Yahoo",
+					url : "https://search.yahoo.com/search?p=$QUERY"
+				}, {
+					newline : true,
+					name : "Google",
+					url : "https://www.google.com/search?q=$QUERY"
+				}, {
+					name : "YouTube",
+					url : "https://www.youtube.com/results?search_query=$QUERY"
+				}, {
+					name : "Maps",
+					url : "https://maps.google.com?q=$QUERY"
+				}, {
+					name : "Translate",
+					url : "https://translate.google.com/#auto/en/$QUERY"
+				}, {
+					newline : true,
+					name : "Stack Overflow",
+					url : "https://stackoverflow.com/search?q=$QUERY"
+				}, {
+					name : "thesaurus.com",
+					url : "http://thesaurus.com/browse/$QUERY"
+				}, {
+					name : "Wikipedia",
+					url : "https://en.wikipedia.org/w/index.php?search=$QUERY"
+				} ];
+		
+		var searchForm = document.getElementById('searchForm');
+		var newTab = document.getElementById('newTab');
+		var setDefaults = document.getElementById('setDefaults');
+						
+		function saveState(s) {
+			var date = new Date();
+			date.setFullYear(date.getFullYear() + 1);
+			var c = "store="+encodeURIComponent(JSON.stringify(s))+"; expires=" + date.toGMTString();
+			document.cookie = c;
+		}
+
+		function loadState() {
+			var ret = { };
+			console.log(document.cookie);
+			var result = document.cookie.match(new RegExp('store=([^;]+)'));
+			try {
+				if (result)
+					ret = JSON.parse(decodeURIComponent(result[1]));
+			}
+			catch(err) { 
+			}
+			return ret;
+		}
+		
+		var state = loadState();
+
+		if (state.hasOwnProperty('newTab') && state.hasOwnProperty('setDefaults') && state.hasOwnProperty('engines')) {
+			// State was loaded properly from cookie
+		}
+		else {
+			// Set default no-cookie state
+			state = {newTab:true, setDefaults:false, engines:[0]};
+		}
+
+		newTab.checked = state.newTab;
+		setDefaults.checked = false; // state.setDefaults;
+		
+		function arrayIncludes(array, element) {
+			for(var i = 0; i < array.length; i++) {
+				if (array[i] == element)
+					return true;
+			}
+			return false;
+		}
+
+		function addEngineButtons() {
+			var text = '';
+			for (var i = 0; i < searchEngines.length; i++) {
+				if (searchEngines[i].newline) {
+					text += '</br>';
+				}
+				cls = arrayIncludes(state.engines, i) ? "btn btnDefault" : "btn";
+				text += '<button class="' + cls + '" onclick="engineClick(' + i + ')", title=\'' + searchEngines[i].name + '\', id="engine' + i + '">';
+				text += searchEngines[i].name;
+				text += '</button>';
+			}			
+			
+			document.getElementById('engines').insertAdjacentHTML('afterbegin', text);
+		}
+
+		addEngineButtons();
+
+		function checkClick() {
+			state.newTab = newTab.checked;
+			state.setDefaults = setDefaults.checked;			
+			saveState(state);
+		}
+		
+		function submitClick() {
+			if (newTab.checked) {				
+				new_tab_index = 0;
+			}
+			else {
+				new_tab_index = state.engines.length;
+			}
+			state.engines.forEach(function(x) {
+				new_tab_index -= 1;
+				search(searchEngines[x], (new_tab_index != 0));
+			});
+		}
+		
+		if (!Array.prototype.remove) {
+			Array.prototype.remove = function(val) {
+				var i = this.indexOf(val);
+				return i>-1 ? this.splice(i, 1) : [];
+			};
+		}
+
+		searchForm.addEventListener('submit', function(e) {
+			e.preventDefault();
+			submitClick();
+		});
+
+		function engineClick(index) {			
+			if (setDefaults.checked) {
+				var button = document.getElementById('engine' + index);
+				if (arrayIncludes(state.engines, index)) {
+					// Removing from defaults
+					button.className = "btn";
+					state.engines.remove(index);
+				}
+				else {
+					// Adding to defaults
+					button.className = "btn btnDefault";
+					state.engines.push(index);
+				}
+				saveState(state);
+			}
+			else {
+				search(searchEngines[index], newTab.checked)				
+			}			
+		}
+		
+		function search(engine, new_tab) {
+			var searchText = document.getElementById('query').value;
+			var url = engine.url.replace("$QUERY", encodeURIComponent(searchText));
+
+			if (new_tab) {
+				var win = window.open(url, '_blank');
+				win.focus();
+			} else {
+				window.location.href = url;
+			}
+		}
+	</script>
+</html>
