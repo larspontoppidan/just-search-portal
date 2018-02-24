@@ -5,5 +5,5 @@
   <InputEncoding>UTF-8</InputEncoding>
   <OutputEncoding>UTF-8</OutputEncoding>
   <Contact>justsearch@larsee.com</Contact>
-  <Url type="text/html" template="http://larsee.com/justsearchportal/#query={searchTerms}"/>
+  <Url type="text/html" template="https://justsearchportal.com/#query={searchTerms}"/>
 </OpenSearchDescription>

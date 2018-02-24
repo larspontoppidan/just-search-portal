@@ -144,11 +144,11 @@ label, input[type=checkbox] {
 		</div>
 		</div>
 		<div class="footer">
-			<p>Just Search Portal - Without distractions - Respecting privacy - <a href="https://github.com/larspontoppidan/just-search-portal">GitHub</a> - <a href="http://www.larsee.com/blog/tag/just-search-portal.html">About</a></p>
+			<p>Just Search Portal - Without distractions - Respecting privacy - <a href="https://github.com/larspontoppidan/just-search-portal">GitHub</a> - <a href="https://www.larsee.com/blog/tag/just-search-portal.html">About</a></p>
 		</div>
 	</div>
 	<script>
-		var searchEngines = [
+	    var searchEngines = [
 				{
 					name : "startpage",
 					url : "https://startpage.com/do/search?language=english&cat=web&query=$QUERY"
@@ -159,8 +159,8 @@ label, input[type=checkbox] {
 					name : "Bing",
 					url : "http://www.bing.com/search?q=$QUERY"
 				}, {
-					name : "Yahoo",
-					url : "https://search.yahoo.com/search?p=$QUERY"
+					name : "Open as URL",
+					mode : "URL"						
 				}, {
 					newline : true,
 					name : "Google",
@@ -169,22 +169,22 @@ label, input[type=checkbox] {
 					name : "YouTube",
 					url : "https://www.youtube.com/results?search_query=$QUERY"
 				}, {
-					name : "Maps",
+					name : "Google Maps",
 					url : "https://maps.google.com?q=$QUERY"
 				}, {
-					name : "Translate",
-					url : "https://translate.google.com/#auto/en/$QUERY"
+					name : "Google Images",
+					url : "https://www.google.com/search?tbm=isch&q=$QUERY"
 				}, {
 					newline : true,
-					name : "Stack Overflow",
-					url : "https://stackoverflow.com/search?q=$QUERY"
+					name : "Google Translate",
+					url : "https://translate.google.com/#auto/en/$QUERY"
 				}, {
 					name : "thesaurus.com",
 					url : "http://thesaurus.com/browse/$QUERY"
 				}, {
 					name : "Wikipedia",
 					url : "https://en.wikipedia.org/w/index.php?search=$QUERY"
-				} ];
+				}];
 		
 		var searchForm = document.getElementById('searchForm');
 		var newTab = document.getElementById('newTab');
@@ -299,9 +299,31 @@ label, input[type=checkbox] {
 			}			
 		}
 		
+		function stringTrim(str) 
+		{
+			return str.replace(/^\s+|\s+$/g, '');
+		}
+		
+		function processUrl(query) {
+	    	// Add http protocol if no protocol is specified in query
+		    if (!(new RegExp("^[a-zA-Z0-9+.-]+://.+")).test(query)) {
+		        query = "http://" + query;
+		    }
+	    	return query;
+	    }
+		
 		function search(engine, new_tab) {			
-			var searchText = document.getElementById('query').value;
-			var url = engine.url.replace("$QUERY", encodeURIComponent(searchText));
+			var query = stringTrim(document.getElementById('query').value);
+			var url;			
+			if (engine.mode == null) {
+				url = engine.url.replace("$QUERY", encodeURIComponent(query));				
+			}
+			else if (engine.mode == "URL") {
+				url = processUrl(query);
+			}
+			else {
+				return;
+			}
 
 			if (new_tab) {
 				var win = window.open(url, '_blank');
