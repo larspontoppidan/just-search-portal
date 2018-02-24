@@ -154,13 +154,13 @@ label, input[type=checkbox] {
 					url : "https://startpage.com/do/search?language=english&cat=web&query=$QUERY"
 				}, {
 					name : "DuckDuckGo",
-					url : "https://duckduckgo.com/?q=$QUERY"
+					url : "https://duckduckgo.com/?q=$QUERY_PLUS_SEP&ia=web"
 				}, {
 					name : "Bing",
 					url : "http://www.bing.com/search?q=$QUERY"
 				}, {
 					name : "Open as URL",
-					mode : "URL"						
+					mode : "URL"
 				}, {
 					newline : true,
 					name : "Google",
@@ -183,7 +183,7 @@ label, input[type=checkbox] {
 					url : "http://thesaurus.com/browse/$QUERY"
 				}, {
 					name : "Wikipedia",
-					url : "https://en.wikipedia.org/w/index.php?search=$QUERY"
+					url : "https://en.wikipedia.org/w/index.php?search=$QUERY_PLUS_SEP"
 				}];
 		
 		var searchForm = document.getElementById('searchForm');
@@ -314,9 +314,12 @@ label, input[type=checkbox] {
 		
 		function search(engine, new_tab) {			
 			var query = stringTrim(document.getElementById('query').value);
-			var url;			
+			var url = engine.url;
 			if (engine.mode == null) {
-				url = engine.url.replace("$QUERY", encodeURIComponent(query));				
+				// Reduce repeating spaces, then URI encode, then convert space to plus if needed
+				query = encodeURIComponent(query.replace(/  +/g, ' '));
+				url = url.replace("$QUERY_PLUS_SEP", query.replace(/%20/g, '+'));
+				url = url.replace("$QUERY", query);
 			}
 			else if (engine.mode == "URL") {
 				url = processUrl(query);
