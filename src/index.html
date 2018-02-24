@@ -4,18 +4,20 @@
 <meta charset="UTF-8">
 <title>Just Search Portal</title> 
 <link rel="shortcut icon" type="image/x-icon" href="data:image/x-icon;,">
+<link rel="search" type="application/opensearchdescription+xml" href="opensearch.xml" title="Just Search Portal" />
+
 <meta id="viewport" name="viewport">
 <script type="text/javascript">
 // Mobile viewport hack, from: 
 // https://stackoverflow.com/a/39642318
 function apply_viewport() {    
-  var ww = window.screen.width;
-  var mw = 450;
-  var viewport_meta_tag = document.getElementById('viewport');
-  if( ww < mw) { 
-    var ratio = ww / mw;
-    viewport_meta_tag.setAttribute('content', 'initial-scale=' + ratio + ', maximum-scale=' + ratio + ', minimum-scale=' + ratio + ', user-scalable=no, width=' + mw);
-  }    
+	var ww = window.screen.width;
+	var mw = 450;
+	var viewport_meta_tag = document.getElementById('viewport');
+	if( ww < mw) { 
+		var ratio = ww / mw;
+		viewport_meta_tag.setAttribute('content', 'initial-scale=' + ratio + ', maximum-scale=' + ratio + ', minimum-scale=' + ratio + ', user-scalable=no, width=' + mw);
+	}    
 }
 window.addEventListener('resize', function(){ apply_viewport(); });
 apply_viewport();
@@ -297,7 +299,7 @@ label, input[type=checkbox] {
 			}			
 		}
 		
-		function search(engine, new_tab) {
+		function search(engine, new_tab) {			
 			var searchText = document.getElementById('query').value;
 			var url = engine.url.replace("$QUERY", encodeURIComponent(searchText));
 
@@ -308,5 +310,19 @@ label, input[type=checkbox] {
 				window.location.href = url;
 			}
 		}
+		
+		function getUrlParam(url, param, fallback) {
+			var capture = (new RegExp(param + "=([^&]+)")).exec(url);
+			return capture ? decodeURIComponent(capture[1]) : fallback;
+		}
+		
+		function handleHashChange() {
+			var url = window.location.hash;
+			document.getElementById('query').value = getUrlParam(url, "query", "").replace(/\+/g, " ");			
+		}
+
+		window.onhashchange = handleHashChange;
+		handleHashChange();
+		
 	</script>
 </html>
