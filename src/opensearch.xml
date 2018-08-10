@@ -4,6 +4,6 @@
   <Description>Use Just Search Portal for quick and distraction free searches with common search engines, respecting privacy</Description>
   <InputEncoding>UTF-8</InputEncoding>
   <OutputEncoding>UTF-8</OutputEncoding>
-  <Contact>justsearch@larsee.com</Contact>
+  <Contact>contact@justsearchportal.com</Contact>
   <Url type="text/html" template="https://justsearchportal.com/#query={searchTerms}"/>
 </OpenSearchDescription>
