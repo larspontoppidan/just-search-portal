@@ -10,7 +10,7 @@ var defaultSearchEngines = [
 	{key:"GOOGLE-MAPS"},
 	{key:"GOOGLE-IMAGES"}, 
 	{key:"NEWLINE"}, 
-	{key:"GOOGLE-TRANSLATE"}, 
+	{key:"GOOGLE-TRANSLATE"},
 	{key:"THESAURUS.COM"}, 
 	{key:"WIKIPEDIA"}
 ];
@@ -18,7 +18,6 @@ var defaultSearchEngines = [
 function createSearchButton(entry, func, id) {
 	engine = getEngineFromKey(entry.key);
 	var elem = document.createElement('button');
-	elem.innerHTML = engine.display_name;
 	elem.classList.add('btn');
 	if (entry.isDefault) {
 		elem.classList.add('btnDefault');
@@ -31,6 +30,7 @@ function createSearchButton(entry, func, id) {
 	}
 	elem.id = id;
 	elem.addEventListener('click', func, false);
+	elem.appendChild(document.createTextNode(engine.display_name));
 	return elem;
 }
 

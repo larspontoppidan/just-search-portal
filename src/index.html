@@ -92,11 +92,10 @@ html, body {
 .btn {
 	background-color: #a7e7a7;
 	border: 2px solid #a0a0a0;
+	vertical-align: bottom;
 	color: black;
 	width: 150px;
-	height: 40px;
-	text-align: center;
-	text-decoration: none;
+	height: 44px;
 	display: inline-block;
 	font-size: 15px;
 	margin: 10px;
@@ -132,13 +131,15 @@ label, input[type=checkbox] {
 			<form id="searchForm" autocomplete="off">			
 			<input type="search" id="query" class="searchInput" placeholder="Type query here" autocomplete="off" autofocus />			
 			</form>
-
+						
 			<div id="engines"></div>
 			
 			<div class="checkbox">
-				<label><input type="checkbox" id="newTab" onClick="checkClick()">Open in new tab</label>
+				<label><input type="checkbox" id="newTab" onClick="usrClickNewTab()">Open in new tab</label>
+				 	&nbsp; 	&nbsp; 	&nbsp;
+				<label><input type="checkbox" id="showAll" onClick="usrClickShowAll()">Show all engines</label>
 			</div>
-						
+			
 			<p><a href="customize.html">Customize Just Search Portal</a></p>
 		</div>
 		</div>
@@ -152,6 +153,7 @@ label, input[type=checkbox] {
     
 		var searchForm = document.getElementById('searchForm');
 		var newTab = document.getElementById('newTab');
+		var showAll = document.getElementById('showAll');
 		
 		var state = loadState();
 		
@@ -160,6 +162,7 @@ label, input[type=checkbox] {
 		}
 		
 		newTab.checked = state.newTab;
+		showAll.checked = state.showAll;
 		
     	function getEngineFromKey(key) {
     		ret = {};
@@ -173,8 +176,8 @@ label, input[type=checkbox] {
    	    	return ret;
     	}
     	    	
-		function addEngineButtons() {
-			var div = document.getElementById('engines');
+		function makeDefaultEngineButtons() {
+			var div = document.createElement('div');
 			state.searchEngines.forEach((entry) => {
 				var elem;
 	        	if (entry.key == "NEWLINE") {
@@ -185,9 +188,63 @@ label, input[type=checkbox] {
 	        	}
         		div.appendChild(elem);
         	});	
+			return div;
 		}
-
-		addEngineButtons();
+    	
+		function makeAllEngineButtons() {
+			var tbl = document.createElement('table');
+	        tbl.classList.add("manageTable");
+			var tr = tbl.insertRow();
+			searchEngineList.forEach((category) => {
+				var th = document.createElement('th');
+		        th.innerHTML = category.category;		        
+		        tr.appendChild(th);
+			});
+			
+			var i = 0;
+			var enginesAdded;
+			do {
+				enginesAdded = false;
+				tr = tbl.insertRow();
+				searchEngineList.forEach((category) => {
+					var td = tr.insertCell();
+					if (i < category.engines.length) {
+						var engine = category.engines[i];
+				        td.appendChild(createSearchButton(engine, engineClick, engine.key));
+				        enginesAdded = true;
+					}
+	    		});
+				i += 1;
+			} while (enginesAdded);
+			
+			return tbl;
+		}
+		
+		function usrClickNewTab() {
+			state.newTab = newTab.checked;
+			saveState(state);
+		}
+		
+		function usrClickShowAll() {
+			state.showAll = showAll.checked; 
+			saveState(state);
+			engines.removeChild(engines.firstChild);
+			if (state.showAll) {
+				engines.appendChild(makeAllEngineButtons());
+			}
+			else {
+				engines.appendChild(makeDefaultEngineButtons());			
+			}
+		}
+		
+		var engines = document.getElementById('engines');
+		
+		if (state.showAll) {
+			engines.appendChild(makeAllEngineButtons());
+		}
+		else {
+			engines.appendChild(makeDefaultEngineButtons());			
+		}
 		
 		function submitClick() {
 			if (newTab.checked) {				

@@ -82,11 +82,10 @@ html, body {
 .btn {
 	background-color: #a7e7a7;
 	border: 2px solid #a0a0a0;
+	vertical-align: bottom;
 	color: black;
-	width: 150px;
-	height: 40px;
-	text-align: center;
-	text-decoration: none;
+	min-width: 150px;
+	height: 44px;
 	display: inline-block;
 	font-size: 15px;
 	margin: 10px;
@@ -306,6 +305,7 @@ html, body {
 	 	// User events:
 	 		
     	function usrSaveChanges() {
+	 		state.showAll = false;
 	 		saveState(state);
     		window.location.href = "index.html";
 	 	}
