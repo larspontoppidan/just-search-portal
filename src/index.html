@@ -53,7 +53,7 @@ html, body {
 }
 
 .container {
-	min-width: 380px;
+	min-width: 480px;
 	width: auto !important;
 	height: 100%;
 	display: flex;
@@ -78,7 +78,6 @@ html, body {
 }
 
 .centerbox {
-	max-width: 45em;
 	margin: auto;
 	text-align: center;
 }
@@ -137,126 +136,58 @@ label, input[type=checkbox] {
 			<div id="engines"></div>
 			
 			<div class="checkbox">
-				<label><input type="checkbox" id="setDefaults" onClick="checkClick()">Toggle default search engines (activated by Enter)</label>
-			</div>
-			
-			<p><a href="customize.html">Customize your search portal</a></p>
-			
-			<div class="checkbox">
 				<label><input type="checkbox" id="newTab" onClick="checkClick()">Open in new tab</label>
 			</div>
+						
+			<p><a href="customize.html">Customize Just Search Portal</a></p>
 		</div>
 		</div>
 		<div class="footer">
 			<p>Just Search Portal - Without distractions - Respecting privacy - <a href="https://github.com/larspontoppidan/just-search-portal">GitHub</a> - <a href="https://larsee.com/blog/2018/02/just-search-portal/">About</a></p>
 		</div>
 	</div>
+	<script src="enginelist.js"></script>
+	<script src="common.js"></script>
 	<script>
-	    var searchEngines = [
-				{
-					name : "startpage",
-					url : "https://startpage.com/do/search?language=english&cat=web&query=$QUERY"
-				}, {
-					name : "DuckDuckGo",
-					url : "https://duckduckgo.com/?q=$QUERY_PLUS_SEP&ia=web"
-				}, {
-					name : "Bing",
-					url : "http://www.bing.com/search?q=$QUERY"
-				}, {
-					name : "Open as URL",
-					mode : "URL"
-				}, {
-					newline : true,
-					name : "Google",
-					url : "https://www.google.com/search?q=$QUERY"
-				}, {
-					name : "YouTube",
-					url : "https://www.youtube.com/results?search_query=$QUERY"
-				}, {
-					name : "Google Maps",
-					url : "https://maps.google.com?q=$QUERY"
-				}, {
-					name : "Google Images",
-					url : "https://www.google.com/search?tbm=isch&q=$QUERY"
-				}, {
-					newline : true,
-					name : "Google Translate",
-					url : "https://translate.google.com/#auto/en/$QUERY"
-				}, {
-					name : "thesaurus.com",
-					url : "http://thesaurus.com/browse/$QUERY"
-				}, {
-					name : "Wikipedia",
-					url : "https://en.wikipedia.org/w/index.php?search=$QUERY_PLUS_SEP"
-				}];
-		
+    
 		var searchForm = document.getElementById('searchForm');
 		var newTab = document.getElementById('newTab');
-		var setDefaults = document.getElementById('setDefaults');
-						
-		function saveState(s) {
-			var date = new Date();
-			date.setFullYear(date.getFullYear() + 1);
-			var c = "store="+encodeURIComponent(JSON.stringify(s))+"; expires=" + date.toGMTString();
-			document.cookie = c;
-		}
-
-		function loadState() {
-			var ret = { };
-			console.log(document.cookie);
-			var result = document.cookie.match(new RegExp('store=([^;]+)'));
-			try {
-				if (result)
-					ret = JSON.parse(decodeURIComponent(result[1]));
-			}
-			catch(err) { 
-			}
-			return ret;
-		}
 		
 		var state = loadState();
-
-		if (state.hasOwnProperty('newTab') && state.hasOwnProperty('setDefaults') && state.hasOwnProperty('engines')) {
-			// State was loaded properly from cookie
-		}
-		else {
-			// Set default no-cookie state
-			state = {newTab:true, setDefaults:false, engines:[0]};
-		}
-
-		newTab.checked = state.newTab;
-		setDefaults.checked = false; // state.setDefaults;
 		
-		function arrayIncludes(array, element) {
-			for(var i = 0; i < array.length; i++) {
-				if (array[i] == element)
-					return true;
-			}
-			return false;
+		if (!isStateValid(state)) {
+			state = loadDefaults();
 		}
-
+		
+		newTab.checked = state.newTab;
+		
+    	function getEngineFromKey(key) {
+    		ret = {};
+    		searchEngineList.forEach((category) => {
+    	    	category.engines.forEach((engine) => {
+    	    		if (engine.key == key) {
+    	    			ret = engine;
+    	    		}
+    	    	});
+    		});
+   	    	return ret;
+    	}
+    	    	
 		function addEngineButtons() {
-			var text = '';
-			for (var i = 0; i < searchEngines.length; i++) {
-				if (searchEngines[i].newline) {
-					text += '</br>';
-				}
-				cls = arrayIncludes(state.engines, i) ? "btn btnDefault" : "btn";
-				text += '<button class="' + cls + '" onclick="engineClick(' + i + ')", title=\'' + searchEngines[i].name + '\', id="engine' + i + '">';
-				text += searchEngines[i].name;
-				text += '</button>';
-			}			
-			
-			document.getElementById('engines').insertAdjacentHTML('afterbegin', text);
+			var div = document.getElementById('engines');
+			state.searchEngines.forEach((entry) => {
+				var elem;
+	        	if (entry.key == "NEWLINE") {
+	        		elem = document.createElement('br');
+	        	}
+	        	else {
+	        		elem = createSearchButton(entry, engineClick, entry.key);
+	        	}
+        		div.appendChild(elem);
+        	});	
 		}
 
 		addEngineButtons();
-
-		function checkClick() {
-			state.newTab = newTab.checked;
-			state.setDefaults = setDefaults.checked;			
-			saveState(state);
-		}
 		
 		function submitClick() {
 			if (newTab.checked) {				
@@ -265,9 +196,13 @@ label, input[type=checkbox] {
 			else {
 				new_tab_index = state.engines.length;
 			}
-			state.engines.forEach(function(x) {
-				new_tab_index -= 1;
-				search(searchEngines[x], (new_tab_index != 0));
+			query = document.getElementById('query').value;
+			state.searchEngines.forEach((entry) => {
+				if (entry.isDefault) {
+					new_tab_index -= 1;
+					engine = getEngineFromKey(entry.key);
+					search(engine, query, (new_tab_index != 0));					
+				}
 			});
 		}
 		
@@ -283,24 +218,8 @@ label, input[type=checkbox] {
 			submitClick();
 		});
 
-		function engineClick(index) {			
-			if (setDefaults.checked) {
-				var button = document.getElementById('engine' + index);
-				if (arrayIncludes(state.engines, index)) {
-					// Removing from defaults
-					button.className = "btn";
-					state.engines.remove(index);
-				}
-				else {
-					// Adding to defaults
-					button.className = "btn btnDefault";
-					state.engines.push(index);
-				}
-				saveState(state);
-			}
-			else {
-				search(searchEngines[index], newTab.checked)				
-			}			
+		function engineClick() {			
+			search(getEngineFromKey(this.id), document.getElementById('query').value, newTab.checked);
 		}
 		
 		function stringTrim(str) 
@@ -316,9 +235,9 @@ label, input[type=checkbox] {
 	    	return query;
 	    }
 		
-		function search(engine, new_tab) {			
-			var query = stringTrim(document.getElementById('query').value);
-			var url = engine.url;
+		function search(engine, query, new_tab) {			
+			var url = engine.query_url;
+			query = stringTrim(query);
 			if (engine.mode == null) {
 				// Reduce repeating spaces, then URI encode, then convert space to plus if needed
 				query = encodeURIComponent(query.replace(/  +/g, ' '));

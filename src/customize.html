@@ -161,7 +161,9 @@ html, body {
 			<div class="segment" id="manageEngines"></div>
 					
 			<div class="segment">
-			<button class="btn">Defaults</button><button class="btn">Save changes</button><button class="btn">Back</button>
+			<button class="btn" onclick="usrDefaults()">Load defaults</button>
+			<button class="btn" onclick="usrSaveChanges()">Save changes</button>
+			<button class="btn" onclick="usrBack()">Cancel</button>
 			</div>
 			
 		    <p class="smallertitle">Add New</p>
@@ -177,23 +179,14 @@ html, body {
 	</div>
 
 		<script src="enginelist.js"></script>
+		<script src="common.js"></script>
 		<script>
-			    
-	    var searchEngines = [
-				{key:"STARTPAGE"}, 
-				{key:"DUCKDUCKGO"},
-				{key:"BING"}, 
-				{key:"URL"},
-				{key:"NEWLINE"}, 
-				{key:"GOOGLE"},
-				{key:"YOUTUBE"},
-				{key:"GOOGLE-MAPS"},
-				{key:"GOOGLE-IMAGES"}, 
-				{key:"NEWLINE"}, 
-				{key:"GOOGLE-TRANSLATE"}, 
-				{key:"THESAURUS.COM"}, 
-				{key:"WIKIPEDIA"}
-			];
+		
+		var state = loadState();
+		
+		if (!isStateValid(state)) {
+			state = loadDefaults();
+		}
 	    
 	    var colorOptions = ["#f0c0c0", "#F89320", "#FFFF01", "#b0b0ff", "#e7e7e7", "#a7e7a7"];
 
@@ -241,17 +234,22 @@ html, body {
    	    	return ret;
     	}
     	
-    	function createSearchButton(entry) {
+    	function createSearchButton(entry, func, id) {
     		engine = getEngineFromKey(entry.key);
     		var elem = document.createElement('button');
-        	elem.classList.add('btn');
         	elem.innerHTML = engine.display_name;
+        	elem.classList.add('btn');
+        	if (entry.isDefault) {
+        		elem.classList.add('btnDefault');
+        	}
         	if (engine.description) {
 	        	elem.title = engine.description;		        		
         	}
         	if (entry.color) {
         		elem.style.backgroundColor = entry.color;
         	}
+        	elem.id = id;
+    		elem.addEventListener('click', func, false);
         	return elem;
     	}
     		
@@ -265,7 +263,7 @@ html, body {
 	        	}
 	        	else {
 					var td = tr.insertCell();		        	
-			        td.appendChild(createSearchButton(entry));
+			        td.appendChild(createSearchButton(entry, usrToggleDefault, index));
 			        td = tr.insertCell();
 			        td.appendChild(createImgBtn("img/palette.png", usrChangeColor, index));
 			        td = tr.insertCell();
@@ -279,37 +277,52 @@ html, body {
 	    }
 	    
 	    function updateEngines() {
-	    	if (searchEngines[0].key == "NEWLINE") {
- 				searchEngines.splice(0, 1);	
+	    	if (state.searchEngines[0].key == "NEWLINE") {
+ 				state.searchEngines.splice(0, 1);	
  			}
 	    	
-	    	if (searchEngines[searchEngines.length - 1].key == "NEWLINE") {
- 				searchEngines.splice(searchEngines.length - 1, 1);	
+	    	if (state.searchEngines[state.searchEngines.length - 1].key == "NEWLINE") {
+ 				state.searchEngines.splice(state.searchEngines.length - 1, 1);	
  			}
 	    	
 		    var div = document.getElementById('manageEngines');
 		    div.removeChild(div.firstChild);
-		    div.appendChild(createManageTable(searchEngines));
+		    div.appendChild(createManageTable(state.searchEngines));
 	    }
 	    
 	    function swapEngines(index1, index2) {
-	    	var tmp = searchEngines[index1];
- 			searchEngines[index1] = searchEngines[index2];
- 			searchEngines[index2] = tmp;
+	    	var tmp = state.searchEngines[index1];
+ 			state.searchEngines[index1] = state.searchEngines[index2];
+ 			state.searchEngines[index2] = tmp;
 	    }
 	    
 	    function insertEngineSeperator(index) {
 	    	var obj = {};
 	    	obj.key = "NEWLINE";
-	    	searchEngines.splice(index, 0, obj);
+	    	state.searchEngines.splice(index, 0, obj);
 	    }
 	     
 	    
 	 	// User events:
+	 		
+    	function usrSaveChanges() {
+	 		saveState(state);
+    		window.location.href = "index.html";
+	 	}
+
+    	function usrDefaults() {
+    		state = loadDefaults();
+    		updateEngines();
+    	}
+    	
+    	function usrBack() {
+    		window.location.href = "index.html";
+    	}
+    	
     	function usrEngineUp() {
  			var idx = Number(this.id);
 	 		if (idx == 0) {	 			
-	 			if (searchEngines[1].key != "NEWLINE") {
+	 			if (state.searchEngines[1].key != "NEWLINE") {
 	 				insertEngineSeperator(0);
 	 				idx = 1;
 	 			}
@@ -323,29 +336,38 @@ html, body {
 	    
 		function usrEngineDown() {
  			var idx = Number(this.id);
-	 		if (idx < (searchEngines.length - 1)) {	 			
+	 		if (idx < (state.searchEngines.length - 1)) {	 			
 	 			swapEngines(idx + 1, idx);	 			
 	 		}
 	    	updateEngines();
 	    }
 		
 		function usrEngineDelete() {
-	 		searchEngines.splice(this.id, 1);
+	 		state.searchEngines.splice(this.id, 1);
 	    	updateEngines();
 	    }
 		
 		function usrChangeColor() {
-			searchEngines[this.id].color = cycleColor(searchEngines[this.id].color);
+			state.searchEngines[this.id].color = cycleColor(state.searchEngines[this.id].color);
 			updateEngines();
 		}
-	    
+		
+		function usrToggleDefault() {
+			var newValue = true;
+			if (state.searchEngines[this.id].isDefault) {
+				newValue = !state.searchEngines[this.id].isDefault;
+			}
+			state.searchEngines[this.id].isDefault = newValue;
+			updateEngines();
+		}
+		
 	    function usrAddEngine() {
 		    var div2 = document.getElementById('allEngines');		    
 		    var y1 = div2.getBoundingClientRect().top;
 		    
 	    	var obj = {};
 	    	obj.key = this.id;
-	    	searchEngines.push(obj);
+	    	state.searchEngines.push(obj);
 	    	updateEngines();
 	    	
 		    var y2 = div2.getBoundingClientRect().top;
@@ -375,7 +397,7 @@ html, body {
 			return tbl;
 	    }
 	    
-	    document.getElementById('manageEngines').appendChild(createManageTable(searchEngines));
+	    document.getElementById('manageEngines').appendChild(createManageTable(state.searchEngines));
 
 	    divAllEngines = document.getElementById('allEngines');
 	    
