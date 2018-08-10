@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Just Search Portal</title> 
+<link rel="shortcut icon" type="image/x-icon" href="data:image/x-icon;,">
+<link rel="search" type="application/opensearchdescription+xml" href="opensearch.xml" title="Just Search Portal" />
+<meta id="viewport" name="viewport">
+<script type="text/javascript">
+
+// This file with its HTML, CSS and JavaScript is free software under the terms of the following license: https://justsearchportal.com/LICENSE
+
+// Mobile viewport hack, from: 
+// https://stackoverflow.com/a/39642318
+function apply_viewport() {    
+	var ww = window.screen.width;
+	var mw = 450;
+	var viewport_meta_tag = document.getElementById('viewport');
+	if( ww < mw) { 
+		var ratio = ww / mw;
+		viewport_meta_tag.setAttribute('content', 'initial-scale=' + ratio + ', maximum-scale=' + ratio + ', minimum-scale=' + ratio + ', user-scalable=no, width=' + mw);
+	}    
+}
+window.addEventListener('resize', function(){ apply_viewport(); });
+apply_viewport();
+
+
+</script>
+
+<style>
+html, body {
+	height: 100%;
+	margin: 0;
+	font-family: helvetica, sans-serif;
+}
+
+.container {
+	min-width: 380px;
+	width: auto !important;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+}
+
+.footer {
+	width: fill;
+	margin: 0 20px;
+	border-top: 2px solid #a0a0a0;
+	text-align: center;
+}
+
+.footer p {
+	font-size: 11pt;
+	margin:0.6em 0 0.8em 0;
+}
+
+.centerContainer {
+	margin: auto;
+	text-align: center;
+}
+
+.centerbox {
+	max-width: 45em;
+	margin: auto;
+	text-align: center;
+}
+
+.title {
+	font-weight: bold;
+	font-size: 50pt;
+	color: #d7d7d7;
+	margin: 8px 0 15px 0;
+}
+
+.smallertitle {
+	font-weight: bold;
+	font-size: 32pt;
+	color: #c0c0c0;
+	margin: 30px 0 25px 0;
+}
+
+.btn {
+	background-color: #a7e7a7;
+	border: 2px solid #a0a0a0;
+	color: black;
+	width: 150px;
+	height: 40px;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	font-size: 15px;
+	margin: 10px;
+	cursor: pointer;
+}
+
+.btnDefault {
+	border: 3px solid #404040;
+}
+
+.manageTable {
+    border-collapse: collapse;
+    background-color: white;
+    width: 100%;
+}
+
+.manageTable td, .manageTable th {
+    padding: 5px;
+    white-space:nowrap;
+    text-align: left;
+    padding-left: 16px;
+}
+
+.manageTable tr:hover {background-color: #ddd;}
+
+.manageTable tr {
+    border: 1px solid #ddd;    
+}
+
+.manageTable th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+	background-color: #f5f5f5;
+	font-weight: bold;
+}
+
+.manageTable td:first-child {
+  width:100%;
+}
+
+
+.btnOrganize {
+	width: 42px;
+	padding-left: 3px;	
+	padding-right: 3px;	
+	cursor: pointer;
+}
+
+.buttonCell {
+	background-color: #a7e7a7;
+}
+
+.extraBorder {
+  border-top: 2px solid #000;
+}
+
+.segment {
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+
+</style>
+</head>
+
+<body>
+	<div class="container">
+		<div class="centerContainer">
+		<div class="centerbox">
+			<p class="smallertitle">Manage Search Engines</p>
+						
+			<div class="segment" id="manageEngines"></div>
+					
+			<div class="segment">
+			<button class="btn">Defaults</button><button class="btn">Save changes</button><button class="btn">Back</button>
+			</div>
+			
+		    <p class="smallertitle">Add New</p>
+		    
+			<div class="segment" id="allEngines"></div>
+			
+			
+		</div>
+		</div>
+		<div class="footer">
+			<p>Just Search Portal - Without distractions - Respecting privacy - <a href="https://github.com/larspontoppidan/just-search-portal">GitHub</a> - <a href="https://larsee.com/blog/2018/02/just-search-portal/">About</a></p>
+		</div>
+	</div>
+
+		<script src="enginelist.js"></script>
+		<script>
+			    
+	    var searchEngines = [
+				{key:"STARTPAGE"}, 
+				{key:"DUCKDUCKGO"},
+				{key:"BING"}, 
+				{key:"URL"},
+				{key:"NEWLINE"}, 
+				{key:"GOOGLE"},
+				{key:"YOUTUBE"},
+				{key:"GOOGLE-MAPS"},
+				{key:"GOOGLE-IMAGES"}, 
+				{key:"NEWLINE"}, 
+				{key:"GOOGLE-TRANSLATE"}, 
+				{key:"THESAURUS.COM"}, 
+				{key:"WIKIPEDIA"}
+			];
+	    
+	    var colorOptions = ["#f0c0c0", "#F89320", "#FFFF01", "#b0b0ff", "#e7e7e7", "#a7e7a7"];
+
+    	function createImg(src, classes) {
+    		var img = document.createElement("img");
+    		img.src = src;
+    		classes.forEach((cname) => {img.classList.add(cname);});
+    		return img;
+    	}
+    	
+    	function createImgBtn(src, func, id) {
+    		var img = document.createElement("img");
+    		img.src = src;
+    		img.classList.add("btnOrganize");
+    		img.id = id;
+    		img.addEventListener('click', func, false);
+    		return img;
+    	}
+    	
+    	function createLink(text, link, classes) {
+    		var e = document.createElement('a');
+   		    e.setAttribute("href", link);
+   		    e.innerHTML = text;
+   		    classes.forEach((cname) => {e.classList.add(cname);});
+   		    return e;
+    	}
+    	
+    	function cycleColor(color) {
+    		var i = colorOptions.indexOf(color) + 1;
+    		if (i >= colorOptions.length) {
+    			i = 0;
+    		}
+    		return colorOptions[i];
+    	}
+    	
+    	function getEngineFromKey(key) {
+    		ret = {};
+    		searchEngineList.forEach((category) => {
+    	    	category.engines.forEach((engine) => {
+    	    		if (engine.key == key) {
+    	    			ret = engine;
+    	    		}
+    	    	});
+    		});
+   	    	return ret;
+    	}
+    	
+    	function createSearchButton(entry) {
+    		engine = getEngineFromKey(entry.key);
+    		var elem = document.createElement('button');
+        	elem.classList.add('btn');
+        	elem.innerHTML = engine.display_name;
+        	if (engine.description) {
+	        	elem.title = engine.description;		        		
+        	}
+        	if (entry.color) {
+        		elem.style.backgroundColor = entry.color;
+        	}
+        	return elem;
+    	}
+    		
+	    function createManageTable(engines) {
+	        var tbl  = document.createElement('table');
+	        tbl.classList.add("manageTable");		        
+	        engines.forEach((entry, index) => {
+	        	var tr = tbl.insertRow();
+	        	if (entry.key == "NEWLINE") {
+	        		var td = tr.insertCell();
+	        	}
+	        	else {
+					var td = tr.insertCell();		        	
+			        td.appendChild(createSearchButton(entry));
+			        td = tr.insertCell();
+			        td.appendChild(createImgBtn("img/palette.png", usrChangeColor, index));
+			        td = tr.insertCell();
+			        td.appendChild(createImgBtn("img/up-arrow.png", usrEngineUp, index));
+			        td.appendChild(createImgBtn("img/down-arrow.png", usrEngineDown, index));
+			        td = tr.insertCell();
+			        td.appendChild(createImgBtn("img/trash.png", usrEngineDelete, index));
+	        	}
+        	});
+			return tbl;
+	    }
+	    
+	    function updateEngines() {
+	    	if (searchEngines[0].key == "NEWLINE") {
+ 				searchEngines.splice(0, 1);	
+ 			}
+	    	
+	    	if (searchEngines[searchEngines.length - 1].key == "NEWLINE") {
+ 				searchEngines.splice(searchEngines.length - 1, 1);	
+ 			}
+	    	
+		    var div = document.getElementById('manageEngines');
+		    div.removeChild(div.firstChild);
+		    div.appendChild(createManageTable(searchEngines));
+	    }
+	    
+	    function swapEngines(index1, index2) {
+	    	var tmp = searchEngines[index1];
+ 			searchEngines[index1] = searchEngines[index2];
+ 			searchEngines[index2] = tmp;
+	    }
+	    
+	    function insertEngineSeperator(index) {
+	    	var obj = {};
+	    	obj.key = "NEWLINE";
+	    	searchEngines.splice(index, 0, obj);
+	    }
+	     
+	    
+	 	// User events:
+    	function usrEngineUp() {
+ 			var idx = Number(this.id);
+	 		if (idx == 0) {	 			
+	 			if (searchEngines[1].key != "NEWLINE") {
+	 				insertEngineSeperator(0);
+	 				idx = 1;
+	 			}
+	 			else {
+	 				return;
+	 			}
+ 			}
+ 			swapEngines(idx - 1, idx);
+	    	updateEngines();
+	    }
+	    
+		function usrEngineDown() {
+ 			var idx = Number(this.id);
+	 		if (idx < (searchEngines.length - 1)) {	 			
+	 			swapEngines(idx + 1, idx);	 			
+	 		}
+	    	updateEngines();
+	    }
+		
+		function usrEngineDelete() {
+	 		searchEngines.splice(this.id, 1);
+	    	updateEngines();
+	    }
+		
+		function usrChangeColor() {
+			searchEngines[this.id].color = cycleColor(searchEngines[this.id].color);
+			updateEngines();
+		}
+	    
+	    function usrAddEngine() {
+		    var div2 = document.getElementById('allEngines');		    
+		    var y1 = div2.getBoundingClientRect().top;
+		    
+	    	var obj = {};
+	    	obj.key = this.id;
+	    	searchEngines.push(obj);
+	    	updateEngines();
+	    	
+		    var y2 = div2.getBoundingClientRect().top;
+		    window.scrollBy(0, y2 - y1);
+	    }
+	    	    	    
+	    function createCategoryTable(obj) {
+	        var tbl  = document.createElement('table');
+	        tbl.classList.add("manageTable");
+	        var th = document.createElement('th');
+	        th.appendChild(document.createTextNode(obj.category));
+	        th.colSpan = 3;
+	        tbl.insertRow().appendChild(th);
+	        
+	        obj.engines.forEach((engine) => {
+	        	var td, tr = tbl.insertRow();
+	        	td = tr.insertCell();
+                   if (engine.about_url) {
+					td.appendChild(createLink(engine.display_name, engine.about_url, []));
+                   }
+                   else {
+                    td.appendChild(document.createTextNode(engine.display_name));                    	
+                   }                   
+                   td = tr.insertCell();
+                   td.appendChild(createImgBtn("img/plus.png", usrAddEngine, engine.key));
+        	});
+			return tbl;
+	    }
+	    
+	    document.getElementById('manageEngines').appendChild(createManageTable(searchEngines));
+
+	    divAllEngines = document.getElementById('allEngines');
+	    
+	    searchEngineList.forEach((category) => {
+	    	divAllEngines.appendChild(createCategoryTable(category));
+	    	divAllEngines.appendChild(document.createElement('br'));
+		});
+	    
+	    
+		    
+		    
+		    
+		
+	</script>
+</body>	
+</html>
