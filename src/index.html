@@ -89,6 +89,12 @@ html, body {
 	margin: 8px 0 15px 0;
 }
 
+.categoryBox {
+	display: inline-block;
+	vertical-align: top;
+	padding : 5px;
+}
+
 .btn {
 	background-color: #a7e7a7;
 	border: 2px solid #a0a0a0;
@@ -120,6 +126,8 @@ html, body {
 label, input[type=checkbox] {
 	cursor: pointer;
 }
+
+
 </style>
 </head>
 
@@ -190,34 +198,24 @@ label, input[type=checkbox] {
         	});	
 			return div;
 		}
-    	
+    			
 		function makeAllEngineButtons() {
-			var tbl = document.createElement('table');
-	        tbl.classList.add("manageTable");
-			var tr = tbl.insertRow();
+			var div = document.createElement('div');
 			searchEngineList.forEach((category) => {
-				var th = document.createElement('th');
-		        th.innerHTML = category.category;		        
-		        tr.appendChild(th);
+				var cat = document.createElement('div');
+				cat.classList.add("categoryBox");
+				div.appendChild(cat);
+				var th = document.createElement('h3');
+				th.appendChild(document.createTextNode(category.category));
+		        cat.appendChild(th);
+		        
+		        category.engines.forEach((engine) => {
+			        cat.appendChild(createSearchButton(engine, engineClick, engine.key));
+					cat.appendChild(document.createElement('br'));
+		        });
 			});
 			
-			var i = 0;
-			var enginesAdded;
-			do {
-				enginesAdded = false;
-				tr = tbl.insertRow();
-				searchEngineList.forEach((category) => {
-					var td = tr.insertCell();
-					if (i < category.engines.length) {
-						var engine = category.engines[i];
-				        td.appendChild(createSearchButton(engine, engineClick, engine.key));
-				        enginesAdded = true;
-					}
-	    		});
-				i += 1;
-			} while (enginesAdded);
-			
-			return tbl;
+			return div;
 		}
 		
 		function usrClickNewTab() {
