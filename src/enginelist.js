@@ -1,6 +1,6 @@
 var searchEngineList = [
 {
-	category : "General web searching",
+	category : "Web search",
 	engines : [
 		{
 			key : "STARTPAGE",
@@ -35,7 +35,7 @@ var searchEngineList = [
 	]
 },
 {
-	category : "Media searching",
+	category : "Media search",
 	engines : [
 		{
 			key : "GOOGLE-IMAGES",
@@ -44,13 +44,20 @@ var searchEngineList = [
 		}, {
 			key : "YOUTUBE",
 			display_name : "YouTube",
-			query_url : "https://www.youtube.com/results?search_query=$QUERY"
+			query_url : "https://www.youtube.com/results?search_query=$QUERY",
+			about_url : "https://www.youtube.com"
 		}, {
 			key : "IMDB",
 			display_name : "IMDb",
 			description : "Search the Internet Movie Database",
 			query_url : "https://www.imdb.com/find?q=$QUERY_PLUS_SEP",
 			about_url : "https://www.imdb.com"
+		}, {
+			key : "ALLMUSIC",
+			display_name : "AllMusic",
+			description : "Search with AllMusic",
+			query_url : "https://www.allmusic.com/search/all/$QUERY",
+			about_url : "https://www.allmusic.com"
 		}
 	]
 },
