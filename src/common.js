@@ -38,7 +38,7 @@ function createSearchButton(entry, func, id) {
 function saveState(s) {
 	var date = new Date();
 	date.setFullYear(date.getFullYear() + 1);
-	var c = "store="+encodeURIComponent(JSON.stringify(s))+"; expires=" + date.toGMTString();
+	var c = "store="+JSON.stringify(s)+"; expires=" + date.toGMTString();
 	document.cookie = c;
 }
 

@@ -155,8 +155,13 @@ html, body {
 	<div class="container">
 		<div class="centerContainer">
 		<div class="centerbox">
-			<p class="smallertitle">Manage Search Engines</p>
+			
+		    <p class="smallertitle">Customize Page</p>
+		    <p>Check the search engines to appear in the custom search page, visible when Show all engines is not checked:</p>
+			<div class="segment" id="allEngines"></div>
+			
 						
+		    <p>Change the position and color of the search engines in compact view:</p>
 			<div class="segment" id="manageEngines"></div>
 					
 			<div class="segment">
@@ -164,10 +169,6 @@ html, body {
 			<button class="btn" onclick="usrSaveChanges()">Save changes</button>
 			<button class="btn" onclick="usrBack()">Cancel</button>
 			</div>
-			
-		    <p class="smallertitle">Add New</p>
-		    
-			<div class="segment" id="allEngines"></div>
 			
 			
 		</div>
@@ -227,6 +228,18 @@ html, body {
     	    	category.engines.forEach((engine) => {
     	    		if (engine.key == key) {
     	    			ret = engine;
+    	    		}
+    	    	});
+    		});
+   	    	return ret;
+    	}
+    	
+    	function getEngineCategory(key) {
+    		ret = {};
+    		searchEngineList.forEach((category) => {
+    	    	category.engines.forEach((engine) => {
+    	    		if (engine.key == key) {
+    	    			ret = category;
     	    		}
     	    	});
     		});
@@ -355,23 +368,73 @@ html, body {
 		function usrToggleDefault() {
 			var newValue = true;
 			if (state.searchEngines[this.id].isDefault) {
-				newValue = !state.searchEngines[this.id].isDefault;
+				delete state.searchEngines[this.id].isDefault;
+			} 
+			else {
+				state.searchEngines[this.id].isDefault = true;				
 			}
-			state.searchEngines[this.id].isDefault = newValue;
 			updateEngines();
 		}
-		
-	    function usrAddEngine() {
-		    var div2 = document.getElementById('allEngines');		    
-		    var y1 = div2.getBoundingClientRect().top;
-		    
+			    
+	    function addEngine(key) {
+			pos = findBestPosition(key);
+			
 	    	var obj = {};
-	    	obj.key = this.id;
-	    	state.searchEngines.push(obj);
-	    	updateEngines();
+	    	obj.key = key;
+	    	state.searchEngines.splice( pos, 0, obj);
+	    }
+	    
+	    function usrToggleEngine() {
+	    	idx = findEngineIndex(this.id);
+		    if (idx >= 0) {
+		    	state.searchEngines.splice(idx, 1);
+		    	this.src = "img/box-unchecked.png";   
+		    }
+		    else {
+		    	addEngine(this.id);
+                this.src = "img/box-checked.png";   
+            }
 	    	
-		    var y2 = div2.getBoundingClientRect().top;
-		    window.scrollBy(0, y2 - y1);
+	    	updateEngines();
+	    }
+	    
+	    function findEngineIndex(key) {
+	    	var result = -1;
+	    	state.searchEngines.forEach((entry, index) => {
+	    		if (entry.key == key) {
+	    			result = index;
+	    		}
+	    	});
+	    	return result;
+	    }
+	    
+	    function findBestPosition(key) {
+			var latestPos = 0;
+			var result = 0;
+		    searchEngineList.forEach((objCategory) => {
+		    	var catPos = -1;
+		    	objCategory.engines.forEach((engine) => {
+		    		if (catPos == -1) {
+			    		catPos = findEngineIndex(engine.key);
+		    		}
+		    	});
+		    	if (catPos == -1) {
+		    		catPos = latestPos;
+		    	}
+		    	var first = true;
+		    	objCategory.engines.forEach((engine) => {
+		    		pos = findEngineIndex(engine.key);
+		    		if (pos != -1) {
+		    			first = false;
+		    			latestPos = pos + 1;
+		    		}
+		    		if (engine.key == key) {
+		    			result = first ? catPos : latestPos;
+		    		}
+		    	});
+		    });
+		    
+		    return result;
 	    }
 	    	    	    
 	    function createCategoryTable(obj) {
@@ -392,7 +455,13 @@ html, body {
                     td.appendChild(document.createTextNode(engine.display_name));                    	
                    }                   
                    td = tr.insertCell();
-                   td.appendChild(createImgBtn("img/plus.png", usrAddEngine, engine.key));
+                   if (findEngineIndex(engine.key) >= 0) {
+	                   img = "img/box-checked.png";                	   
+                   }
+                   else {
+                	   img = "img/box-unchecked.png";
+                   }
+                   td.appendChild(createImgBtn(img, usrToggleEngine, engine.key));
         	});
 			return tbl;
 	    }
