@@ -27,8 +27,15 @@ var searchEngineList = [
 			query_url : "https://www.google.com/search?q=$QUERY",
 			about_url : "https://www.google.com/"
 		}, {
+			key : "GOOGLELUCKY",
+			display_name : "Google I feel lucky",
+			description : "Google I feel lucky",
+			query_url : "https://www.google.com/search?q=$QUERY&btnI",
+			about_url : "https://www.google.com/"
+		}, {
 			key : "YAHOO",
 			display_name : "Yahoo",
+			description : "Search with Yahoo",
 			query_url : "https://search.yahoo.com/search?p=$QUERY_PLUS_SEP",
 			about_url : "https://www.yahoo.com/"
 		}
@@ -40,7 +47,8 @@ var searchEngineList = [
 		{
 			key : "GOOGLE-IMAGES",
 			display_name :  "Google Images",
-			query_url : "https://www.google.com/search?tbm=isch&q=$QUERY"
+			query_url : "https://www.google.com/search?tbm=isch&q=$QUERY",
+			about_url : "https://www.google.com/"
 		}, {
 			key : "YOUTUBE",
 			display_name : "YouTube",
@@ -87,6 +95,12 @@ var searchEngineList = [
 			description : "Search Google Maps",
 			query_url : "https://maps.google.com?q=$QUERY",
 			about_url : "https://maps.google.com"
+		}, {
+			key : "TWITTER",
+			display_name : "Twitter",
+			description : "Search Twitter",
+			query_url : "https://twitter.com/search?q=$QUERY",
+			about_url : "https://twitter.com"			
 		}
 	]	    		
 },
