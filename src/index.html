@@ -141,7 +141,7 @@ label, input[type=checkbox] {
 			</form>
 						
 			<div id="engines"></div>
-			
+						
 			<div class="checkbox">
 				<label><input type="checkbox" id="newTab" onClick="usrClickNewTab()">Open in new tab</label>
 				 	&nbsp; 	&nbsp; 	&nbsp;
@@ -163,12 +163,8 @@ label, input[type=checkbox] {
 		var newTab = document.getElementById('newTab');
 		var showAll = document.getElementById('showAll');
 		
-		var state = loadState();
-		
-		if (!isStateValid(state)) {
-			state = loadDefaults();
-		}
-		
+		var state = stateLoadOrDefault();
+				
 		newTab.checked = state.newTab;
 		showAll.checked = state.showAll;
 		
@@ -186,15 +182,13 @@ label, input[type=checkbox] {
     	    	
 		function makeDefaultEngineButtons() {
 			var div = document.createElement('div');
-			state.searchEngines.forEach((entry) => {
-				var elem;
-	        	if (entry.key == "NEWLINE") {
-	        		elem = document.createElement('br');
-	        	}
-	        	else {
-	        		elem = createSearchButton(entry, engineClick, entry.key);
-	        	}
-        		div.appendChild(elem);
+			state.engines.forEach((columns) => {
+        		if (div.children.length > 0) {
+        			div.appendChild(document.createElement('br'));
+        		}
+				columns.forEach((entry) => {
+		        	div.appendChild(createSearchButton(entry, engineClick, entry.key));	
+				});
         	});	
 			return div;
 		}
@@ -220,12 +214,12 @@ label, input[type=checkbox] {
 		
 		function usrClickNewTab() {
 			state.newTab = newTab.checked;
-			saveState(state);
+			stateSave(state);
 		}
 		
 		function usrClickShowAll() {
 			state.showAll = showAll.checked; 
-			saveState(state);
+			stateSave(state);
 			engines.removeChild(engines.firstChild);
 			if (state.showAll) {
 				engines.appendChild(makeAllEngineButtons());

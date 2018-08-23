@@ -148,6 +148,14 @@ html, body {
 }
 
 
+
+.btnFunction {
+    padding: 6px 18px;
+	margin: 5px 8px;
+	cursor: pointer;
+	font-size: 15px;
+}
+
 .btnOrganize {
 	width: 42px;
 	padding-left: 3px;	
@@ -196,15 +204,15 @@ label, input[type=radio] {
 		    <h2 class="text">Cookie consent</h2>
 		    <p class="text">To customize Just Search Portal a cookie must be used to save the settings. The cookie is not used for any other purpose and has a 1 year lifetime.</p>
 		    <div style="float:right">
-		    <button class="btn btnSlim" onClick="clickCookieReject()">No Thanks</button>
-		    <button class="btn btnSlim" onClick="clickCookieAccept()"><b>Accept</b></button>
+		    <button class="btnFunction" onClick="clickCookieReject()">No Thanks</button>
+		    <button class="btnFunction" onClick="clickCookieAccept()"><b>Accept</b></button>
 		    </div>
 		    </div>
 		    
 		    <div id="customizeDiv">
 			<p class="smallertitle">Click engines to swap position</p>
 			<div class="segment" id="swapEngines"></div>
-		    <button class="btn" onClick="clickSwapUndo()">Undo</button>
+		    <button class="btnFunction" onClick="clickSwapUndo()">Undo</button>
 			
 			<p class="smallertitle">Select and configure engines</p>
 			
@@ -212,12 +220,13 @@ label, input[type=radio] {
 		    
 		    
 			<br>
-			<br>
 			
 			</div>
 			
 		    <div id="haveConsentBox" class="consentBox">
-		    <div style="float:right;margin-top:25px"><button class="btn btnSlim" onClick="clickCookieWithdraw()">Withdraw and revert to default settings</button></div>
+		    <div style="float:right;margin-top:25px">
+		    <button class="btnFunction" onClick="clickCookieWithdraw()">Withdraw and revert to default settings</button>
+		    </div>
 		    <h2 class="text">Cookie consent</h2>	
 		    </div>
 			<br>	    
@@ -233,9 +242,8 @@ label, input[type=radio] {
 		<script src="common.js"></script>
 		<script>
 		
-		// Utility functions
-		// -----------------
-		
+		// Convenience functions
+		// ---------------------
 		
 		Array.prototype.removeAt = function(index) {
             this.splice(index, 1);
@@ -253,8 +261,6 @@ label, input[type=radio] {
 		
 		// Cookie consent management
 		// -------------------------
-				
-		var state = stateLoadOrDefault();
 		
 		function updateConsentState(got_consent) {
 			var ask_box = document.getElementById('askConsentBox');
@@ -271,7 +277,8 @@ label, input[type=radio] {
 				customize_div.style.display = 'none';
 			}
 		}
-		
+
+		var state = stateLoadOrDefault();	
 		updateConsentState(state.consent);
 	    
 		function clickCookieAccept() {
@@ -293,14 +300,10 @@ label, input[type=radio] {
 		// Organize engines
 		// ----------------
 		
-		function createEmptyTarget(func, id) {
-			var elem = document.createElement('div');
-			elem.classList.add('btnEmpty');
-			elem.id = id;
-			elem.addEventListener('click', func, false);
-			return elem;
+		function composeIndex(row, col) {
+			return row*100 + col;
 		}
-	    
+		
 	    function reorderEngines(engines, src_i, dst_i) {
 			// Decompose indexes into row/col
 			var src_row = Math.floor(src_i / 100) - 1;
@@ -314,15 +317,12 @@ label, input[type=radio] {
 		
 			// Insert at destination
 			if (dst_row < 0) {
-				// Make new row for this operation
 				engines.insertBefore([engine], 0);
 			}
 			else if (dst_row < engines.length) {
-				// Row exists
 				engines[dst_row].insertBefore(engine, dst_col);					
 			} 
 			else {
-				// Make new row after
 				engines.push([engine]);					
 			}
 			
@@ -330,33 +330,38 @@ label, input[type=radio] {
 		} 
 	    
 	    function cleanEngines(engines) {
-	    	// Remove eventually empty rows
-			for (var i = 0; i < engines.length; i++) {
-				if (engines[i].length == 0) {
-					engines.removeAt(i);
-					i--;
-				}
+	    	// Remove empty rows in beginning and end
+			while (engines[0].length == 0) {
+				engines.removeAt(0);	
+			}
+			while (engines[engines.length - 1].length == 0) {
+				engines.removeAt(engines.length - 1);	
 			}
 			return engines;
 	    }
-	   		
-		// Returns a div with the custom search engines, based on state.engines
-				
-		function makeOrganizeEngineDiv() {
+
+		function createEmptyTarget(func, id) {
+			var elem = document.createElement('div');
+			elem.classList.add('btnEmpty');
+			elem.id = id;
+			elem.addEventListener('click', func, false);
+			return elem;
+		}
+	    
+		function createSwapEngineDiv() {
 			var div = document.createElement('div');
 			var row = 0;
 			var col = 0;
-    		var engines = defaultSearchEngineRows;
-    		
-       		div.appendChild(createEmptyTarget(engineMoveClick, row * 100 + col));
+
+       		div.appendChild(createEmptyTarget(clickEngineMoveEmpty, composeIndex(row, col)));
     		div.appendChild(document.createElement('hr'));
     		
-			engines.forEach((rowArray) => {
+    		state.engines.forEach((columns) => {
 				row += 1;
-	       		div.appendChild(createEmptyTarget(engineMoveClick, row * 100 + col));
-				rowArray.forEach((entry) => {
-					var index = row * 100 + col;
-	        		var elem = createSearchButton(entry, engineMoveClick, index);
+	       		div.appendChild(createEmptyTarget(clickEngineMoveEmpty, composeIndex(row, col)));
+				columns.forEach((entry) => {
+					var index = composeIndex(row, col);
+	        		var elem = createSearchButton(entry, clickEngineMove, index);
 	        		if ((selectedEngine != null) && 
 	        			(selectedEngine != index))
 	       			{
@@ -367,7 +372,10 @@ label, input[type=radio] {
 		        	col += 1;
 				});
 				
-	       		div.appendChild(createEmptyTarget(engineMoveClick, row * 100 + col));
+				if (col > 0) {
+		       		div.appendChild(createEmptyTarget(clickEngineMoveEmpty, composeIndex(row, col)));					
+				}
+				
 	    		div.appendChild(document.createElement('hr'));	
 	  		
 	    		col = 0;
@@ -375,7 +383,7 @@ label, input[type=radio] {
 			
 			row += 1;
 			
-       		div.appendChild(createEmptyTarget(engineMoveClick, row*100 + col));
+       		div.appendChild(createEmptyTarget(clickEngineMoveEmpty, composeIndex(row, col)));
     		
 			return div;
 		}
@@ -386,11 +394,11 @@ label, input[type=radio] {
 			while (div.children.length > 0) {
 				div.removeChild(div.firstChild);
 			}
-			div.appendChild(makeOrganizeEngineDiv());
+			div.appendChild(createSwapEngineDiv());
 		}
 		
 
-		function engineMoveClick() {
+		function clickEngineMove() {
 			if (selectedEngine == null) {
 				selectedEngine = this.id;				
 			}
@@ -398,26 +406,44 @@ label, input[type=radio] {
 				selectedEngine = null;
 			}
 			else {
-				defaultSearchEngineRows = cleanEngines(reorderEngines(defaultSearchEngineRows, selectedEngine, this.id));
+				state.engines = cleanEngines(reorderEngines(state.engines, selectedEngine, this.id));
 				selectedEngine = null;
+				stateSave(state);
 			}
 
 			updateSwapEngines();
 		}
 		
+		function clickEngineMoveEmpty() {
+			if (selectedEngine != null) {
+				state.engines = cleanEngines(reorderEngines(state.engines, selectedEngine, this.id));
+				selectedEngine = null;
+				updateSwapEngines();
+				stateSave(state);
+			}
+		}
+		
 		function clickSwapUndo() {
-			defaultSearchEngineRows = deepCloneObject(swapEnginesUndo);
+			state.engines = deepCloneObject(swapEnginesUndo);
 			selectedEngine = null;
 			updateSwapEngines();
+			stateSave(state);
 		}
 		
 		
 	    var selectedEngine = null;
-	    var swapEnginesUndo = deepCloneObject(defaultSearchEngineRows);
+	    var swapEnginesUndo = deepCloneObject(state.engines);
 	    
 		updateSwapEngines();
+
 		
-		// ----------
+		// Select and configure engines
+		// ----------------------------
+		
+		
+		
+		
+		// --- obsolete
 		
 		
 	    var colorOptions = ["#f0c0c0", "#F89320", "#FFFF01", "#b0b0ff", "#e7e7e7", "#a7e7a7"];
@@ -687,28 +713,6 @@ label, input[type=radio] {
 	    	divAllEngines.appendChild(createCategoryTable(category));
 	    	divAllEngines.appendChild(document.createElement('br'));
 		});
-
-	    // Reorder engines
-	    
-	    
-	    function reorderEngines2(src_list, src_i, dst_i) {
-			var j = 0;
-			var result = [];
-			for (i = 0; i < src_list.length; i++) {
-				if (j == src_i) {
-					j += 1;
-				}
-				if (i == dst_i) {
-					result.push(src_list[src_i]);
-				}
-				else {				
-					result.push(src_list[j]);
-					j += 1;
-				}
-			}
-			return result;
-		}
-	    
 
 	    
 		    

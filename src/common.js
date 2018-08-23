@@ -1,22 +1,5 @@
 
-var defaultSearchEngines = [
-	{key:"STARTPAGE", isDefault:true}, 
-	{key:"DUCKDUCKGO"},
-	{key:"BING"}, 
-	{key:"URL"},
-	{key:"NEWLINE"}, 
-	{key:"GOOGLE"},
-	{key:"YOUTUBE"},
-	{key:"GOOGLE-MAPS"},
-	{key:"GOOGLE-IMAGES"}, 
-	{key:"NEWLINE"}, 
-	{key:"GOOGLE-TRANSLATE"},
-	{key:"THESAURUS.COM"}, 
-	{key:"WIKIPEDIA"}
-];
-
-
-var defaultSearchEngineRows = [[
+var defaultEngines = [[
 	{key:"STARTPAGE", isDefault:true}, 
 	{key:"DUCKDUCKGO"},
 	{key:"BING"}, 
@@ -67,21 +50,21 @@ function stateLoad() {
 }
 
 function stateCheckValid(state) {
-	return state.hasOwnProperty('newTab') && state.hasOwnProperty('searchEngines');
+	return state.hasOwnProperty('newTab') && state.hasOwnProperty('engines');
 }
 
 
 function stateGetRejectDefaults() {
 	// Set default no-cookie state
 	var state = {newTab:true, consent:false};
-	state.searchEngines = defaultSearchEngines;
+	state.engines = defaultEngines;
 	return state;
 }
 
 function stateGetAcceptDefaults() {
 	// Set default no-cookie state
 	var state = {newTab:true, consent:true};
-	state.searchEngines = defaultSearchEngines;
+	state.engines = defaultEngines;
 	return state;
 }
 
@@ -97,10 +80,12 @@ function stateLoadOrDefault() {
 }
 
 function stateSave(s) {
-	var date = new Date();
-	date.setFullYear(date.getFullYear() + 1);
-	var c = "store="+JSON.stringify(s)+"; expires=" + date.toGMTString();
-	document.cookie = c;
+	if (s.consent) {
+		var date = new Date();
+		date.setFullYear(date.getFullYear() + 1);
+		var c = "store="+JSON.stringify(s)+"; expires=" + date.toGMTString();
+		document.cookie = c;
+	}
 }
 
 function stateErase() {
