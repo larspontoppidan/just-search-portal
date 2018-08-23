@@ -55,12 +55,12 @@ html, body {
 }
 
 .centerContainer {
-	margin: auto;
+	margin: auto 10px auto 10px;
 	text-align: center;
 }
 
 .centerbox {
-	max-width: 45em;
+	max-width: 60em;
 	margin: auto;
 	text-align: center;
 }
@@ -96,6 +96,26 @@ html, body {
 	border: 3px solid #404040;
 }
 
+
+.btnEmpty {
+	background-color: white;
+	border: 2px dashed #a0a0a0;
+	vertical-align: bottom;
+	min-width: 45px;
+	height: 40px;
+	display: inline-block;
+	margin: 10px;
+	cursor: pointer;
+}
+
+.ghost {
+	opacity: .5;
+}
+
+.btnSlim {
+	margin: 0 0 0 10px;
+}
+
 .manageTable {
     border-collapse: collapse;
     background-color: white;
@@ -112,7 +132,7 @@ html, body {
 .manageTable tr:hover {background-color: #ddd;}
 
 .manageTable tr {
-    border: 1px solid #ddd;    
+    border: 1px solid #aaa;    
 }
 
 .manageTable th {
@@ -135,6 +155,12 @@ html, body {
 	cursor: pointer;
 }
 
+.consentBox {
+  border: 1px solid #aaa;
+  padding: 0 20px 20px 20px;
+  overflow:auto;
+}
+
 .buttonCell {
 	background-color: #a7e7a7;
 }
@@ -148,6 +174,15 @@ html, body {
   margin-bottom: 30px;
 }
 
+.text {
+  text-align: left;
+}
+
+
+label, input[type=radio] {
+	cursor: pointer;
+}
+
 </style>
 </head>
 
@@ -156,20 +191,36 @@ html, body {
 		<div class="centerContainer">
 		<div class="centerbox">
 			
-		    <p class="smallertitle">Customize Page</p>
-		    <p>Check the search engines to appear in the custom search page, visible when Show all engines is not checked:</p>
-			<div class="segment" id="allEngines"></div>
+		    <br>
+		    <div id="askConsentBox" class="consentBox">
+		    <h2 class="text">Cookie consent</h2>
+		    <p class="text">To customize Just Search Portal a cookie must be used to save the settings. The cookie is not used for any other purpose and has a 1 year lifetime.</p>
+		    <div style="float:right">
+		    <button class="btn btnSlim" onClick="clickCookieReject()">No Thanks</button>
+		    <button class="btn btnSlim" onClick="clickCookieAccept()"><b>Accept</b></button>
+		    </div>
+		    </div>
+		    
+		    <div id="customizeDiv">
+			<p class="smallertitle">Click engines to swap position</p>
+			<div class="segment" id="swapEngines"></div>
+		    <button class="btn" onClick="clickSwapUndo()">Undo</button>
 			
-						
-		    <p>Change the position and color of the search engines in compact view:</p>
-			<div class="segment" id="manageEngines"></div>
-					
-			<div class="segment">
-			<button class="btn" onclick="usrDefaults()">Load defaults</button>
-			<button class="btn" onclick="usrSaveChanges()">Save changes</button>
-			<button class="btn" onclick="usrBack()">Cancel</button>
+			<p class="smallertitle">Select and configure engines</p>
+			
+			<div class="segment" id="allEngines"></div>
+		    
+		    
+			<br>
+			<br>
+			
 			</div>
 			
+		    <div id="haveConsentBox" class="consentBox">
+		    <div style="float:right;margin-top:25px"><button class="btn btnSlim" onClick="clickCookieWithdraw()">Withdraw and revert to default settings</button></div>
+		    <h2 class="text">Cookie consent</h2>	
+		    </div>
+			<br>	    
 			
 		</div>
 		</div>
@@ -182,12 +233,193 @@ html, body {
 		<script src="common.js"></script>
 		<script>
 		
-		var state = loadState();
+		// Utility functions
+		// -----------------
 		
-		if (!isStateValid(state)) {
-			state = loadDefaults();
+		
+		Array.prototype.removeAt = function(index) {
+            this.splice(index, 1);
+		    return this;
+		}
+
+		Array.prototype.insertBefore = function(item, index) {
+            this.splice(index, 0, item);
+		    return this;
+		}
+
+		function deepCloneObject(x) {
+			return JSON.parse(JSON.stringify(x));
+		}
+		
+		// Cookie consent management
+		// -------------------------
+				
+		var state = stateLoadOrDefault();
+		
+		function updateConsentState(got_consent) {
+			var ask_box = document.getElementById('askConsentBox');
+			var have_box = document.getElementById('haveConsentBox');
+			var customize_div = document.getElementById('customizeDiv');
+			if (got_consent) {
+				ask_box.style.display = 'none';
+				have_box.style.display = 'block';
+				customize_div.style.display = 'block';
+			}
+			else {
+				ask_box.style.display = 'block';
+				have_box.style.display = 'none';
+				customize_div.style.display = 'none';
+			}
+		}
+		
+		updateConsentState(state.consent);
+	    
+		function clickCookieAccept() {
+			state = stateGetAcceptDefaults();
+			stateSave(state);
+			updateConsentState(true);
+		}
+		
+		function clickCookieReject() {
+			stateErase();
+			window.location.href = "index.html";
+		}
+
+		function clickCookieWithdraw() {
+			stateErase();
+			updateConsentState(false);
+		}
+		
+		// Organize engines
+		// ----------------
+		
+		function createEmptyTarget(func, id) {
+			var elem = document.createElement('div');
+			elem.classList.add('btnEmpty');
+			elem.id = id;
+			elem.addEventListener('click', func, false);
+			return elem;
 		}
 	    
+	    function reorderEngines(engines, src_i, dst_i) {
+			// Decompose indexes into row/col
+			var src_row = Math.floor(src_i / 100) - 1;
+			var src_col = src_i % 100;
+			var dst_row = Math.floor(dst_i / 100) - 1;
+			var dst_col = dst_i % 100;
+			
+			// Get source item and remove it
+			var engine = engines[src_row][src_col];
+			engines[src_row].removeAt(src_col);				
+		
+			// Insert at destination
+			if (dst_row < 0) {
+				// Make new row for this operation
+				engines.insertBefore([engine], 0);
+			}
+			else if (dst_row < engines.length) {
+				// Row exists
+				engines[dst_row].insertBefore(engine, dst_col);					
+			} 
+			else {
+				// Make new row after
+				engines.push([engine]);					
+			}
+			
+			return engines;
+		} 
+	    
+	    function cleanEngines(engines) {
+	    	// Remove eventually empty rows
+			for (var i = 0; i < engines.length; i++) {
+				if (engines[i].length == 0) {
+					engines.removeAt(i);
+					i--;
+				}
+			}
+			return engines;
+	    }
+	   		
+		// Returns a div with the custom search engines, based on state.engines
+				
+		function makeOrganizeEngineDiv() {
+			var div = document.createElement('div');
+			var row = 0;
+			var col = 0;
+    		var engines = defaultSearchEngineRows;
+    		
+       		div.appendChild(createEmptyTarget(engineMoveClick, row * 100 + col));
+    		div.appendChild(document.createElement('hr'));
+    		
+			engines.forEach((rowArray) => {
+				row += 1;
+	       		div.appendChild(createEmptyTarget(engineMoveClick, row * 100 + col));
+				rowArray.forEach((entry) => {
+					var index = row * 100 + col;
+	        		var elem = createSearchButton(entry, engineMoveClick, index);
+	        		if ((selectedEngine != null) && 
+	        			(selectedEngine != index))
+	       			{
+	       				elem.classList.add("ghost");
+	       			}
+	        		div.appendChild(elem);
+	        	
+		        	col += 1;
+				});
+				
+	       		div.appendChild(createEmptyTarget(engineMoveClick, row * 100 + col));
+	    		div.appendChild(document.createElement('hr'));	
+	  		
+	    		col = 0;
+        	});	
+			
+			row += 1;
+			
+       		div.appendChild(createEmptyTarget(engineMoveClick, row*100 + col));
+    		
+			return div;
+		}
+
+	    
+		function updateSwapEngines() {
+			var div = document.getElementById('swapEngines');
+			while (div.children.length > 0) {
+				div.removeChild(div.firstChild);
+			}
+			div.appendChild(makeOrganizeEngineDiv());
+		}
+		
+
+		function engineMoveClick() {
+			if (selectedEngine == null) {
+				selectedEngine = this.id;				
+			}
+			else if (selectedEngine == this.id) {
+				selectedEngine = null;
+			}
+			else {
+				defaultSearchEngineRows = cleanEngines(reorderEngines(defaultSearchEngineRows, selectedEngine, this.id));
+				selectedEngine = null;
+			}
+
+			updateSwapEngines();
+		}
+		
+		function clickSwapUndo() {
+			defaultSearchEngineRows = deepCloneObject(swapEnginesUndo);
+			selectedEngine = null;
+			updateSwapEngines();
+		}
+		
+		
+	    var selectedEngine = null;
+	    var swapEnginesUndo = deepCloneObject(defaultSearchEngineRows);
+	    
+		updateSwapEngines();
+		
+		// ----------
+		
+		
 	    var colorOptions = ["#f0c0c0", "#F89320", "#FFFF01", "#b0b0ff", "#e7e7e7", "#a7e7a7"];
 
     	function createImg(src, classes) {
@@ -246,24 +478,6 @@ html, body {
    	    	return ret;
     	}
     	
-    	function createSearchButton(entry, func, id) {
-    		engine = getEngineFromKey(entry.key);
-    		var elem = document.createElement('button');
-        	elem.innerHTML = engine.display_name;
-        	elem.classList.add('btn');
-        	if (entry.isDefault) {
-        		elem.classList.add('btnDefault');
-        	}
-        	if (engine.description) {
-	        	elem.title = engine.description;		        		
-        	}
-        	if (entry.color) {
-        		elem.style.backgroundColor = entry.color;
-        	}
-        	elem.id = id;
-    		elem.addEventListener('click', func, false);
-        	return elem;
-    	}
     		
 	    function createManageTable(engines) {
 	        var tbl  = document.createElement('table');
@@ -297,10 +511,10 @@ html, body {
  				state.searchEngines.splice(state.searchEngines.length - 1, 1);	
  			}
 	    	
-		    var div = document.getElementById('manageEngines');
-		    div.removeChild(div.firstChild);
-		    div.appendChild(createManageTable(state.searchEngines));
-	    }
+
+			//setSearchEngines(makeDefaultEngineButtons(state.searchEngines));
+			
+		}
 	    
 	    function swapEngines(index1, index2) {
 	    	var tmp = state.searchEngines[index1];
@@ -466,7 +680,6 @@ html, body {
 			return tbl;
 	    }
 	    
-	    document.getElementById('manageEngines').appendChild(createManageTable(state.searchEngines));
 
 	    divAllEngines = document.getElementById('allEngines');
 	    
@@ -474,10 +687,30 @@ html, body {
 	    	divAllEngines.appendChild(createCategoryTable(category));
 	    	divAllEngines.appendChild(document.createElement('br'));
 		});
+
+	    // Reorder engines
 	    
 	    
-		    
-		    
+	    function reorderEngines2(src_list, src_i, dst_i) {
+			var j = 0;
+			var result = [];
+			for (i = 0; i < src_list.length; i++) {
+				if (j == src_i) {
+					j += 1;
+				}
+				if (i == dst_i) {
+					result.push(src_list[src_i]);
+				}
+				else {				
+					result.push(src_list[j]);
+					j += 1;
+				}
+			}
+			return result;
+		}
+	    
+
+	    
 		    
 		
 	</script>

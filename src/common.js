@@ -15,13 +15,29 @@ var defaultSearchEngines = [
 	{key:"WIKIPEDIA"}
 ];
 
+
+var defaultSearchEngineRows = [[
+	{key:"STARTPAGE", isDefault:true}, 
+	{key:"DUCKDUCKGO"},
+	{key:"BING"}, 
+	{key:"URL"}],[
+	{key:"GOOGLE"},
+	{key:"YOUTUBE"},
+	{key:"GOOGLE-MAPS"},
+	{key:"GOOGLE-IMAGES"}],[
+	{key:"GOOGLE-TRANSLATE"},
+	{key:"THESAURUS.COM"}, 
+	{key:"WIKIPEDIA"}
+]];
+
+
 function createSearchButton(entry, func, id) {
 	engine = getEngineFromKey(entry.key);
 	var elem = document.createElement('button');
 	elem.classList.add('btn');
 	if (entry.isDefault) {
 		elem.classList.add('btnDefault');
-	}
+	} 
 	if (engine.description) {
     	elem.title = engine.description;		        		
 	}
@@ -34,15 +50,10 @@ function createSearchButton(entry, func, id) {
 	return elem;
 }
 
+// State management
+// ----------------
 
-function saveState(s) {
-	var date = new Date();
-	date.setFullYear(date.getFullYear() + 1);
-	var c = "store="+JSON.stringify(s)+"; expires=" + date.toGMTString();
-	document.cookie = c;
-}
-
-function loadState() {
+function stateLoad() {
 	var ret = { };
 	console.log(document.cookie);
 	var result = document.cookie.match(new RegExp('store=([^;]+)'));
@@ -55,15 +66,48 @@ function loadState() {
 	return ret;
 }
 
-function isStateValid(state) {
+function stateCheckValid(state) {
 	return state.hasOwnProperty('newTab') && state.hasOwnProperty('searchEngines');
 }
 
-function loadDefaults() {
+
+function stateGetRejectDefaults() {
 	// Set default no-cookie state
-	var state = {newTab:true};
+	var state = {newTab:true, consent:false};
 	state.searchEngines = defaultSearchEngines;
 	return state;
+}
+
+function stateGetAcceptDefaults() {
+	// Set default no-cookie state
+	var state = {newTab:true, consent:true};
+	state.searchEngines = defaultSearchEngines;
+	return state;
+}
+
+function stateLoadOrDefault() {
+
+	var state = stateLoad();
+	
+	if (!stateCheckValid(state)) {
+		state = stateGetRejectDefaults();
+	}
+	
+    return state;
+}
+
+function stateSave(s) {
+	var date = new Date();
+	date.setFullYear(date.getFullYear() + 1);
+	var c = "store="+JSON.stringify(s)+"; expires=" + date.toGMTString();
+	document.cookie = c;
+}
+
+function stateErase() {
+	var date = new Date();
+	date.setFullYear(date.getFullYear() + 1);
+	var c = "store=; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+	document.cookie = c;
 }
 
 
