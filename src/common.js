@@ -85,6 +85,7 @@ function stateSave(s) {
 		date.setFullYear(date.getFullYear() + 1);
 		var c = "store="+JSON.stringify(s)+"; expires=" + date.toGMTString();
 		document.cookie = c;
+		console.log(c);
 	}
 }
 

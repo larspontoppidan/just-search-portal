@@ -214,12 +214,10 @@ label, input[type=checkbox] {
 		
 		function usrClickNewTab() {
 			state.newTab = newTab.checked;
-			stateSave(state);
 		}
 		
 		function usrClickShowAll() {
-			state.showAll = showAll.checked; 
-			stateSave(state);
+			state.showAll = showAll.checked;
 			engines.removeChild(engines.firstChild);
 			if (state.showAll) {
 				engines.appendChild(makeAllEngineButtons());

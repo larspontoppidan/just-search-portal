@@ -32,6 +32,7 @@ html, body {
 	height: 100%;
 	margin: 0;
 	font-family: helvetica, sans-serif;
+	background-color:#eee;
 }
 
 .container {
@@ -129,7 +130,6 @@ html, body {
     padding-left: 16px;
 }
 
-.manageTable tr:hover {background-color: #ddd;}
 
 .manageTable tr {
     border: 1px solid #aaa;    
@@ -147,13 +147,20 @@ html, body {
   width:100%;
 }
 
-
-
 .btnFunction {
     padding: 6px 18px;
 	margin: 5px 8px;
 	cursor: pointer;
 	font-size: 15px;
+}
+
+
+.btn:hover {
+    border: 1px solid black;
+}
+
+.btn:active {
+    border: 2px solid black;
 }
 
 .btnOrganize {
@@ -164,6 +171,8 @@ html, body {
 }
 
 .consentBox {
+  background-color: white;
+  border-radius: 4px;
   border: 1px solid #aaa;
   padding: 0 20px 20px 20px;
   overflow:auto;
@@ -191,6 +200,13 @@ label, input[type=radio] {
 	cursor: pointer;
 }
 
+
+
+.checkbox {
+	color: #303030;
+	margin: 20px;
+}
+
 </style>
 </head>
 
@@ -208,29 +224,51 @@ label, input[type=radio] {
 		    <button class="btnFunction" onClick="clickCookieAccept()"><b>Accept</b></button>
 		    </div>
 		    </div>
-		    
+		    <br>
 		    <div id="customizeDiv">
-			<p class="smallertitle">Click engines to swap position</p>
-			<div class="segment" id="swapEngines"></div>
-		    <button class="btnFunction" onClick="clickSwapUndo()">Undo</button>
 			
-			<p class="smallertitle">Select and configure engines</p>
+			<p class="smallertitle">Customize Just Search Portal</p>
+		    
+		    <div id="haveConsentBox" class="consentBox">
+		    <div style="float:right;margin-top:25px">
+		    <button class="btnFunction" onClick="clickCookieWithdraw()">Withdraw and revert to defaults</button>
+		    </div>
+		    <h2 class="text">Cookie consent</h2>	
+		    </div>
+		    <br>
+			
+			<div class="consentBox">
+		    <h2 class="text">Initial state</h2>		    
+		    <div >
+				<label><input type="checkbox" id="chkNewTab" onClick="clickChkNewTab()">Open in new tab</label>
+				 	&nbsp; 	&nbsp; 	&nbsp;
+				<label><input type="checkbox" id="chkShowAll" onClick="clickChkShowAll()">Show all engines</label>
+				</div>
+		    </div>
+		    
+		    <br>
+			
+			<div class="consentBox">
+		    <div style="float:right;margin-top:25px">
+		    <button class="btnFunction" id="btnSwapUndo" onClick="clickSwapUndo()">Undo</button>
+		    </div>
+		    <h2 class="text">Modify Page Layout</h2>
+			<div class="segment" id="swapEngines"></div>			
+		    </div>
+
+			<br>
+
+			<div class="consentBox">
+		    <h2 class="text">Select and Configure Search Engines</h2>
 			
 			<div class="segment" id="allEngines"></div>
 		    
 		    
-			<br>
 			
 			</div>
 			
-		    <div id="haveConsentBox" class="consentBox">
-		    <div style="float:right;margin-top:25px">
-		    <button class="btnFunction" onClick="clickCookieWithdraw()">Withdraw and revert to default settings</button>
-		    </div>
-		    <h2 class="text">Cookie consent</h2>	
-		    </div>
 			<br>	    
-			
+			</div>
 		</div>
 		</div>
 		<div class="footer">
@@ -297,7 +335,28 @@ label, input[type=radio] {
 			updateConsentState(false);
 		}
 		
-		// Organize engines
+		// Initial state
+		// -------------
+		
+		var chkNewTab = document.getElementById('chkNewTab');
+		var chkShowAll = document.getElementById('chkShowAll');
+		chkNewTab.checked = state.newTab;		
+		chkShowAll.checked = state.showAll;		
+		
+		function clickChkNewTab() {
+			console.log("nt" + chkNewTab.checked);
+			state.newTab = chkNewTab.checked;
+			stateSave(state);
+		}
+		
+		function clickChkShowAll() {
+			console.log("sa" + chkShowAll.checked);
+			state.showAll = chkShowAll.checked; 
+			stateSave(state);
+		}
+		
+		
+		// Engine layout
 		// ----------------
 		
 		function composeIndex(row, col) {
@@ -326,6 +385,20 @@ label, input[type=radio] {
 				engines.push([engine]);					
 			}
 			
+			return engines;
+		} 
+	    
+	    function switchEngines(engines, src_i, dst_i) {
+			// Decompose indexes into row/col
+			var src_row = Math.floor(src_i / 100) - 1;
+			var src_col = src_i % 100;
+			var dst_row = Math.floor(dst_i / 100) - 1;
+			var dst_col = dst_i % 100;
+			
+			// Swap source and dest engine
+			var tmp = engines[src_row][src_col];
+			engines[src_row][src_col] = engines[dst_row][dst_col];
+			engines[dst_row][dst_col] = tmp;
 			return engines;
 		} 
 	    
@@ -397,6 +470,9 @@ label, input[type=radio] {
 			div.appendChild(createSwapEngineDiv());
 		}
 		
+		function showSwapEngineUndo(x) {
+			document.getElementById('btnSwapUndo').style.display = x ? "block" : "none";
+		}
 
 		function clickEngineMove() {
 			if (selectedEngine == null) {
@@ -406,9 +482,10 @@ label, input[type=radio] {
 				selectedEngine = null;
 			}
 			else {
-				state.engines = cleanEngines(reorderEngines(state.engines, selectedEngine, this.id));
+				state.engines = cleanEngines(switchEngines(state.engines, selectedEngine, this.id));
 				selectedEngine = null;
 				stateSave(state);
+				showSwapEngineUndo(true);
 			}
 
 			updateSwapEngines();
@@ -420,6 +497,7 @@ label, input[type=radio] {
 				selectedEngine = null;
 				updateSwapEngines();
 				stateSave(state);
+				showSwapEngineUndo(true);
 			}
 		}
 		
@@ -428,6 +506,7 @@ label, input[type=radio] {
 			selectedEngine = null;
 			updateSwapEngines();
 			stateSave(state);
+			showSwapEngineUndo(false);
 		}
 		
 		
@@ -435,6 +514,7 @@ label, input[type=radio] {
 	    var swapEnginesUndo = deepCloneObject(state.engines);
 	    
 		updateSwapEngines();
+		showSwapEngineUndo(false);
 
 		
 		// Select and configure engines
