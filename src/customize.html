@@ -156,7 +156,8 @@ html, body {
 
 
 .btn:hover {
-    border: 1px solid black;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.6);
+    transition-duration: 0.2s;
 }
 
 .btn:active {
@@ -205,13 +206,6 @@ hr {
   border-bottom: 0;
 }
 
-
-.checkbox {
-	color: #303030;
-	margin: 20px;
-}
-
-
 /* Style the tab */
 .tab {
     background-color: inherit;
@@ -228,7 +222,7 @@ hr {
     outline: none;
     cursor: pointer;
     padding: 14px 16px;
-    transition: 0.3s;
+    transition: 0.2s;
     font-size: 17px;
     border: 0;
     border-bottom: 3px solid #d7d7d7;
@@ -243,6 +237,70 @@ hr {
 .tab button.active {
     border-bottom: 3px solid red;
 }
+
+
+/* Custom checkbox */
+.chkContainer {
+    display: block;
+    position: relative;
+    padding-left: 35px;
+    margin-left: 30px;
+    margin-right: 30px;
+    margin-bottom: 15px;
+    line-height: 27px;
+    cursor: pointer;
+    font-size: 16px;
+    text-align: left;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.chkContainer input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.chkMark {
+    position: absolute;
+    top: 1;
+    left: 0;
+    height: 23px;
+    width: 23px;
+    background-color: #eee;
+    border: 2px solid #555;
+}
+
+.chkContainer:hover input ~ .chkMark {
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.6);
+    transition-duration: 0.2s;
+}
+
+.chkMark:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+
+.chkContainer input:checked ~ .chkMark:after {
+    display: block;
+}
+
+.chkContainer .chkMark:after {
+    left: 8px;
+    top: 4px;
+    width: 5px;
+    height: 10px;
+    border: solid black;
+    border-width: 0 3px 3px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
+
+
 
 
 </style>
@@ -276,12 +334,20 @@ hr {
 		    <br>
 			
 			<div class="consentBox">
-		    <h2 class="text">Default mode</h2>		    
-		    <div >
-				<label><input type="checkbox" id="chkNewTab" onClick="clickChkNewTab()">Open in new tab</label>
-				 	&nbsp; 	&nbsp; 	&nbsp;
-				<label><input type="checkbox" id="chkShowAll" onClick="clickChkShowAll()">Show all engines</label>
-				</div>
+		    <h2 class="text">Default mode</h2>
+		    
+		    <div>
+				<label class="chkContainer">Open in new tab
+				  <input type="checkbox" id="chkNewTab" onClick="clickChkNewTab()">
+				  <span class="chkMark"></span>
+				</label>
+				<label class="chkContainer">Show all engines
+				  <input type="checkbox" id="chkShowAll" onClick="clickChkShowAll()">
+				  <span class="chkMark"></span>
+				</label>
+			</div>
+		    
+		    <br>
 		    </div>
 		    
 		    <br>
@@ -290,12 +356,12 @@ hr {
 		    <div style="float:right;margin-top:25px">
 		    <button class="btnFunction" id="btnSwapUndo" onClick="clickSwapUndo()">Undo changes</button>
 		    </div>
-		    <h2 class="text">Custom Search Engine Page</h2>
+		    <h2 class="text">Modify Custom Engines Page</h2>
 			    
 			<div class="tab" id="customize_tab">
-			  <button class="tablinks active" onclick="clickTab(0)">Modify layout</button>
-			  <button class="tablinks" onclick="clickTab(1)">Toggle default</button>
-			  <button class="tablinks" onclick="clickTab(2)">Toggle color</button>
+			  <button class="tablinks active" onclick="clickTab(0)">Layout</button>
+			  <button class="tablinks" onclick="clickTab(1)">Default Engines</button>
+			  <button class="tablinks" onclick="clickTab(2)">Engine Colors</button>
 			</div>
 
 			<div class="segment" id="swapEngines"></div>			
@@ -304,7 +370,7 @@ hr {
 			<br>
 
 			<div class="consentBox">
-		    <h2 class="text">Select and Configure Search Engines</h2>
+		    <h2 class="text">Select Search Engines</h2>
 			
 			<div class="segment" id="allEngines"></div>
 		    			
@@ -518,6 +584,8 @@ hr {
 			stateSave(state);
 		}
 
+	    var colorOptions = ["#f0c0c0", "#F89320", "#FFFF01", "#b0b0ff", "#e7e7e7", "#a7e7a7"];
+	    
     	function cycleColor(color) {
     		var i = colorOptions.indexOf(color) + 1;
     		if (i >= colorOptions.length) {
@@ -525,7 +593,7 @@ hr {
     		}
     		return colorOptions[i];
     	}
-    	
+
 		function clickToggleColor(index) {
 			var row = Math.floor(this.id / 100) - 1;
 			var col = this.id % 100;
@@ -639,6 +707,13 @@ hr {
 			updateSwapEngines();
 		}
 		
+
+		// Undo management
+		// ---------------
+		
+		
+		
+		
 		// Select and configure engines
 		// ----------------------------
 		
@@ -654,303 +729,81 @@ hr {
 	    	return result;
 	    }
 
-	    function clickChkEnable() {
-	    	entry = findEngine(this.id);
-		    if (entry != null) {
-		    	//removeEngine(this.id);
-		    	this.src = "img/box-unchecked.png";   
-		    }
-		    else {
-		    	//addEngine(this.id);
-                this.src = "img/box-checked.png";   
-            }
+		function addEngine(key) {
+			var obj = {};
+	    	obj.key = key;
+		}
 
-			//updateSwapEngines();
-	    }
-	    
-	    function clickChkDefault() {
-	    	entry = findEngine(this.id);
-		    if (entry != null) {
-		    	//removeEngine(this.id);
-		    	this.src = "img/box-unchecked.png";   
-		    }
-		    else {
-		    	//addEngine(this.id);
-                this.src = "img/box-checked.png";   
-            }
-
-			//updateSwapEngines();
-	    }
-
-		function clickChkToggleColor() {
-
-	    	entry = findEngine(this.id);
-	    	entry.color = cycleColor(entry.color);
-			updateEngines();
+		function removeEngine(key) {
+			console.log("remove " + key);
+			var result = null;
+	    	state.engines.forEach(columns => {
+	    		for (var i = 0; i < columns.length; i++) {
+		    		if (columns[i].key == key) {
+		    			columns.removeAt(i);
+		    			i -= 1;
+		    		}
+	    		}
+	    	});
 		}
 		
-		function usrToggleDefault() {
-			var newValue = true;
-			if (state.searchEngines[this.id].isDefault) {
-				delete state.searchEngines[this.id].isDefault;
+		
+		function clickChkEngine() {
+			if (this.checked) {
+				addEngine(this.id);
 			} 
 			else {
-				state.searchEngines[this.id].isDefault = true;				
+				removeEngine(this.id);
 			}
-			updateEngines();
+			
+			updateSwapEngines();
 		}
 		
-	    function createCategoryTable(obj) {
-		    var tbl  = document.createElement('table');
-		    tbl.classList.add("manageTable");
-		    var tr = tbl.insertRow();
-		    var th;
-		    //th = document.createElement('th');
-		    //tr.appendChild(th);
-
-		    th = document.createElement('th');
-		    th.appendChild(document.createTextNode("Check to include"));
-		    th.colSpan = 2;
-		    tr.appendChild(th);
-
-		    th = document.createElement('th');
-		    th.appendChild(document.createTextNode("Default"));
-		    th.style.textAlign = "center";
-		    tr.appendChild(th);
-		    
-		    th = document.createElement('th');
-		    th.appendChild(document.createTextNode("Color"));
-		    th.style.textAlign = "center";
-		    tr.appendChild(th);
-	
-		    th = document.createElement('th');
-		    th.appendChild(document.createTextNode("Button Preview"));
-		    th.style.textAlign = "center";
-		    tr.appendChild(th);
-	
-	
-		    obj.engines.forEach((engine) => {
-			    tr = tbl.insertRow();
-			    
-			    td = tr.insertCell(); // include
-			    var entry = findEngine(engine.key);
-			    if (entry != null) {
-				    img = "img/box-checked.png";                	   
-			    }
-			    else {
-				    img = "img/box-unchecked.png";
-			    }
-			    td.appendChild(createImgBtn(img, clickChkEnable, engine.key));
-
-			    td = tr.insertCell(); // Description.
+		function makeChkBox(text, checked, on_click, id) {
+			var lbl = document.createElement('label');
+			lbl.className = "chkContainer";
+			lbl.innerHtml = text;
+			lbl.appendChild(document.createTextNode(text));
+			
+			var input = document.createElement('input');
+			input.type = "checkbox";
+			input.id = id;
+			input.checked = checked;
+			input.addEventListener('click', on_click, false);
+			lbl.appendChild(input);
+			
+			var span = document.createElement('span');
+			span.className = "chkMark";
+			lbl.appendChild(span);
+			
+			return lbl;
+		}
+		
+	    function createCategoryElements(obj, parent) {
+	    	
+	    	var header;
+	    	header = document.createElement('h3');
+	    	header.appendChild(document.createTextNode(obj.category));
+	    	header.style.textAlign = "left";
+	    	parent.appendChild(header);
+	    	
+		    obj.engines.forEach((engine) => {		    	
 			    var name = engine.description ? engine.description : engine.display_name;
-				td.appendChild(document.createTextNode(name + ". "));
-				
-			    if (engine.about_url) {
-			    	td.appendChild(createLink("Link", engine.about_url, []));
-				}
-
-			    if (entry != null) {
-				    td = tr.insertCell(); // default
-				    if (entry.isDefault) {
-					    img = "img/box-checked.png";                	   
-				    }
-				    else {
-					    img = "img/box-unchecked.png";
-				    }
-				    td.appendChild(createImgBtn(img, clickChkDefault, engine.key));
-	
-				    td = tr.insertCell(); // color
-				    img = "img/palette.png";                	   
-				    td.appendChild(createImgBtn(img, clickChkToggleColor, engine.key));
+			    var entry = findEngine(engine.key);
 			    
-				    td = tr.insertCell(); // preview			    
-				    var btn = createSearchButtonEngine(engine, entry.isDefault, entry.color, null, null);			    	
-				    td.appendChild(btn);
-			    } 
-			    else {
-				    td = tr.insertCell(); // default
-				    td = tr.insertCell(); // color
-				    td = tr.insertCell(); // preview
-			    }          
+		    	parent.appendChild(makeChkBox(name, entry != null, clickChkEngine, engine.key));
+		    	
 		    });
-		    return tbl;
+		    
+		    parent.appendChild(document.createElement('br'));
 	    }
 	    
 
 	    divAllEngines = document.getElementById('allEngines');
 	    
 	    searchEngineList.forEach((category) => {
-	    	var header;
-	    	header = document.createElement('h3');
-	    	header.appendChild(document.createTextNode(category.category));
-	    	header.style.textAlign = "left";
-	    	divAllEngines.appendChild(header);
-	    	divAllEngines.appendChild(createCategoryTable(category));
-	    	divAllEngines.appendChild(document.createElement('br'));
+	    	createCategoryElements(category, divAllEngines);	    	
 		});
-
-	    
-	    
-		
-		
-		// --- obsolete
-		
-		
-	    var colorOptions = ["#f0c0c0", "#F89320", "#FFFF01", "#b0b0ff", "#e7e7e7", "#a7e7a7"];
-
-    	function createImg(src, classes) {
-    		var img = document.createElement("img");
-    		img.src = src;
-    		classes.forEach((cname) => {img.classList.add(cname);});
-    		return img;
-    	}
-    	
-    	function createImgBtn(src, func, id) {
-    		var img = document.createElement("img");
-    		img.src = src;
-    		img.classList.add("btnOrganize");
-    		img.id = id;
-    		img.addEventListener('click', func, false);
-    		return img;
-    	}
-    	
-    	function createLink(text, link, classes) {
-    		var e = document.createElement('a');
-   		    e.setAttribute("href", link);
-   		    e.innerHTML = text;
-   		    classes.forEach((cname) => {e.classList.add(cname);});
-   		    return e;
-    	}
-    	
-    	
-    	
-    	function getEngineCategory(key) {
-    		ret = {};
-    		searchEngineList.forEach((category) => {
-    	    	category.engines.forEach((engine) => {
-    	    		if (engine.key == key) {
-    	    			ret = category;
-    	    		}
-    	    	});
-    		});
-   	    	return ret;
-    	}
-    	
-    		
-	 	// User events:
-	 		
-    	function usrSaveChanges() {
-	 		state.showAll = false;
-	 		saveState(state);
-    		window.location.href = "index.html";
-	 	}
-
-    	function usrDefaults() {
-    		state = loadDefaults();
-    		updateEngines();
-    	}
-    	
-    	function usrBack() {
-    		window.location.href = "index.html";
-    	}
-    	
-    	function usrEngineUp() {
- 			var idx = Number(this.id);
-	 		if (idx == 0) {	 			
-	 			if (state.searchEngines[1].key != "NEWLINE") {
-	 				insertEngineSeperator(0);
-	 				idx = 1;
-	 			}
-	 			else {
-	 				return;
-	 			}
- 			}
- 			swapEngines(idx - 1, idx);
-	    	updateEngines();
-	    }
-	    
-		function usrEngineDown() {
- 			var idx = Number(this.id);
-	 		if (idx < (state.searchEngines.length - 1)) {	 			
-	 			swapEngines(idx + 1, idx);	 			
-	 		}
-	    	updateEngines();
-	    }
-		
-		function usrEngineDelete() {
-	 		state.searchEngines.splice(this.id, 1);
-	    	updateEngines();
-	    }
-		
-		function usrChangeColor() {
-			state.searchEngines[this.id].color = cycleColor(state.searchEngines[this.id].color);
-			updateEngines();
-		}
-		
-		function usrToggleDefault() {
-			var newValue = true;
-			if (state.searchEngines[this.id].isDefault) {
-				delete state.searchEngines[this.id].isDefault;
-			} 
-			else {
-				state.searchEngines[this.id].isDefault = true;				
-			}
-			updateEngines();
-		}
-			    
-	    function addEngineOld(key) {
-			pos = findBestPosition(key);
-			
-	    	var obj = {};
-	    	obj.key = key;
-	    	state.searchEngines.splice( pos, 0, obj);
-	    }
-	    
-	    function addEngine(key) {			
-	    	var obj = {};
-	    	obj.key = key;
-	    	state.engines[0].insertBefore(0, obj);
-	    }
-	    
-
-	    function removeEngine(key) {			
-	    	var obj = {};
-	    	obj.key = key;
-	    	state.engines[0].insertBefore(0, obj);
-	    }
-	    
-	    
-	    function findBestPosition(key) {
-			var latestPos = 0;
-			var result = 0;
-		    searchEngineList.forEach((objCategory) => {
-		    	var catPos = -1;
-		    	objCategory.engines.forEach((engine) => {
-		    		if (catPos == -1) {
-			    		catPos = findEngineIndex(engine.key);
-		    		}
-		    	});
-		    	if (catPos == -1) {
-		    		catPos = latestPos;
-		    	}
-		    	var first = true;
-		    	objCategory.engines.forEach((engine) => {
-		    		pos = findEngineIndex(engine.key);
-		    		if (pos != -1) {
-		    			first = false;
-		    			latestPos = pos + 1;
-		    		}
-		    		if (engine.key == key) {
-		    			result = first ? catPos : latestPos;
-		    		}
-		    	});
-		    });
-		    
-		    return result;
-	    }
-	    	    	    
-	    
 		    
 		
 	</script>
