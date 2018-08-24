@@ -140,10 +140,10 @@ html, body {
     padding-bottom: 12px;
     text-align: left;
 	background-color: #f5f5f5;
-	font-weight: bold;
+	font-weight: normal;
 }
 
-.manageTable td:first-child {
+.manageTable td:nth-child(2) {
   width:100%;
 }
 
@@ -200,12 +200,50 @@ label, input[type=radio] {
 	cursor: pointer;
 }
 
+hr {
+  border-top: 1px solid #aaa;
+  border-bottom: 0;
+}
 
 
 .checkbox {
 	color: #303030;
 	margin: 20px;
 }
+
+
+/* Style the tab */
+.tab {
+    background-color: inherit;
+    overflow: hidden;
+    border: 0;
+    padding: 0;
+	margin: 0;
+}
+
+/* Style the buttons inside the tab */
+.tab button {
+    background-color: inherit;
+    float: left;
+    outline: none;
+    cursor: pointer;
+    padding: 14px 16px;
+    transition: 0.3s;
+    font-size: 17px;
+    border: 0;
+    border-bottom: 3px solid #d7d7d7;
+}
+
+/* Change background color of buttons on hover */
+.tab button:hover {
+    background-color: #ddd;
+}
+
+/* Create an active/current tablink class */
+.tab button.active {
+    border-bottom: 3px solid red;
+}
+
 
 </style>
 </head>
@@ -238,7 +276,7 @@ label, input[type=radio] {
 		    <br>
 			
 			<div class="consentBox">
-		    <h2 class="text">Initial state</h2>		    
+		    <h2 class="text">Default mode</h2>		    
 		    <div >
 				<label><input type="checkbox" id="chkNewTab" onClick="clickChkNewTab()">Open in new tab</label>
 				 	&nbsp; 	&nbsp; 	&nbsp;
@@ -250,9 +288,16 @@ label, input[type=radio] {
 			
 			<div class="consentBox">
 		    <div style="float:right;margin-top:25px">
-		    <button class="btnFunction" id="btnSwapUndo" onClick="clickSwapUndo()">Undo</button>
+		    <button class="btnFunction" id="btnSwapUndo" onClick="clickSwapUndo()">Undo changes</button>
 		    </div>
-		    <h2 class="text">Modify Page Layout</h2>
+		    <h2 class="text">Custom Search Engine Page</h2>
+			    
+			<div class="tab" id="customize_tab">
+			  <button class="tablinks active" onclick="clickTab(0)">Modify layout</button>
+			  <button class="tablinks" onclick="clickTab(1)">Toggle default</button>
+			  <button class="tablinks" onclick="clickTab(2)">Toggle color</button>
+			</div>
+
 			<div class="segment" id="swapEngines"></div>			
 		    </div>
 
@@ -262,9 +307,7 @@ label, input[type=radio] {
 		    <h2 class="text">Select and Configure Search Engines</h2>
 			
 			<div class="segment" id="allEngines"></div>
-		    
-		    
-			
+		    			
 			</div>
 			
 			<br>	    
@@ -461,13 +504,81 @@ label, input[type=radio] {
 			return div;
 		}
 
+		function clickToggleDefault() {
+			var row = Math.floor(this.id / 100) - 1;
+			var col = this.id % 100;
+			if (state.engines[row][col].isDefault) {
+				delete state.engines[row][col].isDefault;
+			}
+			else {
+				state.engines[row][col].isDefault = true;
+			}
+
+			updateSwapEngines();
+			stateSave(state);
+		}
+
+    	function cycleColor(color) {
+    		var i = colorOptions.indexOf(color) + 1;
+    		if (i >= colorOptions.length) {
+    			i = 0;
+    		}
+    		return colorOptions[i];
+    	}
+    	
+		function clickToggleColor(index) {
+			var row = Math.floor(this.id / 100) - 1;
+			var col = this.id % 100;
+			state.engines[row][col].color = cycleColor(state.engines[row][col].color);
+			updateSwapEngines();
+			stateSave(state);
+		}
+
+		function createToggleEngineDiv(button_func) {
+			var div = document.createElement('div');
+			var row = 0;
+			var col = 0;
+
+    		div.appendChild(document.createElement('br'));
+    		
+    		state.engines.forEach((columns) => {
+				row += 1;
+				columns.forEach((entry) => {
+					var index = composeIndex(row, col);
+	        		var elem = createSearchButton(entry, button_func, index);	        		
+	        		div.appendChild(elem);
+	        	
+		        	col += 1;
+				});
+				
+	    		div.appendChild(document.createElement('br'));	
+	  		
+	    		col = 0;
+        	});	
+			
+			row += 1;
+			
+			return div;
+		}
+
 	    
 		function updateSwapEngines() {
+			var new_content;
+			if (customizeMode == 0) {
+				new_content = createSwapEngineDiv();
+			}
+			else if (customizeMode == 1) {
+				new_content = createToggleEngineDiv(clickToggleDefault);
+			}
+			else if (customizeMode == 2) {
+				new_content = createToggleEngineDiv(clickToggleColor);
+			}
+			
 			var div = document.getElementById('swapEngines');
 			while (div.children.length > 0) {
 				div.removeChild(div.firstChild);
 			}
-			div.appendChild(createSwapEngineDiv());
+			div.appendChild(new_content);
 		}
 		
 		function showSwapEngineUndo(x) {
@@ -496,8 +607,8 @@ label, input[type=radio] {
 				state.engines = cleanEngines(reorderEngines(state.engines, selectedEngine, this.id));
 				selectedEngine = null;
 				updateSwapEngines();
-				stateSave(state);
 				showSwapEngineUndo(true);
+				stateSave(state);
 			}
 		}
 		
@@ -512,15 +623,175 @@ label, input[type=radio] {
 		
 	    var selectedEngine = null;
 	    var swapEnginesUndo = deepCloneObject(state.engines);
+	    var customizeMode = 0; 
 	    
 		updateSwapEngines();
 		showSwapEngineUndo(false);
+		
 
+		function clickTab(tab_no) {
+			var tab_div = document.getElementById('customize_tab');
+			for (var i = 0; i < tab_div.children.length; i++) {
+				tab_div.children[i].className = (i == tab_no) ? "tablinks active" : "tablinks";				
+			}
+			
+			customizeMode = tab_no;
+			updateSwapEngines();
+		}
 		
 		// Select and configure engines
 		// ----------------------------
 		
+	    function findEngine(key) {
+	    	var result = null;
+	    	state.engines.forEach((columns, row) => {
+	    		columns.forEach((entry, col) => {
+		    		if (entry.key == key) {
+		    			result = entry;
+		    		}
+	    		});
+	    	});
+	    	return result;
+	    }
+
+	    function clickChkEnable() {
+	    	entry = findEngine(this.id);
+		    if (entry != null) {
+		    	//removeEngine(this.id);
+		    	this.src = "img/box-unchecked.png";   
+		    }
+		    else {
+		    	//addEngine(this.id);
+                this.src = "img/box-checked.png";   
+            }
+
+			//updateSwapEngines();
+	    }
+	    
+	    function clickChkDefault() {
+	    	entry = findEngine(this.id);
+		    if (entry != null) {
+		    	//removeEngine(this.id);
+		    	this.src = "img/box-unchecked.png";   
+		    }
+		    else {
+		    	//addEngine(this.id);
+                this.src = "img/box-checked.png";   
+            }
+
+			//updateSwapEngines();
+	    }
+
+		function clickChkToggleColor() {
+
+	    	entry = findEngine(this.id);
+	    	entry.color = cycleColor(entry.color);
+			updateEngines();
+		}
 		
+		function usrToggleDefault() {
+			var newValue = true;
+			if (state.searchEngines[this.id].isDefault) {
+				delete state.searchEngines[this.id].isDefault;
+			} 
+			else {
+				state.searchEngines[this.id].isDefault = true;				
+			}
+			updateEngines();
+		}
+		
+	    function createCategoryTable(obj) {
+		    var tbl  = document.createElement('table');
+		    tbl.classList.add("manageTable");
+		    var tr = tbl.insertRow();
+		    var th;
+		    //th = document.createElement('th');
+		    //tr.appendChild(th);
+
+		    th = document.createElement('th');
+		    th.appendChild(document.createTextNode("Check to include"));
+		    th.colSpan = 2;
+		    tr.appendChild(th);
+
+		    th = document.createElement('th');
+		    th.appendChild(document.createTextNode("Default"));
+		    th.style.textAlign = "center";
+		    tr.appendChild(th);
+		    
+		    th = document.createElement('th');
+		    th.appendChild(document.createTextNode("Color"));
+		    th.style.textAlign = "center";
+		    tr.appendChild(th);
+	
+		    th = document.createElement('th');
+		    th.appendChild(document.createTextNode("Button Preview"));
+		    th.style.textAlign = "center";
+		    tr.appendChild(th);
+	
+	
+		    obj.engines.forEach((engine) => {
+			    tr = tbl.insertRow();
+			    
+			    td = tr.insertCell(); // include
+			    var entry = findEngine(engine.key);
+			    if (entry != null) {
+				    img = "img/box-checked.png";                	   
+			    }
+			    else {
+				    img = "img/box-unchecked.png";
+			    }
+			    td.appendChild(createImgBtn(img, clickChkEnable, engine.key));
+
+			    td = tr.insertCell(); // Description.
+			    var name = engine.description ? engine.description : engine.display_name;
+				td.appendChild(document.createTextNode(name + ". "));
+				
+			    if (engine.about_url) {
+			    	td.appendChild(createLink("Link", engine.about_url, []));
+				}
+
+			    if (entry != null) {
+				    td = tr.insertCell(); // default
+				    if (entry.isDefault) {
+					    img = "img/box-checked.png";                	   
+				    }
+				    else {
+					    img = "img/box-unchecked.png";
+				    }
+				    td.appendChild(createImgBtn(img, clickChkDefault, engine.key));
+	
+				    td = tr.insertCell(); // color
+				    img = "img/palette.png";                	   
+				    td.appendChild(createImgBtn(img, clickChkToggleColor, engine.key));
+			    
+				    td = tr.insertCell(); // preview			    
+				    var btn = createSearchButtonEngine(engine, entry.isDefault, entry.color, null, null);			    	
+				    td.appendChild(btn);
+			    } 
+			    else {
+				    td = tr.insertCell(); // default
+				    td = tr.insertCell(); // color
+				    td = tr.insertCell(); // preview
+			    }          
+		    });
+		    return tbl;
+	    }
+	    
+
+	    divAllEngines = document.getElementById('allEngines');
+	    
+	    searchEngineList.forEach((category) => {
+	    	var header;
+	    	header = document.createElement('h3');
+	    	header.appendChild(document.createTextNode(category.category));
+	    	header.style.textAlign = "left";
+	    	divAllEngines.appendChild(header);
+	    	divAllEngines.appendChild(createCategoryTable(category));
+	    	divAllEngines.appendChild(document.createElement('br'));
+		});
+
+	    
+	    
 		
 		
 		// --- obsolete
@@ -552,25 +823,7 @@ label, input[type=radio] {
    		    return e;
     	}
     	
-    	function cycleColor(color) {
-    		var i = colorOptions.indexOf(color) + 1;
-    		if (i >= colorOptions.length) {
-    			i = 0;
-    		}
-    		return colorOptions[i];
-    	}
     	
-    	function getEngineFromKey(key) {
-    		ret = {};
-    		searchEngineList.forEach((category) => {
-    	    	category.engines.forEach((engine) => {
-    	    		if (engine.key == key) {
-    	    			ret = engine;
-    	    		}
-    	    	});
-    		});
-   	    	return ret;
-    	}
     	
     	function getEngineCategory(key) {
     		ret = {};
@@ -585,56 +838,6 @@ label, input[type=radio] {
     	}
     	
     		
-	    function createManageTable(engines) {
-	        var tbl  = document.createElement('table');
-	        tbl.classList.add("manageTable");		        
-	        engines.forEach((entry, index) => {
-	        	var tr = tbl.insertRow();
-	        	if (entry.key == "NEWLINE") {
-	        		var td = tr.insertCell();
-	        	}
-	        	else {
-					var td = tr.insertCell();		        	
-			        td.appendChild(createSearchButton(entry, usrToggleDefault, index));
-			        td = tr.insertCell();
-			        td.appendChild(createImgBtn("img/palette.png", usrChangeColor, index));
-			        td = tr.insertCell();
-			        td.appendChild(createImgBtn("img/up-arrow.png", usrEngineUp, index));
-			        td.appendChild(createImgBtn("img/down-arrow.png", usrEngineDown, index));
-			        td = tr.insertCell();
-			        td.appendChild(createImgBtn("img/trash.png", usrEngineDelete, index));
-	        	}
-        	});
-			return tbl;
-	    }
-	    
-	    function updateEngines() {
-	    	if (state.searchEngines[0].key == "NEWLINE") {
- 				state.searchEngines.splice(0, 1);	
- 			}
-	    	
-	    	if (state.searchEngines[state.searchEngines.length - 1].key == "NEWLINE") {
- 				state.searchEngines.splice(state.searchEngines.length - 1, 1);	
- 			}
-	    	
-
-			//setSearchEngines(makeDefaultEngineButtons(state.searchEngines));
-			
-		}
-	    
-	    function swapEngines(index1, index2) {
-	    	var tmp = state.searchEngines[index1];
- 			state.searchEngines[index1] = state.searchEngines[index2];
- 			state.searchEngines[index2] = tmp;
-	    }
-	    
-	    function insertEngineSeperator(index) {
-	    	var obj = {};
-	    	obj.key = "NEWLINE";
-	    	state.searchEngines.splice(index, 0, obj);
-	    }
-	     
-	    
 	 	// User events:
 	 		
     	function usrSaveChanges() {
@@ -696,7 +899,7 @@ label, input[type=radio] {
 			updateEngines();
 		}
 			    
-	    function addEngine(key) {
+	    function addEngineOld(key) {
 			pos = findBestPosition(key);
 			
 	    	var obj = {};
@@ -704,29 +907,19 @@ label, input[type=radio] {
 	    	state.searchEngines.splice( pos, 0, obj);
 	    }
 	    
-	    function usrToggleEngine() {
-	    	idx = findEngineIndex(this.id);
-		    if (idx >= 0) {
-		    	state.searchEngines.splice(idx, 1);
-		    	this.src = "img/box-unchecked.png";   
-		    }
-		    else {
-		    	addEngine(this.id);
-                this.src = "img/box-checked.png";   
-            }
-	    	
-	    	updateEngines();
+	    function addEngine(key) {			
+	    	var obj = {};
+	    	obj.key = key;
+	    	state.engines[0].insertBefore(0, obj);
 	    }
 	    
-	    function findEngineIndex(key) {
-	    	var result = -1;
-	    	state.searchEngines.forEach((entry, index) => {
-	    		if (entry.key == key) {
-	    			result = index;
-	    		}
-	    	});
-	    	return result;
+
+	    function removeEngine(key) {			
+	    	var obj = {};
+	    	obj.key = key;
+	    	state.engines[0].insertBefore(0, obj);
 	    }
+	    
 	    
 	    function findBestPosition(key) {
 			var latestPos = 0;
@@ -757,43 +950,6 @@ label, input[type=radio] {
 		    return result;
 	    }
 	    	    	    
-	    function createCategoryTable(obj) {
-	        var tbl  = document.createElement('table');
-	        tbl.classList.add("manageTable");
-	        var th = document.createElement('th');
-	        th.appendChild(document.createTextNode(obj.category));
-	        th.colSpan = 3;
-	        tbl.insertRow().appendChild(th);
-	        
-	        obj.engines.forEach((engine) => {
-	        	var td, tr = tbl.insertRow();
-	        	td = tr.insertCell();
-                   if (engine.about_url) {
-					td.appendChild(createLink(engine.display_name, engine.about_url, []));
-                   }
-                   else {
-                    td.appendChild(document.createTextNode(engine.display_name));                    	
-                   }                   
-                   td = tr.insertCell();
-                   if (findEngineIndex(engine.key) >= 0) {
-	                   img = "img/box-checked.png";                	   
-                   }
-                   else {
-                	   img = "img/box-unchecked.png";
-                   }
-                   td.appendChild(createImgBtn(img, usrToggleEngine, engine.key));
-        	});
-			return tbl;
-	    }
-	    
-
-	    divAllEngines = document.getElementById('allEngines');
-	    
-	    searchEngineList.forEach((category) => {
-	    	divAllEngines.appendChild(createCategoryTable(category));
-	    	divAllEngines.appendChild(document.createElement('br'));
-		});
-
 	    
 		    
 		

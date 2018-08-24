@@ -13,24 +13,39 @@ var defaultEngines = [[
 	{key:"WIKIPEDIA"}
 ]];
 
+function getEngineFromKey(key) {
+	ret = {};
+	searchEngineList.forEach((category) => {
+    	category.engines.forEach((engine) => {
+    		if (engine.key == key) {
+    			ret = engine;
+    		}
+    	});
+	});
+   	return ret;
+}
 
-function createSearchButton(entry, func, id) {
-	engine = getEngineFromKey(entry.key);
+function createSearchButtonEngine(engine, is_default, color, func, id) {
 	var elem = document.createElement('button');
 	elem.classList.add('btn');
-	if (entry.isDefault) {
+	if (is_default) {
 		elem.classList.add('btnDefault');
 	} 
 	if (engine.description) {
-    	elem.title = engine.description;		        		
+    	elem.title = engine.description;
 	}
-	if (entry.color) {
-		elem.style.backgroundColor = entry.color;
+	if (color) {
+		elem.style.backgroundColor = color;
 	}
 	elem.id = id;
 	elem.addEventListener('click', func, false);
 	elem.appendChild(document.createTextNode(engine.display_name));
 	return elem;
+}
+
+function createSearchButton(entry, func, id) {
+	engine = getEngineFromKey(entry.key);
+	return createSearchButtonEngine(engine, entry.isDefault, entry.color, func, id);
 }
 
 // State management
