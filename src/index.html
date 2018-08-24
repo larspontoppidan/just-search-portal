@@ -118,15 +118,68 @@ html, body {
 	font-size: 16pt;
 }
 
-.checkbox {
-	color: #303030;
-	margin: 20px;
+
+/* Custom checkbox */
+.chkContainer {
+    display: inline;
+    position: relative;
+    padding-left: 31px;
+    margin-left: 30px;
+    margin-right: 30px;
+    line-height: 23px;
+    cursor: pointer;
+	font-size: 11pt;
+    text-align: left;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 
-label, input[type=checkbox] {
-	cursor: pointer;
+.chkContainer input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
 }
 
+.chkMark {
+    position: absolute;
+    top: 1;
+    left: 0;
+    height: 18px;
+    width: 18px;
+    background-color: #eee;
+    border: 2px solid #555;
+}
+
+.chkContainer:hover input ~ .chkMark {
+    background-color: #ccc;
+}
+
+.chkMark:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+
+.chkContainer input:checked ~ .chkMark:after {
+    display: block;
+}
+
+a {
+    font-size: 15px;
+}
+.chkContainer .chkMark:after {
+    left: 6px;
+    top: 2px;
+    width: 4px;
+    height: 9px;
+    border: solid black;
+    border-width: 0 3px 3px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
 
 </style>
 </head>
@@ -141,11 +194,15 @@ label, input[type=checkbox] {
 			</form>
 						
 			<div id="engines"></div>
-						
-			<div class="checkbox">
-				<label><input type="checkbox" id="newTab" onClick="usrClickNewTab()">Open in new tab</label>
-				 	&nbsp; 	&nbsp; 	&nbsp;
-				<label><input type="checkbox" id="showAll" onClick="usrClickShowAll()">Show all engines</label>
+			<div style="margin: 15px 0">
+				<label class="chkContainer">Open in new tab
+				  <input type="checkbox" id="newTab" onClick="usrClickNewTab()">
+				  <span class="chkMark"></span>
+				</label>
+				<label class="chkContainer">Show all engines
+				  <input type="checkbox" id="showAll" onClick="usrClickShowAll()">
+				  <span class="chkMark"></span>
+				</label>
 			</div>
 			
 			<p><a href="customize.html">Customize Page</a></p>
@@ -167,19 +224,7 @@ label, input[type=checkbox] {
 				
 		newTab.checked = state.newTab;
 		showAll.checked = state.showAll;
-		
-    	function getEngineFromKey(key) {
-    		ret = {};
-    		searchEngineList.forEach((category) => {
-    	    	category.engines.forEach((engine) => {
-    	    		if (engine.key == key) {
-    	    			ret = engine;
-    	    		}
-    	    	});
-    		});
-   	    	return ret;
-    	}
-    	    	
+		    	    	
 		function makeDefaultEngineButtons() {
 			var div = document.createElement('div');
 			state.engines.forEach((columns) => {
