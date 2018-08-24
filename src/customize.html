@@ -76,7 +76,7 @@ html, body {
 .smallertitle {
 	font-weight: bold;
 	font-size: 32pt;
-	color: #c0c0c0;
+	color: #888;
 	margin: 30px 0 25px 0;
 }
 
@@ -85,7 +85,7 @@ html, body {
 	border: 2px solid #a0a0a0;
 	vertical-align: bottom;
 	color: black;
-	min-width: 150px;
+	width: 150px;
 	height: 44px;
 	display: inline-block;
 	font-size: 15px;
@@ -161,7 +161,8 @@ html, body {
 }
 
 .btn:active {
-    border: 2px solid black;
+   filter: brightness(65%);
+   transition-duration: 0.2s;
 }
 
 .btnOrganize {
@@ -301,7 +302,21 @@ hr {
 }
 
 
+.stickyFooter {
+   position: fixed;
+   left: 0;
+   bottom: 0;
+   width: 100%;
+   border-top: 2px solid #a0a0a0;
+   background-color: white;
+}
 
+.stickyFooterInside {
+   background-color: inherit;
+   margin: 0;
+   padding: 2px;
+   padding-left: 20px;
+}
 
 </style>
 </head>
@@ -311,7 +326,6 @@ hr {
 		<div class="centerContainer">
 		<div class="centerbox">
 			
-		    <br>
 		    <div id="askConsentBox" class="consentBox">
 		    <h2 class="text">Cookie consent</h2>
 		    <p class="text">To customize Just Search Portal a cookie must be used to save the settings. The cookie is not used for any other purpose and has a 1 year lifetime.</p>
@@ -320,19 +334,11 @@ hr {
 		    <button class="btnFunction" onClick="clickCookieAccept()"><b>Accept</b></button>
 		    </div>
 		    </div>
-		    <br>
-		    <div id="customizeDiv">
+		    
+			<div id="customizeDiv">
 			
 			<p class="smallertitle">Customize Just Search Portal</p>
-		    
-		    <div id="haveConsentBox" class="consentBox">
-		    <div style="float:right;margin-top:25px">
-		    <button class="btnFunction" onClick="clickCookieWithdraw()">Withdraw and revert to defaults</button>
-		    </div>
-		    <h2 class="text">Cookie consent</h2>	
-		    </div>
-		    <br>
-			
+		    			
 			<div class="consentBox">
 		    <h2 class="text">Default mode</h2>
 		    
@@ -354,7 +360,7 @@ hr {
 			
 			<div class="consentBox">
 		    <div style="float:right;margin-top:25px">
-		    <button class="btnFunction" id="btnSwapUndo" onClick="clickSwapUndo()">Undo changes</button>
+		    <button class="btnFunction" id="btnModifyUndo" onClick="clickModifyUndo()" disabled>Undo changes</button>
 		    </div>
 		    <h2 class="text">Modify Custom Engines Page</h2>
 			    
@@ -370,18 +376,37 @@ hr {
 			<br>
 
 			<div class="consentBox">
+		    <div style="float:right;margin-top:25px">
+		    <button class="btnFunction" onClick="clickDeselectAll()">Deselect all</button>
+		    <button class="btnFunction" id="btnSelectUndo" onClick="clickSelectUndo()" disabled>Undo changes</button>
+		    </div>
 		    <h2 class="text">Select Search Engines</h2>
 			
 			<div class="segment" id="allEngines"></div>
 		    			
 			</div>
 			
-			<br>	    
+			<br>
+		    <div id="haveConsentBox" class="consentBox">
+		    <h2 class="text">Cookie consent</h2>	
+		    <p class="text">To customize Just Search Portal a cookie must be used to save the settings. The cookie is not used for any other purpose and has a 1 year lifetime.</p>
+		    <div style="float:right">
+		    <button class="btnFunction" onClick="clickCookieWithdraw()">Withdraw and revert to defaults</button>
+		    </div>
+		    </div>
+		    <br>
+			<br>
+			<br>    
 			</div>
 		</div>
 		</div>
-		<div class="footer">
-			<p>Just Search Portal - Without distractions - Respecting privacy - <a href="https://github.com/larspontoppidan/just-search-portal">GitHub</a> - <a href="https://larsee.com/blog/2018/02/just-search-portal/">About</a></p>
+		<div class="stickyFooter">
+			<div class="stickyFooterInside">
+			<div style="float:right">		        
+			    <button class="btnFunction" onClick="clickGoBack()">Back to Portal</button>
+		    </div>
+			<p>Customizing Just Search Portal</p>
+			</div>
 		</div>
 	</div>
 
@@ -463,7 +488,13 @@ hr {
 			state.showAll = chkShowAll.checked; 
 			stateSave(state);
 		}
-		
+
+		// Footer
+		// ------
+				
+		function clickGoBack() {
+			window.location.href = "index.html";			
+		}
 		
 		// Engine layout
 		// ----------------
@@ -580,8 +611,8 @@ hr {
 				state.engines[row][col].isDefault = true;
 			}
 
-			updateSwapEngines();
-			stateSave(state);
+			smModified(0);
+			updateModifyEngines();
 		}
 
 	    var colorOptions = ["#f0c0c0", "#F89320", "#FFFF01", "#b0b0ff", "#e7e7e7", "#a7e7a7"];
@@ -598,8 +629,8 @@ hr {
 			var row = Math.floor(this.id / 100) - 1;
 			var col = this.id % 100;
 			state.engines[row][col].color = cycleColor(state.engines[row][col].color);
-			updateSwapEngines();
-			stateSave(state);
+			smModified(0);
+			updateModifyEngines();
 		}
 
 		function createToggleEngineDiv(button_func) {
@@ -630,7 +661,7 @@ hr {
 		}
 
 	    
-		function updateSwapEngines() {
+		function updateModifyEngines() {
 			var new_content;
 			if (customizeMode == 0) {
 				new_content = createSwapEngineDiv();
@@ -649,10 +680,6 @@ hr {
 			div.appendChild(new_content);
 		}
 		
-		function showSwapEngineUndo(x) {
-			document.getElementById('btnSwapUndo').style.display = x ? "block" : "none";
-		}
-
 		function clickEngineMove() {
 			if (selectedEngine == null) {
 				selectedEngine = this.id;				
@@ -663,40 +690,33 @@ hr {
 			else {
 				state.engines = cleanEngines(switchEngines(state.engines, selectedEngine, this.id));
 				selectedEngine = null;
-				stateSave(state);
-				showSwapEngineUndo(true);
+				smModified(0);
 			}
 
-			updateSwapEngines();
+			updateModifyEngines();
 		}
 		
 		function clickEngineMoveEmpty() {
 			if (selectedEngine != null) {
 				state.engines = cleanEngines(reorderEngines(state.engines, selectedEngine, this.id));
 				selectedEngine = null;
-				updateSwapEngines();
-				showSwapEngineUndo(true);
-				stateSave(state);
+				updateModifyEngines();
+				smModified(0);
 			}
 		}
 		
-		function clickSwapUndo() {
-			state.engines = deepCloneObject(swapEnginesUndo);
+		function clickModifyUndo() {
 			selectedEngine = null;
-			updateSwapEngines();
-			stateSave(state);
-			showSwapEngineUndo(false);
+			smUndo(0);
+			updateModifyEngines();			
 		}
 		
 		
 	    var selectedEngine = null;
-	    var swapEnginesUndo = deepCloneObject(state.engines);
 	    var customizeMode = 0; 
 	    
-		updateSwapEngines();
-		showSwapEngineUndo(false);
+		updateModifyEngines();
 		
-
 		function clickTab(tab_no) {
 			var tab_div = document.getElementById('customize_tab');
 			for (var i = 0; i < tab_div.children.length; i++) {
@@ -704,14 +724,51 @@ hr {
 			}
 			
 			customizeMode = tab_no;
-			updateSwapEngines();
+			updateModifyEngines();
 		}
 		
 
-		// Undo management
-		// ---------------
+		// Save/undo management
+		// --------------------
 		
+		function showUndo(section, value) {
+			if (section == 0) {
+				document.getElementById('btnModifyUndo').disabled = value ? false : true;				
+			}
+			else {
+				document.getElementById('btnSelectUndo').disabled = value ? false : true;
+			}
+		}
 		
+		// Init undo state:
+		var undoState = deepCloneObject(state.engines);
+	    var undoStateSection = -1;
+	    
+		function smModified(section) {
+			if (undoStateSection == -1) {
+				undoStateSection = section;
+				showUndo(section, true);
+			}	
+			else if (undoStateSection != section) {
+				// We are changing section, take new undoState snapshow
+				undoState = deepCloneObject(state.engines);
+				showUndo(1 - section, false); 
+				showUndo(section, true);
+				undoStateSection = section;
+			}
+
+			stateSave(state);			
+		}
+		
+		function smUndo() {			
+			state.engines = deepCloneObject(undoState);
+			undoStateSection = -1;
+			
+			showUndo(0, false);
+			showUndo(1, false);
+			
+			stateSave(state);
+		}
 		
 		
 		// Select and configure engines
@@ -728,16 +785,15 @@ hr {
 	    	});
 	    	return result;
 	    }
-
+	       
 		function addEngine(key) {
 			var obj = {};
 	    	obj.key = key;
+			state.engines[state.engines.length - 1].push(obj);	    	
 		}
 
 		function removeEngine(key) {
-			console.log("remove " + key);
-			var result = null;
-	    	state.engines.forEach(columns => {
+			state.engines.forEach(columns => {
 	    		for (var i = 0; i < columns.length; i++) {
 		    		if (columns[i].key == key) {
 		    			columns.removeAt(i);
@@ -747,8 +803,26 @@ hr {
 	    	});
 		}
 		
+		function removeAllEngines() {
+			state.engines = [[]];
+		}
+		
+		
+		function clickDeselectAll() {
+			removeAllEngines();
+			smModified(1);
+			updateModifyEngines();			
+			updateSelectedState();
+		}
+		
+		function clickSelectUndo() {
+			smUndo(1);
+			updateModifyEngines();
+			updateSelectedState();			
+		}
 		
 		function clickChkEngine() {
+			console.log("chk: " + this.checked);
 			if (this.checked) {
 				addEngine(this.id);
 			} 
@@ -756,7 +830,16 @@ hr {
 				removeEngine(this.id);
 			}
 			
-			updateSwapEngines();
+			smModified(1);
+			updateModifyEngines();
+			updateSelectedState();
+		}
+		
+		function updateSelectedState() {
+			var chkboxes = document.querySelectorAll(".chkBoxInput");
+			chkboxes.forEach(input => {
+				input.checked = (findEngine(input.id) == null) ? false : true;
+			});
 		}
 		
 		function makeChkBox(text, checked, on_click, id) {
@@ -768,6 +851,7 @@ hr {
 			var input = document.createElement('input');
 			input.type = "checkbox";
 			input.id = id;
+			input.className = "chkBoxInput";
 			input.checked = checked;
 			input.addEventListener('click', on_click, false);
 			lbl.appendChild(input);
