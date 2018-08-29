@@ -70,6 +70,32 @@ var searchEngineList = [
 	]
 },
 {
+	category : "Shopping",
+	engines : [
+		{
+			key : "AMAZON-CO-UK",
+			display_name :  "Amazon.co.uk",
+			query_url : "https://www.amazon.co.uk/s/field-keywords=$QUERY_PLUS_SEP",
+			about_url : "https://www.amazon.co.uk/"
+		}, {
+			key : "AMAZON-COM",
+			display_name :  "Amazon.com",
+			query_url : "https://www.amazon.com/s/field-keywords=$QUERY_PLUS_SEP",
+			about_url : "https://www.amazon.com/"
+		}, {
+			key : "AMAZON-DE",
+			display_name :  "Amazon.de",
+			query_url : "https://www.amazon.de/s/field-keywords=$QUERY_PLUS_SEP",
+			about_url : "https://www.amazon.de/"
+		}, {
+			key : "EBAY-COM",
+			display_name : "eBay.com",
+			query_url : "https://www.ebay.com/sch/i.html?_nkw=$QUERY_PLUS_SEP",
+			about_url : "https://www.ebay.com"
+		}
+	]
+},
+{
 	category : "Other",
 	engines : [
 		{
@@ -102,7 +128,7 @@ var searchEngineList = [
 			query_url : "https://twitter.com/search?q=$QUERY",
 			about_url : "https://twitter.com"			
 		}
-	]	    		
+	]
 },
 {
 	category : "Language",
