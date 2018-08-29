@@ -299,13 +299,15 @@ a {
 				new_tab_index = state.engines.length;
 			}
 			query = document.getElementById('query').value;
-			state.searchEngines.forEach((entry) => {
-				if (entry.isDefault) {
-					new_tab_index -= 1;
-					engine = getEngineFromKey(entry.key);
-					search(engine, query, (new_tab_index != 0));					
-				}
-			});
+			state.engines.forEach((columns) => {
+        		columns.forEach((entry) => {
+					if (entry.isDefault) {
+						new_tab_index -= 1;
+						engine = getEngineFromKey(entry.key);
+						search(engine, query, (new_tab_index != 0));					
+					}
+				});
+        	});
 		}
 		
 		if (!Array.prototype.remove) {
