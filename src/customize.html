@@ -538,10 +538,10 @@ hr {
        		div.appendChild(createEmptyTarget(clickEngineMoveEmpty, composeIndex(row, col)));
     		div.appendChild(document.createElement('hr'));
     		
-    		state.engines.forEach((columns) => {
+    		state.engines.forEach(function(columns) {
 				row += 1;
 	       		div.appendChild(createEmptyTarget(clickEngineMoveEmpty, composeIndex(row, col)));
-				columns.forEach((entry) => {
+				columns.forEach(function(entry) {
 					var index = composeIndex(row, col);
 	        		var elem = createSearchButton(entry, clickEngineMove, index);
 	        		if ((selectedEngine != null) && 
@@ -609,9 +609,9 @@ hr {
 
     		div.appendChild(document.createElement('br'));
     		
-    		state.engines.forEach((columns) => {
+    		state.engines.forEach(function(columns) {
 				row += 1;
-				columns.forEach((entry) => {
+				columns.forEach(function(entry) {
 					var index = composeIndex(row, col);
 	        		var elem = createSearchButton(entry, button_func, index);	        		
 	        		div.appendChild(elem);
@@ -745,8 +745,8 @@ hr {
 		
 	    function findEngine(key) {
 	    	var result = null;
-	    	state.engines.forEach((columns, row) => {
-	    		columns.forEach((entry, col) => {
+	    	state.engines.forEach(function(columns, row) {
+	    		columns.forEach(function(entry, col) {
 		    		if (entry.key == key) {
 		    			result = entry;
 		    		}
@@ -762,7 +762,7 @@ hr {
 		}
 
 		function removeEngine(key) {
-			state.engines.forEach(columns => {
+			state.engines.forEach(function(columns) {
 	    		for (var i = 0; i < columns.length; i++) {
 		    		if (columns[i].key == key) {
 		    			columns.removeAt(i);
@@ -806,7 +806,7 @@ hr {
 		
 		function updateSelectedState() {
 			var chkboxes = document.querySelectorAll(".chkBoxInput");
-			chkboxes.forEach(input => {
+			chkboxes.forEach(function(input) {
 				input.checked = (findEngine(input.id) == null) ? false : true;
 			});
 		}
@@ -840,7 +840,7 @@ hr {
 	    	header.style.textAlign = "left";
 	    	parent.appendChild(header);
 	    	
-		    obj.engines.forEach((engine) => {		    	
+		    obj.engines.forEach(function(engine) {		    	
 			    var name = engine.description ? engine.description : engine.display_name;
 			    var entry = findEngine(engine.key);
 			    
@@ -854,7 +854,7 @@ hr {
 
 	    divAllEngines = document.getElementById('allEngines');
 	    
-	    searchEngineList.forEach((category) => {
+	    searchEngineList.forEach(function(category) {
 	    	createCategoryElements(category, divAllEngines);	    	
 		});
 		    

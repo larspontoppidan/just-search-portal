@@ -237,11 +237,11 @@ a {
 		    	    	
 		function makeDefaultEngineButtons() {
 			var div = document.createElement('div');
-			state.engines.forEach((columns) => {
+			state.engines.forEach(function(columns) {
         		if (div.children.length > 0) {
         			div.appendChild(document.createElement('br'));
         		}
-				columns.forEach((entry) => {
+				columns.forEach(function(entry) {
 		        	div.appendChild(createSearchButton(entry, engineClick, entry.key));	
 				});
         	});	
@@ -250,7 +250,7 @@ a {
     			
 		function makeAllEngineButtons() {
 			var div = document.createElement('div');
-			searchEngineList.forEach((category) => {
+			searchEngineList.forEach(function(category) {
 				var cat = document.createElement('div');
 				cat.classList.add("categoryBox");
 				div.appendChild(cat);
@@ -258,7 +258,7 @@ a {
 				th.appendChild(document.createTextNode(category.category));
 		        cat.appendChild(th);
 		        
-		        category.engines.forEach((engine) => {
+		        category.engines.forEach(function(engine) {
 			        cat.appendChild(createSearchButton(engine, engineClick, engine.key));
 					cat.appendChild(document.createElement('br'));
 		        });
@@ -299,8 +299,8 @@ a {
 				new_tab_index = state.engines.length;
 			}
 			query = document.getElementById('query').value;
-			state.engines.forEach((columns) => {
-        		columns.forEach((entry) => {
+			state.engines.forEach(function(columns) {
+        		columns.forEach(function(entry) {
 					if (entry.isDefault) {
 						new_tab_index -= 1;
 						engine = getEngineFromKey(entry.key);

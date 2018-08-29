@@ -15,8 +15,8 @@ var defaultEngines = [[
 
 function getEngineFromKey(key) {
 	ret = {};
-	searchEngineList.forEach((category) => {
-    	category.engines.forEach((engine) => {
+	searchEngineList.forEach(function (category) {
+    	category.engines.forEach(function (engine) {
     		if (engine.key == key) {
     			ret = engine;
     		}
