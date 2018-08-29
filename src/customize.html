@@ -117,36 +117,6 @@ html, body {
 	margin: 0 0 0 10px;
 }
 
-.manageTable {
-    border-collapse: collapse;
-    background-color: white;
-    width: 100%;
-}
-
-.manageTable td, .manageTable th {
-    padding: 5px;
-    white-space:nowrap;
-    text-align: left;
-    padding-left: 16px;
-}
-
-
-.manageTable tr {
-    border: 1px solid #aaa;    
-}
-
-.manageTable th {
-    padding-top: 12px;
-    padding-bottom: 12px;
-    text-align: left;
-	background-color: #f5f5f5;
-	font-weight: normal;
-}
-
-.manageTable td:nth-child(2) {
-  width:100%;
-}
-
 .btnFunction {
     padding: 6px 18px;
 	margin: 5px 8px;
@@ -157,12 +127,12 @@ html, body {
 
 .btn:hover {
     box-shadow: 0 0 8px rgba(0, 0, 0, 0.6);
-    transition-duration: 0.2s;
+    transition-duration: 0.1s;
 }
 
 .btn:active {
    filter: brightness(65%);
-   transition-duration: 0.2s;
+   transition-duration: 0.1s;
 }
 
 .btnOrganize {
@@ -350,7 +320,7 @@ hr {
 				<label class="chkContainer">Show all engines
 				  <input type="checkbox" id="chkShowAll" onClick="clickChkShowAll()">
 				  <span class="chkMark"></span>
-				</label>
+				</label>				
 			</div>
 		    
 		    <br>
@@ -362,14 +332,15 @@ hr {
 		    <div style="float:right;margin-top:25px">
 		    <button class="btnFunction" id="btnModifyUndo" onClick="clickModifyUndo()" disabled>Undo changes</button>
 		    </div>
-		    <h2 class="text">Modify Custom Engines Page</h2>
+		    <h2 class="text">Modify Custom Search Page</h2>
 			    
+			<p class="text">The custom search page is shown when 'Show all engines' is not checked and is intended to provide easy access to the favorite search engines. The search buttons can be positioned, colored and have their default status set.</p>
+			<p class="text">Default search engines are marked with a thick border and will be searched when pressing Enter in the search query field. If there are more than one default engine, Just Search Portal will open multiple browser tabs with the search results.</p>  
 			<div class="tab" id="customize_tab">
-			  <button class="tablinks active" onclick="clickTab(0)">Layout</button>
-			  <button class="tablinks" onclick="clickTab(1)">Default Engines</button>
-			  <button class="tablinks" onclick="clickTab(2)">Engine Colors</button>
+			  <button class="tablinks active" onclick="clickTab(0)">Move buttons</button>			  
+			  <button class="tablinks" onclick="clickTab(1)">Toggle default status</button>
+			  <button class="tablinks" onclick="clickTab(2)">Toggle button color</button>
 			</div>
-
 			<div class="segment" id="swapEngines"></div>			
 		    </div>
 
@@ -380,7 +351,7 @@ hr {
 		    <button class="btnFunction" onClick="clickDeselectAll()">Deselect all</button>
 		    <button class="btnFunction" id="btnSelectUndo" onClick="clickSelectUndo()" disabled>Undo changes</button>
 		    </div>
-		    <h2 class="text">Select Search Engines</h2>
+		    <h2 class="text">Select Custom Search Page Engines</h2>
 			
 			<div class="segment" id="allEngines"></div>
 		    			
@@ -667,7 +638,7 @@ hr {
 				new_content = createSwapEngineDiv();
 			}
 			else if (customizeMode == 1) {
-				new_content = createToggleEngineDiv(clickToggleDefault);
+				new_content = createToggleEngineDiv(clickToggleDefault);			
 			}
 			else if (customizeMode == 2) {
 				new_content = createToggleEngineDiv(clickToggleColor);
