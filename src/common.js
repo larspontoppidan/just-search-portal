@@ -65,26 +65,20 @@ function stateLoad() {
 }
 
 function stateCheckValid(state) {
-	return state.hasOwnProperty('newTab') && state.hasOwnProperty('engines');
+	return state.version == 1; 
 }
 
-
 function stateGetRejectDefaults() {
-	// Set default no-cookie state
-	var state = {newTab:true, consent:false};
-	state.engines = defaultEngines;
-	return state;
+	// Return default no-cookie state, without cookie consent
+	return {version:1, newTab:true, consent:false, engines:defaultEngines};
 }
 
 function stateGetAcceptDefaults() {
-	// Set default no-cookie state
-	var state = {newTab:true, consent:true};
-	state.engines = defaultEngines;
-	return state;
+	// Return default no-cookie state, with cookie consent
+	return {version:1, newTab:true, consent:true, engines:defaultEngines};
 }
 
 function stateLoadOrDefault() {
-
 	var state = stateLoad();
 	
 	if (!stateCheckValid(state)) {
