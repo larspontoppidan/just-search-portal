@@ -1,12 +1,18 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <title>Customize Just Search Portal</title> 
-<meta id="viewport" name="viewport">
-<script type="text/javascript">
+<link rel="shortcut icon" id="link_favicon" type="image/x-icon" href="data:image/png;base64," />
+<meta id="meta_viewport" name="viewport" content />
+<script src="favicon.js"></script>
+<script>
 
 // This file with its HTML, CSS and JavaScript is free software under the terms of the following license: https://justsearchportal.com/LICENSE
+
+// Inline favicon inspired by:
+// https://stackoverflow.com/a/5568484
+document.getElementById('link_favicon').href = 'data:image/png;base64,'+favIcon;
 
 // Mobile viewport hack, from: 
 // https://stackoverflow.com/a/39642318
@@ -21,7 +27,6 @@ function apply_viewport() {
 }
 window.addEventListener('resize', function(){ apply_viewport(); });
 apply_viewport();
-
 
 </script>
 
@@ -234,7 +239,7 @@ hr {
 
 .chkMark {
     position: absolute;
-    top: 1;
+    top: 1px;
     left: 0;
     height: 23px;
     width: 23px;

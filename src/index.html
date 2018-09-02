@@ -1,21 +1,26 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<meta charset="UTF-8">
+<meta charset="UTF-8"/>
 <title>Just Search Portal</title> 
-<link rel="shortcut icon" type="image/x-icon" href="data:image/x-icon;,">
+<link rel="shortcut icon" id="link_favicon" type="image/x-icon" href="data:image/png;base64," />
 <link rel="search" type="application/opensearchdescription+xml" href="opensearch.xml" title="Just Search Portal" />
-<meta id="viewport" name="viewport">
-<script type="text/javascript">
+<meta id="meta_viewport" name="viewport" content />
+<script src="favicon.js"></script>
+<script>
 
 // This file with its HTML, CSS and JavaScript is free software under the terms of the following license: https://justsearchportal.com/LICENSE
+
+// Inline favicon inspired by:
+// https://stackoverflow.com/a/5568484
+document.getElementById('link_favicon').href = 'data:image/png;base64,'+favIcon;
 
 // Mobile viewport hack, from: 
 // https://stackoverflow.com/a/39642318
 function apply_viewport() {    
 	var ww = window.screen.width;
 	var mw = 450;
-	var viewport_meta_tag = document.getElementById('viewport');
+	var viewport_meta_tag = document.getElementById('meta_viewport');
 	if( ww < mw) { 
 		var ratio = ww / mw;
 		viewport_meta_tag.setAttribute('content', 'initial-scale=' + ratio + ', maximum-scale=' + ratio + ', minimum-scale=' + ratio + ', user-scalable=no, width=' + mw);
@@ -24,25 +29,7 @@ function apply_viewport() {
 window.addEventListener('resize', function(){ apply_viewport(); });
 apply_viewport();
 
-// Inline favicon technique from:
-// https://stackoverflow.com/a/5568484
 
-var favIcon = "\
-iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABj0lEQVQ4y5WSsU4iURSGv3sv6FDgA1i\
-QaLOikcTOcmMpUl4TMfEB9gkoMLGg4Al8g53CKSHWFlvYmVgw05nQagUmzAIzd4sZLiCDuqc4zTnnyz\
-n/+YU2KADvfqdEtFlHbuxjzBEAQjwRT251zX9kTQhtUF6nfIzM/0I6dQCikY8qlG3XdNDUtaCdBZBJT\
-ofj0CUK68j3KuZ1l+mgSTTyyW21vM5eI3MDOpULlOMShy5i2NSnL/3FBq9bOUc5LtHIR75XP9YlgjMA\
-DN2PRQB99nxHHLqoQpnI2V49YSaYHK4VinjcS/bNl1YBQjwlwq3S510b+2tLlo75mdXg3e+U7JZm0s/\
-4gnhYp3QyXGyhCmXi0M3yQ+qDvQa5rVZyb+jaqjFHiXgjHzP5DYD66y6KLawTu5VzMNdLBpoB43EPkb\
-+cbbL4bguY29nZtmrL4aM+felbLyxCU8gS4LNYOjOF6OrzlTq4Se38RRz8ePvTC4pj5OZJcnzusBcUx\
-98atq6sBW2mg+bKF/jPmL1b14L2P96CtjFufhdDAAAAAElFTkSuQmCC";
-
-var docHead = document.getElementsByTagName('head')[0];
-var newLink = document.createElement('link');
-newLink.rel = 'shortcut icon';
-newLink.type = 'image/x-icon';
-newLink.href = 'data:image/png;base64,'+favIcon;
-docHead.appendChild(newLink);
 </script>
 
 <style>
@@ -155,7 +142,7 @@ html, body {
 
 .chkMark {
     position: absolute;
-    top: 1;
+    top: 1px;
     left: 0;
     height: 18px;
     width: 18px;
