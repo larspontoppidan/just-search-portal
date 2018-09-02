@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <title>Customize Just Search Portal</title> 
 <link rel="shortcut icon" id="link_favicon" type="image/x-icon" href="data:image/png;base64," />
-<meta id="meta_viewport" name="viewport" content />
+<meta id="meta_viewport" name="viewport" content="" />
 <script src="favicon.js"></script>
 <script>
 
@@ -19,12 +19,13 @@ document.getElementById('link_favicon').href = 'data:image/png;base64,'+favIcon;
 function apply_viewport() {    
 	var ww = window.screen.width;
 	var mw = 450;
-	var viewport_meta_tag = document.getElementById('viewport');
+	var viewport_meta_tag = document.getElementById('meta_viewport');
 	if( ww < mw) { 
 		var ratio = ww / mw;
 		viewport_meta_tag.setAttribute('content', 'initial-scale=' + ratio + ', maximum-scale=' + ratio + ', minimum-scale=' + ratio + ', user-scalable=no, width=' + mw);
 	}    
 }
+
 window.addEventListener('resize', function(){ apply_viewport(); });
 apply_viewport();
 
@@ -38,24 +39,35 @@ html, body {
 	background-color:#eee;
 }
 
+h1 {
+	font-weight: bold;
+	font-size: 36pt;
+	color: #aaa;
+	margin: 30px 0 25px 0;
+}
+
+h2 {
+    font-size: 15pt;
+    font-weight: bold;
+    margin: 17pt 0;
+}
+
+h3 {
+    font-size: 13pt;
+    font-weight: normal;
+    margin: 14pt 0;
+}
+
+p {
+    font-size: 11pt;
+}
+
 .container {
 	min-width: 380px;
 	width: auto !important;
 	height: 100%;
 	display: flex;
 	flex-direction: column;
-}
-
-.footer {
-	width: fill;
-	margin: 0 20px;
-	border-top: 2px solid #a0a0a0;
-	text-align: center;
-}
-
-.footer p {
-	font-size: 11pt;
-	margin:0.6em 0 0.8em 0;
 }
 
 .centerContainer {
@@ -65,22 +77,8 @@ html, body {
 
 .centerbox {
 	max-width: 60em;
-	margin: auto;
+	margin: 0 auto 80px auto;
 	text-align: center;
-}
-
-.title {
-	font-weight: bold;
-	font-size: 50pt;
-	color: #d7d7d7;
-	margin: 8px 0 15px 0;
-}
-
-.smallertitle {
-	font-weight: bold;
-	font-size: 32pt;
-	color: #888;
-	margin: 30px 0 25px 0;
 }
 
 .btn {
@@ -91,9 +89,9 @@ html, body {
 	width: 150px;
 	height: 44px;
 	display: inline-block;
-	font-size: 15px;
 	margin: 10px;
 	cursor: pointer;
+	font-size: 11pt;
 }
 
 .btnDefault {
@@ -116,17 +114,12 @@ html, body {
 	opacity: .5;
 }
 
-.btnSlim {
-	margin: 0 0 0 10px;
-}
-
 .btnFunction {
     padding: 6px 18px;
-	margin: 5px 8px;
+	margin: 0 0 0 15px;
 	cursor: pointer;
 	font-size: 15px;
 }
-
 
 .btn:hover {
     box-shadow: 0 0 8px rgba(0, 0, 0, 0.6);
@@ -138,23 +131,13 @@ html, body {
    transition-duration: 0.1s;
 }
 
-.btnOrganize {
-	width: 42px;
-	padding-left: 3px;	
-	padding-right: 3px;	
-	cursor: pointer;
-}
-
-.consentBox {
+.layoutBox {
   background-color: white;
   border-radius: 4px;
   border: 1px solid #aaa;
   padding: 0 20px 20px 20px;
+  margin-bottom: 25px;
   overflow:auto;
-}
-
-.buttonCell {
-	background-color: #a7e7a7;
 }
 
 .extraBorder {
@@ -163,10 +146,10 @@ html, body {
 
 .segment {
   margin-top: 30px;
-  margin-bottom: 30px;
+  margin-bottom: 10px;
 }
 
-.text {
+.leftalign {
   text-align: left;
 }
 
@@ -180,50 +163,44 @@ hr {
   border-bottom: 0;
 }
 
-/* Style the tab */
 .tab {
-    background-color: inherit;
+    background-color: white;
     overflow: hidden;
     border: 0;
     padding: 0;
 	margin: 0;
 }
 
-/* Style the buttons inside the tab */
 .tab button {
-    background-color: inherit;
+    background-color: white;
     float: left;
     outline: none;
     cursor: pointer;
     padding: 14px 16px;
     transition: 0.2s;
-    font-size: 17px;
+    font-size: 13pt;
     border: 0;
     border-bottom: 3px solid #d7d7d7;
+    color: #555;
 }
 
-/* Change background color of buttons on hover */
 .tab button:hover {
     background-color: #ddd;
 }
 
-/* Create an active/current tablink class */
 .tab button.active {
     border-bottom: 3px solid red;
+    color: black;
 }
 
-
-/* Custom checkbox */
 .chkContainer {
     display: block;
     position: relative;
-    padding-left: 35px;
-    margin-left: 30px;
-    margin-right: 30px;
-    margin-bottom: 15px;
-    line-height: 27px;
+    padding: 2px 0 2px 31px;
+    margin: 10pt 14pt;
+    line-height: 23px;
     cursor: pointer;
-    font-size: 16px;
+	font-size: 11pt;
     text-align: left;
     -webkit-user-select: none;
     -moz-user-select: none;
@@ -238,18 +215,19 @@ hr {
 }
 
 .chkMark {
-    position: absolute;
-    top: 1px;
+    position: absolute;    
+    top: 50%;
+    transform: translateY(-50%);
     left: 0;
-    height: 23px;
-    width: 23px;
+    height: 18px;
+    width: 18px;
     background-color: #eee;
     border: 2px solid #555;
 }
 
 .chkContainer:hover input ~ .chkMark {
     box-shadow: 0 0 8px rgba(0, 0, 0, 0.6);
-    transition-duration: 0.2s;
+    transition-duration: 0.1s;
 }
 
 .chkMark:after {
@@ -263,17 +241,16 @@ hr {
 }
 
 .chkContainer .chkMark:after {
-    left: 8px;
-    top: 4px;
-    width: 5px;
-    height: 10px;
+    left: 6px;
+    top: 2px;
+    width: 4px;
+    height: 9px;
     border: solid black;
     border-width: 0 3px 3px 0;
     -webkit-transform: rotate(45deg);
     -ms-transform: rotate(45deg);
     transform: rotate(45deg);
 }
-
 
 .stickyFooter {
    position: fixed;
@@ -284,11 +261,31 @@ hr {
    background-color: white;
 }
 
+.stickyFooter p {
+  margin: 9px 0;
+}
+
 .stickyFooterInside {
    background-color: inherit;
    margin: 0;
    padding: 2px;
    padding-left: 20px;
+}
+
+.btnFooter {    
+  padding: 4px 18px;
+  margin: 3px 10px 5px 15px;
+  cursor: pointer;
+  font-size: 15px;
+}
+
+.buttonsRightTop {
+	float:right;
+	margin: 22px 0 5px 0;
+}
+
+.buttonsRight {
+	float:right;
 }
 
 </style>
@@ -299,9 +296,9 @@ hr {
 		<div class="centerContainer">
 		<div class="centerbox">
 			
-		    <div id="askConsentBox" class="consentBox">
-		    <h2 class="text">Cookie consent</h2>
-		    <p class="text">To customize Just Search Portal a cookie must be used to save the settings. The cookie is not used for any other purpose and has a 1 year lifetime.</p>
+		    <div id="askConsentBox" class="layoutBox">
+		    <h2 class="leftalign">Cookie consent</h2>
+		    <p class="leftalign">To customize Just Search Portal a cookie must be used to save the settings. The cookie is not used for any other purpose and has a 1 year lifetime.</p>
 		    <div style="float:right">
 		    <button class="btnFunction" onClick="clickCookieReject()">No Thanks</button>
 		    <button class="btnFunction" onClick="clickCookieAccept()"><b>Accept</b></button>
@@ -310,10 +307,10 @@ hr {
 		    
 			<div id="customizeDiv">
 			
-			<p class="smallertitle">Customize Just Search Portal</p>
+			<h1>Customize Just Search Portal</h1>
 		    			
-			<div class="consentBox">
-		    <h2 class="text">Default mode</h2>
+			<div class="layoutBox">
+		    <h2 class="leftalign">Default mode</h2>
 		    
 		    <div>
 				<label class="chkContainer">Open in new tab
@@ -324,60 +321,49 @@ hr {
 				  <input type="checkbox" id="chkShowAll" onClick="clickChkShowAll()">
 				  <span class="chkMark"></span>
 				</label>				
-			</div>
-		    
-		    <br>
+			</div>		    
 		    </div>
 		    
-		    <br>
-			
-			<div class="consentBox">
-		    <div style="float:right;margin-top:25px">
+			<div class="layoutBox">
+		    <div class="buttonsRightTop">
 		    <button class="btnFunction" id="btnModifyUndo" onClick="clickModifyUndo()" disabled>Undo changes</button>
 		    </div>
-		    <h2 class="text">Modify custom search page</h2>
+		    <h2 class="leftalign">Modify custom search page</h2>
 			    
-			<p class="text">The custom search page is shown when 'Show all engines' is not checked and is intended to provide easy access to favorite search engines. The search buttons can be positioned, colored and made default.</p>
-			<p class="text">The default search engines are marked with a thick border and will be searched when pressing Enter from the search query field. If there are more than one default engine, Just Search Portal will open multiple browser tabs with the search results.</p>  
+			<p class="leftalign">The custom search page is shown when 'Show all engines' is not checked and is intended to provide easy access to favorite search engines. The search buttons can be positioned, colored and made default.</p>
+			<p class="leftalign">The default search engines are marked with a thick border and will be searched when pressing Enter from the search query field. If there are more than one default engine, Just Search Portal will open multiple browser tabs with the search results.</p>  
 			<div class="tab" id="customize_tab">
 			  <button class="tablinks active" onclick="clickTab(0)">Move buttons</button>			  
 			  <button class="tablinks" onclick="clickTab(1)">Toggle default status</button>
 			  <button class="tablinks" onclick="clickTab(2)">Toggle button color</button>
 			</div>
-			<div class="segment" id="swapEngines"></div>			
+			<div class="segment" id="swapEngines"></div>		
+			<br>	
 		    </div>
 
-			<br>
-
-			<div class="consentBox">
-		    <div style="float:right;margin-top:25px">
+			<div class="layoutBox">
+		    <div class="buttonsRightTop">
 		    <button class="btnFunction" onClick="clickDeselectAll()">Deselect all</button>
 		    <button class="btnFunction" id="btnSelectUndo" onClick="clickSelectUndo()" disabled>Undo changes</button>
 		    </div>
-		    <h2 class="text">Select custom search page engines</h2>
-			
+		    <h2 class="leftalign">Select custom search page engines</h2>
 			<div class="segment" id="allEngines"></div>
-		    			
 			</div>
 			
-			<br>
-		    <div id="haveConsentBox" class="consentBox">
-		    <h2 class="text">Cookie consent</h2>	
-		    <p class="text">To customize Just Search Portal a cookie must be used to save the settings. The cookie is not used for any other purpose and has a 1 year lifetime.</p>
-		    <div style="float:right">
+		    <div id="haveConsentBox" class="layoutBox">
+		    <h2 class="leftalign">Cookie consent</h2>	
+		    <p class="leftalign">To customize Just Search Portal a cookie must be used to save the settings. The cookie is not used for any other purpose and has a 1 year lifetime.</p>
+		    <div class="buttonsRight">
 		    <button class="btnFunction" onClick="clickCookieWithdraw()">Withdraw and revert to defaults</button>
 		    </div>
 		    </div>
-		    <br>
-			<br>
-			<br>    
 			</div>
 		</div>
 		</div>
 		<div class="stickyFooter">
 			<div class="stickyFooterInside">
-			<div style="float:right">		        
-			    <button class="btnFunction" onClick="clickGoBack()">Back to Portal</button>
+			<div class="buttonsRight">		        
+			    <button class="btnFooter" onClick="clickGoBack()">Back to Portal</button>
 		    </div>
 			<p>Customizing Just Search Portal</p>
 			</div>
