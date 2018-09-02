@@ -25,6 +25,7 @@ function apply_viewport() {
 		viewport_meta_tag.setAttribute('content', 'initial-scale=' + ratio + ', maximum-scale=' + ratio + ', minimum-scale=' + ratio + ', user-scalable=no, width=' + mw);
 	}    
 }
+
 window.addEventListener('resize', function(){ apply_viewport(); });
 apply_viewport();
 </script>
@@ -44,13 +45,13 @@ h1 {
 }
 
 h3 {
-    font-size: 15pt;
-    font-weight: normal;
-    margin: 10px 0;
+	font-size: 15pt;
+	font-weight: normal;
+	margin: 10px 0;
 }
 
 p {
-    font-size: 11pt;
+	font-size: 11pt;
 }
 
 .container {
@@ -103,8 +104,8 @@ p {
 }
 
 .btn:hover {
-    box-shadow: 0 0 8px rgba(0, 0, 0, 0.6);
-    transition-duration: 0.1s;
+	box-shadow: 0 0 8px rgba(0, 0, 0, 0.6);
+	transition-duration: 0.1s;
 }
 
 .btn:active {
@@ -118,255 +119,258 @@ p {
 
 .searchInput {
 	width: 80%;
+	max-width: 550px;
 	margin: 15px 0 35px 0;
 	font-size: 16pt;
 }
 
 .chkContainer {
-    display: inline;
-    position: relative;
-    padding: 2px 0 2px 31px;
-    margin-left: 30px;
-    margin-right: 30px;
-    line-height: 23px;
-    cursor: pointer;
+	display: inline;
+	position: relative;
+	padding: 2px 0 2px 31px;
+	margin-left: 30px;
+	margin-right: 30px;
+	line-height: 23px;
+	cursor: pointer;
 	font-size: 11pt;
-    text-align: left;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
+	text-align: left;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
 }
 
 .chkContainer input {
-    position: absolute;
-    opacity: 0;
-    cursor: pointer;
+	position: absolute;
+	opacity: 0;
+	cursor: pointer;
 }
 
 .chkMark {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    left: 0;
-    height: 18px;
-    width: 18px;
-    background-color: #eee;
-    border: 2px solid #555;
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+	left: 0;
+	height: 18px;
+	width: 18px;
+	background-color: #eee;
+	border: 2px solid #555;
 }
 
 .chkContainer:hover input ~ .chkMark {
-    box-shadow: 0 0 8px rgba(0, 0, 0, 0.6);
-    transition-duration: 0.1s;
+	box-shadow: 0 0 8px rgba(0, 0, 0, 0.6);
+	transition-duration: 0.1s;
 }
 
 .chkMark:after {
-    content: "";
-    position: absolute;
-    display: none;
+	content: "";
+	position: absolute;
+	display: none;
 }
 
 .chkContainer input:checked ~ .chkMark:after {
-    display: block;
+	display: block;
 }
 
 .chkContainer .chkMark:after {
-    left: 6px;
-    top: 2px;
-    width: 4px;
-    height: 9px;
-    border: solid black;
-    border-width: 0 3px 3px 0;
-    -webkit-transform: rotate(45deg);
-    -ms-transform: rotate(45deg);
-    transform: rotate(45deg);
+	left: 6px;
+	top: 2px;
+	width: 4px;
+	height: 9px;
+	border: solid black;
+	border-width: 0 3px 3px 0;
+	-webkit-transform: rotate(45deg);
+	-ms-transform: rotate(45deg);
+	transform: rotate(45deg);
 }
 
 </style>
 </head>
 
 <body>
-	<div class="container">
-		<div class="centerContainer">
-		<div class="centerbox">
-			<h1>Just Search</h1>
-			<form id="searchForm" autocomplete="off">			
-			<input type="search" id="query" class="searchInput" placeholder="Type query here" autocomplete="off" autofocus />			
-			</form>
-						
-			<div id="engines"></div>
-			<div style="margin: 15px 0">
-				<label class="chkContainer">Open in new tab
-				  <input type="checkbox" id="newTab" onClick="usrClickNewTab()">
-				  <span class="chkMark"></span>
-				</label>
-				<label class="chkContainer">Show all engines
-				  <input type="checkbox" id="showAll" onClick="usrClickShowAll()">
-				  <span class="chkMark"></span>
-				</label>
-			</div>
-			<p><a href="customize.html">Customize Page</a></p>
-			
+<div class="container">
+	<div class="centerContainer">
+	<div class="centerbox">
+		<h1>Just Search</h1>
+		<form id="searchForm" autocomplete="off">
+		<input type="search" id="query" class="searchInput" placeholder="Type query here" autocomplete="off" autofocus />			
+		</form>
+					
+		<div id="engines"></div>
+		<div style="margin: 18px 0">
+			<label class="chkContainer">Open in new tab
+				<input type="checkbox" id="newTab" onClick="usrClickNewTab()">
+				<span class="chkMark"></span>
+			</label>
+			<label class="chkContainer">Show all engines
+				<input type="checkbox" id="showAll" onClick="usrClickShowAll()">
+				<span class="chkMark"></span>
+			</label>
 		</div>
-		</div>
-		<div class="footer">
-			<p>Just Search Portal - Without distractions - Respecting privacy - <a href="https://github.com/larspontoppidan/just-search-portal">GitHub</a> - <a href="https://larsee.com/blog/2018/02/just-search-portal/">About</a></p>
-		</div>
+		<p><a href="customize.html">Customize Page</a></p>
+		
 	</div>
-	<script src="enginelist.js"></script>
-	<script src="common.js"></script>
-	<script>
-    
-		var searchForm = document.getElementById('searchForm');
-		var newTab = document.getElementById('newTab');
-		var showAll = document.getElementById('showAll');
+	</div>
+	<div class="footer">
+		<p>Just Search Portal - Without distractions - Respecting privacy - <a href="https://github.com/larspontoppidan/just-search-portal">GitHub</a> - <a href="https://larsee.com/blog/2018/02/just-search-portal/">About</a></p>
+	</div>
+</div>
+<script src="enginelist.js"></script>
+<script src="common.js"></script>
+<script>
+
+var searchForm = document.getElementById('searchForm');
+var newTab = document.getElementById('newTab');
+var showAll = document.getElementById('showAll');
+
+var state = stateLoadOrDefault();
 		
-		var state = stateLoadOrDefault();
+newTab.checked = state.newTab;
+showAll.checked = state.showAll;
 				
-		newTab.checked = state.newTab;
-		showAll.checked = state.showAll;
-		    	    	
-		function makeDefaultEngineButtons() {
-			var div = document.createElement('div');
-			state.engines.forEach(function(columns) {
-        		if (div.children.length > 0) {
-        			div.appendChild(document.createElement('br'));
-        		}
-				columns.forEach(function(entry) {
-		        	div.appendChild(createSearchButton(entry, engineClick, entry.key));	
-				});
-        	});	
-			return div;
+function makeDefaultEngineButtons() {
+	var div = document.createElement('div');
+	state.engines.forEach(function(columns) {
+		if (div.children.length > 0) {
+			div.appendChild(document.createElement('br'));
 		}
-    			
-		function makeAllEngineButtons() {
-			var div = document.createElement('div');
-			searchEngineList.forEach(function(category) {
-				var cat = document.createElement('div');
-				cat.classList.add("categoryBox");
-				div.appendChild(cat);
-				var th = document.createElement('h3');
-				th.appendChild(document.createTextNode(category.category));
-		        cat.appendChild(th);
-		        
-		        category.engines.forEach(function(engine) {
-			        cat.appendChild(createSearchButton(engine, engineClick, engine.key));
-					cat.appendChild(document.createElement('br'));
-		        });
-			});
-			
-			return div;
-		}
-		
-		function usrClickNewTab() {
-			state.newTab = newTab.checked;
-		}
-		
-		function usrClickShowAll() {
-			state.showAll = showAll.checked;
-			engines.removeChild(engines.firstChild);
-			if (state.showAll) {
-				engines.appendChild(makeAllEngineButtons());
-			}
-			else {
-				engines.appendChild(makeDefaultEngineButtons());			
-			}
-		}
-		
-		var engines = document.getElementById('engines');
-		
-		if (state.showAll) {
-			engines.appendChild(makeAllEngineButtons());
-		}
-		else {
-			engines.appendChild(makeDefaultEngineButtons());			
-		}
-		
-		function submitClick() {
-			if (newTab.checked) {				
-				new_tab_index = 0;
-			}
-			else {
-				new_tab_index = state.engines.length;
-			}
-			query = document.getElementById('query').value;
-			state.engines.forEach(function(columns) {
-        		columns.forEach(function(entry) {
-					if (entry.isDefault) {
-						new_tab_index -= 1;
-						engine = getEngineFromKey(entry.key);
-						search(engine, query, (new_tab_index != 0));					
-					}
-				});
-        	});
-		}
-		
-		if (!Array.prototype.remove) {
-			Array.prototype.remove = function(val) {
-				var i = this.indexOf(val);
-				return i>-1 ? this.splice(i, 1) : [];
-			};
-		}
-
-		searchForm.addEventListener('submit', function(e) {
-			e.preventDefault();
-			submitClick();
+		columns.forEach(function(entry) {
+			div.appendChild(createSearchButton(entry, engineClick, entry.key));	
 		});
+	});	
+	return div;
+}
+		
+function makeAllEngineButtons() {
+	var div = document.createElement('div');
+	searchEngineList.forEach(function(category) {
+		var cat = document.createElement('div');
+		cat.classList.add("categoryBox");
+		div.appendChild(cat);
+		var th = document.createElement('h3');
+		th.appendChild(document.createTextNode(category.category));
+		cat.appendChild(th);
+		
+		category.engines.forEach(function(engine) {
+			cat.appendChild(createSearchButton(engine, engineClick, engine.key));
+			cat.appendChild(document.createElement('br'));
+		});
+	});
+	
+	return div;
+}
 
-		function engineClick() {			
-			search(getEngineFromKey(this.id), document.getElementById('query').value, newTab.checked);
-		}
-		
-		function stringTrim(str) 
-		{
-			return str.replace(/^\s+|\s+$/g, '');
-		}
-		
-		function processUrl(query) {
-	    	// Add http protocol if no protocol is specified in query
-		    if (!(new RegExp("^[a-zA-Z0-9+.-]+://.+")).test(query)) {
-		        query = "http://" + query;
-		    }
-	    	return query;
-	    }
-		
-		function search(engine, query, new_tab) {			
-			var url = engine.query_url;
-			query = stringTrim(query);
-			if (engine.mode == null) {
-				// Reduce repeating spaces, then URI encode, then convert space to plus if needed
-				query = encodeURIComponent(query.replace(/  +/g, ' '));
-				url = url.replace("$QUERY_PLUS_SEP", query.replace(/%20/g, '+'));
-				url = url.replace("$QUERY", query);
-			}
-			else if (engine.mode == "URL") {
-				url = processUrl(query);
-			}
-			else {
-				return;
-			}
+function usrClickNewTab() {
+	state.newTab = newTab.checked;
+}
 
-			if (new_tab) {
-				var win = window.open(url, '_blank');
-				win.focus();
-			} else {
-				window.location.href = url;
-			}
-		}
-		
-		function getUrlParam(url, param, fallback) {
-			var capture = (new RegExp(param + "=([^&]+)")).exec(url);
-			return capture ? decodeURIComponent(capture[1]) : fallback;
-		}
-		
-		function handleHashChange() {
-			var url = window.location.hash;
-			document.getElementById('query').value = getUrlParam(url, "query", "").replace(/\+/g, " ");			
-		}
+function usrClickShowAll() {
+	state.showAll = showAll.checked;
+	engines.removeChild(engines.firstChild);
+	if (state.showAll) {
+		engines.appendChild(makeAllEngineButtons());
+	}
+	else {
+		engines.appendChild(makeDefaultEngineButtons());
+	}
+}
 
-		window.onhashchange = handleHashChange;
-		handleHashChange();
-		
-	</script>
+var engines = document.getElementById('engines');
+
+if (state.showAll) {
+	engines.appendChild(makeAllEngineButtons());
+}
+else {
+	engines.appendChild(makeDefaultEngineButtons());
+}
+
+function submitClick() {
+	if (newTab.checked) {
+		new_tab_index = 0;
+	}
+	else {
+		new_tab_index = state.engines.length;
+	}
+	query = document.getElementById('query').value;
+	state.engines.forEach(function(columns) {
+		columns.forEach(function(entry) {
+			if (entry.isDefault) {
+				new_tab_index -= 1;
+				engine = getEngineFromKey(entry.key);
+				search(engine, query, (new_tab_index != 0));
+			}
+		});
+	});
+}
+
+if (!Array.prototype.remove) {
+	Array.prototype.remove = function(val) {
+		var i = this.indexOf(val);
+		return i>-1 ? this.splice(i, 1) : [];
+	};
+}
+
+searchForm.addEventListener('submit', function(e) {
+	e.preventDefault();
+	submitClick();
+});
+
+function engineClick() {
+	// Run this with a slight delay so the button transition is still visible
+	setTimeout(
+		search(getEngineFromKey(this.id), document.getElementById('query').value, newTab.checked), 
+		100);
+}
+
+function stringTrim(str) {
+	return str.replace(/^\s+|\s+$/g, '');
+}
+
+function processUrl(query) {
+	// Add http protocol if no protocol is specified in query
+	if (!(new RegExp("^[a-zA-Z0-9+.-]+://.+")).test(query)) {
+		query = "http://" + query;
+	}
+	return query;
+}
+
+function search(engine, query, new_tab) {
+	var url = engine.query_url;
+	query = stringTrim(query);
+	if (engine.mode == null) {
+		// Reduce repeating spaces, then URI encode, then convert space to plus if needed
+		query = encodeURIComponent(query.replace(/  +/g, ' '));
+		url = url.replace("$QUERY_PLUS_SEP", query.replace(/%20/g, '+'));
+		url = url.replace("$QUERY", query);
+	}
+	else if (engine.mode == "URL") {
+		url = processUrl(query);
+	}
+	else {
+		return;
+	}
+
+	if (new_tab) {
+		var win = window.open(url, '_blank');
+		win.focus();
+	} else {
+		window.location.href = url;
+	}
+}
+
+function getUrlParam(url, param, fallback) {
+	var capture = (new RegExp(param + "=([^&]+)")).exec(url);
+	return capture ? decodeURIComponent(capture[1]) : fallback;
+}
+
+function handleHashChange() {
+	var url = window.location.hash;
+	document.getElementById('query').value = getUrlParam(url, "query", "").replace(/\+/g, " ");			
+}
+
+window.onhashchange = handleHashChange;
+handleHashChange();
+
+</script>
 </body>	
 </html>

@@ -47,19 +47,19 @@ h1 {
 }
 
 h2 {
-    font-size: 15pt;
-    font-weight: bold;
-    margin: 17pt 0;
+	font-size: 15pt;
+	font-weight: bold;
+	margin: 17pt 0;
 }
 
 h3 {
-    font-size: 13pt;
-    font-weight: normal;
-    margin: 14pt 0;
+	font-size: 13pt;
+	font-weight: normal;
+	margin: 14pt 0;
 }
 
 p {
-    font-size: 11pt;
+	font-size: 11pt;
 }
 
 .container {
@@ -92,6 +92,7 @@ p {
 	margin: 10px;
 	cursor: pointer;
 	font-size: 11pt;
+   transition-duration: 0.3s;
 }
 
 .btnDefault {
@@ -115,42 +116,38 @@ p {
 }
 
 .btnFunction {
-    padding: 6px 18px;
+	padding: 6px 18px;
 	margin: 0 0 0 15px;
 	cursor: pointer;
 	font-size: 15px;
 }
 
 .btn:hover {
-    box-shadow: 0 0 8px rgba(0, 0, 0, 0.6);
-    transition-duration: 0.1s;
+	box-shadow: 0 0 8px rgba(0, 0, 0, 0.6);
+	transition-duration: 0.1s;
 }
 
 .btn:active {
-   filter: brightness(65%);
-   transition-duration: 0.1s;
+	filter: brightness(65%);
+	transition-duration: 0.1s;
 }
 
 .layoutBox {
-  background-color: white;
-  border-radius: 4px;
-  border: 1px solid #aaa;
-  padding: 0 20px 20px 20px;
-  margin-bottom: 25px;
-  overflow:auto;
-}
-
-.extraBorder {
-  border-top: 2px solid #000;
+	background-color: white;
+	border-radius: 4px;
+	border: 1px solid #aaa;
+	padding: 0 20px 20px 20px;
+	margin-bottom: 25px;
+	overflow:auto;
 }
 
 .segment {
-  margin-top: 30px;
-  margin-bottom: 10px;
+	margin-top: 30px;
+	margin-bottom: 10px;
 }
 
 .leftalign {
-  text-align: left;
+	text-align: left;
 }
 
 
@@ -159,124 +156,124 @@ label, input[type=radio] {
 }
 
 hr {
-  border-top: 1px solid #aaa;
-  border-bottom: 0;
+	border-top: 1px solid #aaa;
+	border-bottom: 0;
 }
 
 .tab {
-    background-color: white;
-    overflow: hidden;
-    border: 0;
-    padding: 0;
+	background-color: white;
+	overflow: hidden;
+	border: 0;
+	padding: 0;
 	margin: 0;
 }
 
 .tab button {
-    background-color: white;
-    float: left;
-    outline: none;
-    cursor: pointer;
-    padding: 14px 16px;
-    transition: 0.2s;
-    font-size: 13pt;
-    border: 0;
-    border-bottom: 3px solid #d7d7d7;
-    color: #555;
+	background-color: white;
+	float: left;
+	outline: none;
+	cursor: pointer;
+	padding: 14px 16px;
+	transition: 0.2s;
+	font-size: 13pt;
+	border: 0;
+	border-bottom: 3px solid #d7d7d7;
+	color: #555;
 }
 
 .tab button:hover {
-    background-color: #ddd;
+	background-color: #ddd;
 }
 
 .tab button.active {
-    border-bottom: 3px solid red;
-    color: black;
+	border-bottom: 3px solid red;
+	color: black;
 }
 
 .chkContainer {
-    display: block;
-    position: relative;
-    padding: 2px 0 2px 31px;
-    margin: 10pt 14pt;
-    line-height: 23px;
-    cursor: pointer;
+	display: block;
+	position: relative;
+	padding: 2px 0 2px 31px;
+	margin: 10pt 14pt;
+	line-height: 23px;
+	cursor: pointer;
 	font-size: 11pt;
-    text-align: left;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
+	text-align: left;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
 }
 
 .chkContainer input {
-    position: absolute;
-    opacity: 0;
-    cursor: pointer;
+	position: absolute;
+	opacity: 0;
+	cursor: pointer;
 }
 
 .chkMark {
-    position: absolute;    
-    top: 50%;
-    transform: translateY(-50%);
-    left: 0;
-    height: 18px;
-    width: 18px;
-    background-color: #eee;
-    border: 2px solid #555;
+	position: absolute;    
+	top: 50%;
+	transform: translateY(-50%);
+	left: 0;
+	height: 18px;
+	width: 18px;
+	background-color: #eee;
+	border: 2px solid #555;
 }
 
 .chkContainer:hover input ~ .chkMark {
-    box-shadow: 0 0 8px rgba(0, 0, 0, 0.6);
-    transition-duration: 0.1s;
+	box-shadow: 0 0 8px rgba(0, 0, 0, 0.6);
+	transition-duration: 0.1s;
 }
 
 .chkMark:after {
-    content: "";
-    position: absolute;
-    display: none;
+	content: "";
+	position: absolute;
+	display: none;
 }
 
 .chkContainer input:checked ~ .chkMark:after {
-    display: block;
+	display: block;
 }
 
 .chkContainer .chkMark:after {
-    left: 6px;
-    top: 2px;
-    width: 4px;
-    height: 9px;
-    border: solid black;
-    border-width: 0 3px 3px 0;
-    -webkit-transform: rotate(45deg);
-    -ms-transform: rotate(45deg);
-    transform: rotate(45deg);
+	left: 6px;
+	top: 2px;
+	width: 4px;
+	height: 9px;
+	border: solid black;
+	border-width: 0 3px 3px 0;
+	-webkit-transform: rotate(45deg);
+	-ms-transform: rotate(45deg);
+	transform: rotate(45deg);
 }
 
 .stickyFooter {
-   position: fixed;
-   left: 0;
-   bottom: 0;
-   width: 100%;
-   border-top: 2px solid #a0a0a0;
-   background-color: white;
+	position: fixed;
+	left: 0;
+	bottom: 0;
+	width: 100%;
+	border-top: 2px solid #a0a0a0;
+	background-color: white;
 }
 
 .stickyFooter p {
-  margin: 9px 0;
+	margin: 9px 0;
 }
 
 .stickyFooterInside {
-   background-color: inherit;
-   margin: 0;
-   padding: 2px;
-   padding-left: 20px;
+	background-color: inherit;
+	margin: 0;
+	padding: 2px;
+	padding-left: 20px;
 }
 
 .btnFooter {    
-  padding: 4px 18px;
-  margin: 3px 10px 5px 15px;
-  cursor: pointer;
-  font-size: 15px;
+	padding: 4px 18px;
+	margin: 3px 10px 5px 15px;
+	cursor: pointer;
+	font-size: 15px;
 }
 
 .buttonsRightTop {
@@ -292,564 +289,556 @@ hr {
 </head>
 
 <body>
-	<div class="container">
-		<div class="centerContainer">
-		<div class="centerbox">
+<div class="container">
+	<div class="centerContainer">
+	<div class="centerbox">
+		
+		<div id="askConsentBox" class="layoutBox">
+		<h2 class="leftalign">Cookie consent</h2>
+		<p class="leftalign">To customize Just Search Portal a cookie must be used to save the settings. The cookie is not used for any other purpose and has a 1 year lifetime.</p>
+		<div style="float:right">
+		<button class="btnFunction" onClick="clickCookieReject()">No Thanks</button>
+		<button class="btnFunction" onClick="clickCookieAccept()"><b>Accept</b></button>
+		</div>
+		</div>
+		
+		<div id="customizeDiv">
+		
+		<h1>Customize Just Search Portal</h1>
+					
+		<div class="layoutBox">
+		<h2 class="leftalign">Default mode</h2>
+		
+		<div>
+			<label class="chkContainer">Open in new tab
+				<input type="checkbox" id="chkNewTab" onClick="clickChkNewTab()">
+				<span class="chkMark"></span>
+			</label>
+			<label class="chkContainer">Show all engines
+				<input type="checkbox" id="chkShowAll" onClick="clickChkShowAll()">
+				<span class="chkMark"></span>
+			</label>
+		</div>
+		</div>
+		
+		<div class="layoutBox">
+		<div class="buttonsRightTop">
+		<button class="btnFunction" id="btnModifyUndo" onClick="clickModifyUndo()" disabled>Undo changes</button>
+		</div>
+		<h2 class="leftalign">Modify custom search page</h2>
 			
-		    <div id="askConsentBox" class="layoutBox">
-		    <h2 class="leftalign">Cookie consent</h2>
-		    <p class="leftalign">To customize Just Search Portal a cookie must be used to save the settings. The cookie is not used for any other purpose and has a 1 year lifetime.</p>
-		    <div style="float:right">
-		    <button class="btnFunction" onClick="clickCookieReject()">No Thanks</button>
-		    <button class="btnFunction" onClick="clickCookieAccept()"><b>Accept</b></button>
-		    </div>
-		    </div>
-		    
-			<div id="customizeDiv">
-			
-			<h1>Customize Just Search Portal</h1>
-		    			
-			<div class="layoutBox">
-		    <h2 class="leftalign">Default mode</h2>
-		    
-		    <div>
-				<label class="chkContainer">Open in new tab
-				  <input type="checkbox" id="chkNewTab" onClick="clickChkNewTab()">
-				  <span class="chkMark"></span>
-				</label>
-				<label class="chkContainer">Show all engines
-				  <input type="checkbox" id="chkShowAll" onClick="clickChkShowAll()">
-				  <span class="chkMark"></span>
-				</label>				
-			</div>		    
-		    </div>
-		    
-			<div class="layoutBox">
-		    <div class="buttonsRightTop">
-		    <button class="btnFunction" id="btnModifyUndo" onClick="clickModifyUndo()" disabled>Undo changes</button>
-		    </div>
-		    <h2 class="leftalign">Modify custom search page</h2>
-			    
-			<p class="leftalign">The custom search page is shown when 'Show all engines' is not checked and is intended to provide easy access to favorite search engines. The search buttons can be positioned, colored and made default.</p>
-			<p class="leftalign">The default search engines are marked with a thick border and will be searched when pressing Enter from the search query field. If there are more than one default engine, Just Search Portal will open multiple browser tabs with the search results.</p>  
-			<div class="tab" id="customize_tab">
-			  <button class="tablinks active" onclick="clickTab(0)">Move buttons</button>			  
-			  <button class="tablinks" onclick="clickTab(1)">Toggle default status</button>
-			  <button class="tablinks" onclick="clickTab(2)">Toggle button color</button>
-			</div>
-			<div class="segment" id="swapEngines"></div>		
-			<br>	
-		    </div>
+		<p class="leftalign">The custom search page is shown when 'Show all engines' is not checked and is intended to provide easy access to favorite search engines. The search buttons can be positioned, colored and made default.</p>
+		<p class="leftalign">The default search engines are marked with a thick border and will be searched when pressing Enter from the search query field. If there are more than one default engine, Just Search Portal will open multiple browser tabs with the search results.</p>  
+		<div class="tab" id="customize_tab">
+			<button class="tablinks active" onclick="clickTab(0)">Move buttons</button>
+			<button class="tablinks" onclick="clickTab(1)">Toggle default status</button>
+			<button class="tablinks" onclick="clickTab(2)">Toggle button color</button>
+		</div>
+		<div class="segment" id="swapEngines"></div>
+		<br>
+		</div>
 
-			<div class="layoutBox">
-		    <div class="buttonsRightTop">
-		    <button class="btnFunction" onClick="clickDeselectAll()">Deselect all</button>
-		    <button class="btnFunction" id="btnSelectUndo" onClick="clickSelectUndo()" disabled>Undo changes</button>
-		    </div>
-		    <h2 class="leftalign">Select custom search page engines</h2>
-			<div class="segment" id="allEngines"></div>
-			</div>
-			
-		    <div id="haveConsentBox" class="layoutBox">
-		    <h2 class="leftalign">Cookie consent</h2>	
-		    <p class="leftalign">To customize Just Search Portal a cookie must be used to save the settings. The cookie is not used for any other purpose and has a 1 year lifetime.</p>
-		    <div class="buttonsRight">
-		    <button class="btnFunction" onClick="clickCookieWithdraw()">Withdraw and revert to defaults</button>
-		    </div>
-		    </div>
-			</div>
+		<div class="layoutBox">
+		<div class="buttonsRightTop">
+		<button class="btnFunction" onClick="clickDeselectAll()">Deselect all</button>
+		<button class="btnFunction" id="btnSelectUndo" onClick="clickSelectUndo()" disabled>Undo changes</button>
+		</div>
+		<h2 class="leftalign">Select custom search page engines</h2>
+		<div class="segment" id="allEngines"></div>
+		</div>
+		
+		<div id="haveConsentBox" class="layoutBox">
+		<h2 class="leftalign">Cookie consent</h2>
+		<p class="leftalign">To customize Just Search Portal a cookie must be used to save the settings. The cookie is not used for any other purpose and has a 1 year lifetime.</p>
+		<div class="buttonsRight">
+		<button class="btnFunction" onClick="clickCookieWithdraw()">Withdraw and revert to defaults</button>
 		</div>
 		</div>
-		<div class="stickyFooter">
-			<div class="stickyFooterInside">
-			<div class="buttonsRight">		        
-			    <button class="btnFooter" onClick="clickGoBack()">Back to Portal</button>
-		    </div>
-			<p>Customizing Just Search Portal</p>
-			</div>
 		</div>
 	</div>
+	</div>
+	<div class="stickyFooter">
+		<div class="stickyFooterInside">
+		<div class="buttonsRight">
+			<button class="btnFooter" onClick="clickGoBack()">Back to Portal</button>
+		</div>
+		<p>Customizing Just Search Portal</p>
+		</div>
+	</div>
+</div>
 
-		<script src="enginelist.js"></script>
-		<script src="common.js"></script>
-		<script>
-		
-		// Convenience functions
-		// ---------------------
-		
-		Array.prototype.removeAt = function(index) {
-            this.splice(index, 1);
-		    return this;
-		}
+<script src="enginelist.js"></script>
+<script src="common.js"></script>
+<script>
 
-		Array.prototype.insertBefore = function(item, index) {
-            this.splice(index, 0, item);
-		    return this;
-		}
+// Convenience functions
+// ---------------------
 
-		function deepCloneObject(x) {
-			return JSON.parse(JSON.stringify(x));
-		}
-		
-		// Cookie consent management
-		// -------------------------
-		
-		function updateConsentState(got_consent) {
-			var ask_box = document.getElementById('askConsentBox');
-			var have_box = document.getElementById('haveConsentBox');
-			var customize_div = document.getElementById('customizeDiv');
-			if (got_consent) {
-				ask_box.style.display = 'none';
-				have_box.style.display = 'block';
-				customize_div.style.display = 'block';
-			}
-			else {
-				ask_box.style.display = 'block';
-				have_box.style.display = 'none';
-				customize_div.style.display = 'none';
-			}
-		}
+Array.prototype.removeAt = function(index) {
+	this.splice(index, 1);
+	return this;
+}
 
-		var state = stateLoadOrDefault();	
-		updateConsentState(state.consent);
-	    
-		function clickCookieAccept() {
-			state = stateGetAcceptDefaults();
-			stateSave(state);
-			updateConsentState(true);
-		}
-		
-		function clickCookieReject() {
-			stateErase();
-			window.location.href = "index.html";
-		}
+Array.prototype.insertBefore = function(item, index) {
+	this.splice(index, 0, item);
+	return this;
+}
 
-		function clickCookieWithdraw() {
-			stateErase();
-			updateConsentState(false);
-		}
-		
-		// Initial state
-		// -------------
-		
-		var chkNewTab = document.getElementById('chkNewTab');
-		var chkShowAll = document.getElementById('chkShowAll');
-		chkNewTab.checked = state.newTab;		
-		chkShowAll.checked = state.showAll;		
-		
-		function clickChkNewTab() {
-			console.log("nt" + chkNewTab.checked);
-			state.newTab = chkNewTab.checked;
-			stateSave(state);
-		}
-		
-		function clickChkShowAll() {
-			console.log("sa" + chkShowAll.checked);
-			state.showAll = chkShowAll.checked; 
-			stateSave(state);
-		}
+function deepCloneObject(x) {
+	return JSON.parse(JSON.stringify(x));
+}
 
-		// Footer
-		// ------
-				
-		function clickGoBack() {
-			window.location.href = "index.html";			
-		}
-		
-		// Engine layout
-		// ----------------
-		
-		function composeIndex(row, col) {
-			return row*100 + col;
-		}
-		
-	    function reorderEngines(engines, src_i, dst_i) {
-			// Decompose indexes into row/col
-			var src_row = Math.floor(src_i / 100) - 1;
-			var src_col = src_i % 100;
-			var dst_row = Math.floor(dst_i / 100) - 1;
-			var dst_col = dst_i % 100;
-			
-			// Get source item and remove it
-			var engine = engines[src_row][src_col];
-			engines[src_row].removeAt(src_col);				
-		
-			// Insert at destination
-			if (dst_row < 0) {
-				engines.insertBefore([engine], 0);
-			}
-			else if (dst_row < engines.length) {
-				engines[dst_row].insertBefore(engine, dst_col);					
-			} 
-			else {
-				engines.push([engine]);					
-			}
-			
-			return engines;
-		} 
-	    
-	    function switchEngines(engines, src_i, dst_i) {
-			// Decompose indexes into row/col
-			var src_row = Math.floor(src_i / 100) - 1;
-			var src_col = src_i % 100;
-			var dst_row = Math.floor(dst_i / 100) - 1;
-			var dst_col = dst_i % 100;
-			
-			// Swap source and dest engine
-			var tmp = engines[src_row][src_col];
-			engines[src_row][src_col] = engines[dst_row][dst_col];
-			engines[dst_row][dst_col] = tmp;
-			return engines;
-		} 
-	    
-	    function cleanEngines(engines) {
-	    	// Remove empty rows in beginning and end
-			while (engines[0].length == 0) {
-				engines.removeAt(0);	
-			}
-			while (engines[engines.length - 1].length == 0) {
-				engines.removeAt(engines.length - 1);	
-			}
-			return engines;
-	    }
+// Cookie consent management
+// -------------------------
 
-		function createEmptyTarget(func, id) {
-			var elem = document.createElement('div');
-			elem.classList.add('btnEmpty');
-			elem.id = id;
-			elem.addEventListener('click', func, false);
-			return elem;
-		}
-	    
-		function createSwapEngineDiv() {
-			var div = document.createElement('div');
-			var row = 0;
-			var col = 0;
+function updateConsentState(got_consent) {
+	var ask_box = document.getElementById('askConsentBox');
+	var have_box = document.getElementById('haveConsentBox');
+	var customize_div = document.getElementById('customizeDiv');
+	if (got_consent) {
+		ask_box.style.display = 'none';
+		have_box.style.display = 'block';
+		customize_div.style.display = 'block';
+	}
+	else {
+		ask_box.style.display = 'block';
+		have_box.style.display = 'none';
+		customize_div.style.display = 'none';
+	}
+}
 
-       		div.appendChild(createEmptyTarget(clickEngineMoveEmpty, composeIndex(row, col)));
-    		div.appendChild(document.createElement('hr'));
-    		
-    		state.engines.forEach(function(columns) {
-				row += 1;
-	       		div.appendChild(createEmptyTarget(clickEngineMoveEmpty, composeIndex(row, col)));
-				columns.forEach(function(entry) {
-					var index = composeIndex(row, col);
-	        		var elem = createSearchButton(entry, clickEngineMove, index);
-	        		if ((selectedEngine != null) && 
-	        			(selectedEngine != index))
-	       			{
-	       				elem.classList.add("ghost");
-	       			}
-	        		div.appendChild(elem);
-	        	
-		        	col += 1;
-				});
-				
-				if (col > 0) {
-		       		div.appendChild(createEmptyTarget(clickEngineMoveEmpty, composeIndex(row, col)));					
+var state = stateLoadOrDefault();
+updateConsentState(state.consent);
+   
+function clickCookieAccept() {
+	state = stateGetAcceptDefaults();
+	stateSave(state);
+	updateConsentState(true);
+}
+
+function clickCookieReject() {
+	stateErase();
+	window.location.href = "index.html";
+}
+
+function clickCookieWithdraw() {
+	stateErase();
+	updateConsentState(false);
+}
+
+// Initial state
+// -------------
+
+var chkNewTab = document.getElementById('chkNewTab');
+var chkShowAll = document.getElementById('chkShowAll');
+chkNewTab.checked = state.newTab;
+chkShowAll.checked = state.showAll;
+
+function clickChkNewTab() {
+	state.newTab = chkNewTab.checked;
+	stateSave(state);
+}
+
+function clickChkShowAll() {
+	state.showAll = chkShowAll.checked; 
+	stateSave(state);
+}
+
+// Footer
+// ------
+		
+function clickGoBack() {
+	window.location.href = "index.html";
+}
+
+// Engine layout
+// ----------------
+
+function composeIndex(row, col) {
+	return row*100 + col;
+}
+
+function reorderEngines(engines, src_i, dst_i) {
+	// Decompose indexes into row/col
+	var src_row = Math.floor(src_i / 100) - 1;
+	var src_col = src_i % 100;
+	var dst_row = Math.floor(dst_i / 100) - 1;
+	var dst_col = dst_i % 100;
+	
+	// Get source item and remove it
+	var engine = engines[src_row][src_col];
+	engines[src_row].removeAt(src_col);
+
+	// Insert at destination
+	if (dst_row < 0) {
+		engines.insertBefore([engine], 0);
+	}
+	else if (dst_row < engines.length) {
+		engines[dst_row].insertBefore(engine, dst_col);
+	} 
+	else {
+		engines.push([engine]);
+	}
+	
+	return engines;
+} 
+
+function switchEngines(engines, src_i, dst_i) {
+	// Decompose indexes into row/col
+	var src_row = Math.floor(src_i / 100) - 1;
+	var src_col = src_i % 100;
+	var dst_row = Math.floor(dst_i / 100) - 1;
+	var dst_col = dst_i % 100;
+	
+	// Swap source and dest engine
+	var tmp = engines[src_row][src_col];
+	engines[src_row][src_col] = engines[dst_row][dst_col];
+	engines[dst_row][dst_col] = tmp;
+	return engines;
+} 
+   
+function cleanEngines(engines) {
+	// Remove empty rows in beginning and end
+	while (engines[0].length == 0) {
+		engines.removeAt(0);	
+	}
+	while (engines[engines.length - 1].length == 0) {
+		engines.removeAt(engines.length - 1);
+	}
+	return engines;
+   }
+
+function createEmptyTarget(func, id) {
+	var elem = document.createElement('div');
+	elem.classList.add('btnEmpty');
+	elem.id = id;
+	elem.addEventListener('click', func, false);
+	return elem;
+}
+   
+function createSwapEngineDiv() {
+	var div = document.createElement('div');
+	var row = 0;
+	var col = 0;
+
+	div.appendChild(createEmptyTarget(clickEngineMoveEmpty, composeIndex(row, col)));
+	div.appendChild(document.createElement('hr'));
+	
+	state.engines.forEach(function(columns) {
+		row += 1;
+		div.appendChild(createEmptyTarget(clickEngineMoveEmpty, composeIndex(row, col)));
+		columns.forEach(function(entry) {
+			var index = composeIndex(row, col);
+			var elem = createSearchButton(entry, clickEngineMove, index);
+			if ((selectedEngine != null) && 
+				(selectedEngine != index))
+				{
+					elem.classList.add("ghost");
 				}
-				
-	    		div.appendChild(document.createElement('hr'));	
-	  		
-	    		col = 0;
-        	});	
-			
-			row += 1;
-			
-       		div.appendChild(createEmptyTarget(clickEngineMoveEmpty, composeIndex(row, col)));
-    		
-			return div;
-		}
-
-		function clickToggleDefault() {
-			var row = Math.floor(this.id / 100) - 1;
-			var col = this.id % 100;
-			if (state.engines[row][col].isDefault) {
-				delete state.engines[row][col].isDefault;
-			}
-			else {
-				state.engines[row][col].isDefault = true;
-			}
-
-			smModified(0);
-			updateModifyEngines();
-		}
-
-	    var colorOptions = ["#f0c0c0", "#F89320", "#FFFF01", "#b0b0ff", "#e7e7e7", "#a7e7a7"];
-	    
-    	function cycleColor(color) {
-    		var i = colorOptions.indexOf(color) + 1;
-    		if (i >= colorOptions.length) {
-    			i = 0;
-    		}
-    		return colorOptions[i];
-    	}
-
-		function clickToggleColor(index) {
-			var row = Math.floor(this.id / 100) - 1;
-			var col = this.id % 100;
-			state.engines[row][col].color = cycleColor(state.engines[row][col].color);
-			smModified(0);
-			updateModifyEngines();
-		}
-
-		function createToggleEngineDiv(button_func) {
-			var div = document.createElement('div');
-			var row = 0;
-			var col = 0;
-
-    		div.appendChild(document.createElement('br'));
-    		
-    		state.engines.forEach(function(columns) {
-				row += 1;
-				columns.forEach(function(entry) {
-					var index = composeIndex(row, col);
-	        		var elem = createSearchButton(entry, button_func, index);	        		
-	        		div.appendChild(elem);
-	        	
-		        	col += 1;
-				});
-				
-	    		div.appendChild(document.createElement('br'));	
-	  		
-	    		col = 0;
-        	});	
-			
-			row += 1;
-			
-			return div;
-		}
-
-	    
-		function updateModifyEngines() {
-			var new_content;
-			if (customizeMode == 0) {
-				new_content = createSwapEngineDiv();
-			}
-			else if (customizeMode == 1) {
-				new_content = createToggleEngineDiv(clickToggleDefault);			
-			}
-			else if (customizeMode == 2) {
-				new_content = createToggleEngineDiv(clickToggleColor);
-			}
-			
-			var div = document.getElementById('swapEngines');
-			while (div.children.length > 0) {
-				div.removeChild(div.firstChild);
-			}
-			div.appendChild(new_content);
-		}
+			div.appendChild(elem);
 		
-		function clickEngineMove() {
-			if (selectedEngine == null) {
-				selectedEngine = this.id;				
-			}
-			else if (selectedEngine == this.id) {
-				selectedEngine = null;
-			}
-			else {
-				state.engines = cleanEngines(switchEngines(state.engines, selectedEngine, this.id));
-				selectedEngine = null;
-				smModified(0);
-			}
-
-			updateModifyEngines();
-		}
-		
-		function clickEngineMoveEmpty() {
-			if (selectedEngine != null) {
-				state.engines = cleanEngines(reorderEngines(state.engines, selectedEngine, this.id));
-				selectedEngine = null;
-				updateModifyEngines();
-				smModified(0);
-			}
-		}
-		
-		function clickModifyUndo() {
-			selectedEngine = null;
-			smUndo(0);
-			updateModifyEngines();			
-		}
-		
-		
-	    var selectedEngine = null;
-	    var customizeMode = 0; 
-	    
-		updateModifyEngines();
-		
-		function clickTab(tab_no) {
-			var tab_div = document.getElementById('customize_tab');
-			for (var i = 0; i < tab_div.children.length; i++) {
-				tab_div.children[i].className = (i == tab_no) ? "tablinks active" : "tablinks";				
-			}
-			
-			customizeMode = tab_no;
-			updateModifyEngines();
-		}
-		
-
-		// Save/undo management
-		// --------------------
-		
-		function showUndo(section, value) {
-			if (section == 0) {
-				document.getElementById('btnModifyUndo').disabled = value ? false : true;				
-			}
-			else {
-				document.getElementById('btnSelectUndo').disabled = value ? false : true;
-			}
-		}
-		
-		// Init undo state:
-		var undoState = deepCloneObject(state.engines);
-	    var undoStateSection = -1;
-	    
-		function smModified(section) {
-			if (undoStateSection == -1) {
-				undoStateSection = section;
-				showUndo(section, true);
-			}	
-			else if (undoStateSection != section) {
-				// We are changing section, take new undoState snapshow
-				undoState = deepCloneObject(state.engines);
-				showUndo(1 - section, false); 
-				showUndo(section, true);
-				undoStateSection = section;
-			}
-
-			stateSave(state);			
-		}
-		
-		function smUndo() {			
-			state.engines = deepCloneObject(undoState);
-			undoStateSection = -1;
-			
-			showUndo(0, false);
-			showUndo(1, false);
-			
-			stateSave(state);
-		}
-		
-		
-		// Select and configure engines
-		// ----------------------------
-		
-	    function findEngine(key) {
-	    	var result = null;
-	    	state.engines.forEach(function(columns, row) {
-	    		columns.forEach(function(entry, col) {
-		    		if (entry.key == key) {
-		    			result = entry;
-		    		}
-	    		});
-	    	});
-	    	return result;
-	    }
-	       
-		function addEngine(key) {
-			var obj = {};
-	    	obj.key = key;
-			state.engines[state.engines.length - 1].push(obj);	    	
-		}
-
-		function removeEngine(key) {
-			state.engines.forEach(function(columns) {
-	    		for (var i = 0; i < columns.length; i++) {
-		    		if (columns[i].key == key) {
-		    			columns.removeAt(i);
-		    			i -= 1;
-		    		}
-	    		}
-	    	});
-		}
-		
-		function removeAllEngines() {
-			state.engines = [[]];
-		}
-		
-		
-		function clickDeselectAll() {
-			removeAllEngines();
-			smModified(1);
-			updateModifyEngines();			
-			updateSelectedState();
-		}
-		
-		function clickSelectUndo() {
-			smUndo(1);
-			updateModifyEngines();
-			updateSelectedState();			
-		}
-		
-		function clickChkEngine() {
-			console.log("chk: " + this.checked);
-			if (this.checked) {
-				addEngine(this.id);
-			} 
-			else {
-				removeEngine(this.id);
-			}
-			
-			smModified(1);
-			updateModifyEngines();
-			updateSelectedState();
-		}
-		
-		function updateSelectedState() {
-			var chkboxes = document.querySelectorAll(".chkBoxInput");
-			chkboxes.forEach(function(input) {
-				input.checked = (findEngine(input.id) == null) ? false : true;
-			});
-		}
-		
-		function makeChkBox(text, checked, on_click, id) {
-			var lbl = document.createElement('label');
-			lbl.className = "chkContainer";
-			lbl.innerHtml = text;
-			lbl.appendChild(document.createTextNode(text));
-			
-			var input = document.createElement('input');
-			input.type = "checkbox";
-			input.id = id;
-			input.className = "chkBoxInput";
-			input.checked = checked;
-			input.addEventListener('click', on_click, false);
-			lbl.appendChild(input);
-			
-			var span = document.createElement('span');
-			span.className = "chkMark";
-			lbl.appendChild(span);
-			
-			return lbl;
-		}
-		
-	    function createCategoryElements(obj, parent) {
-	    	
-	    	var header;
-	    	header = document.createElement('h3');
-	    	header.appendChild(document.createTextNode(obj.category));
-	    	header.style.textAlign = "left";
-	    	parent.appendChild(header);
-	    	
-		    obj.engines.forEach(function(engine) {		    	
-			    var name = engine.description ? engine.description : engine.display_name;
-			    var entry = findEngine(engine.key);
-			    
-		    	parent.appendChild(makeChkBox(name, entry != null, clickChkEngine, engine.key));
-		    	
-		    });
-		    
-		    parent.appendChild(document.createElement('br'));
-	    }
-	    
-
-	    divAllEngines = document.getElementById('allEngines');
-	    
-	    searchEngineList.forEach(function(category) {
-	    	createCategoryElements(category, divAllEngines);	    	
+			col += 1;
 		});
-		    
 		
-	</script>
+		if (col > 0) {
+			div.appendChild(createEmptyTarget(clickEngineMoveEmpty, composeIndex(row, col)));
+		}
+		
+		div.appendChild(document.createElement('hr'));
+		
+		col = 0;
+	});
+
+	row += 1;
+	
+	div.appendChild(createEmptyTarget(clickEngineMoveEmpty, composeIndex(row, col)));
+	
+	return div;
+}
+
+function clickToggleDefault() {
+	var row = Math.floor(this.id / 100) - 1;
+	var col = this.id % 100;
+	if (state.engines[row][col].isDefault) {
+		delete state.engines[row][col].isDefault;
+	}
+	else {
+		state.engines[row][col].isDefault = true;
+	}
+
+	smModified(0);
+	updateModifyEngines();
+}
+
+var colorOptions = ["#f0c0c0", "#F89320", "#FFFF01", "#b0b0ff", "#e7e7e7", "#a7e7a7"];
+
+function cycleColor(color) {
+	var i = colorOptions.indexOf(color) + 1;
+	if (i >= colorOptions.length) {
+		i = 0;
+	}
+	return colorOptions[i];
+}
+
+function clickToggleColor(index) {
+	var row = Math.floor(this.id / 100) - 1;
+	var col = this.id % 100;
+	state.engines[row][col].color = cycleColor(state.engines[row][col].color);
+	smModified(0);
+	updateModifyEngines();
+}
+
+function createToggleEngineDiv(button_func) {
+	var div = document.createElement('div');
+	var row = 0;
+	var col = 0;
+
+	div.appendChild(document.createElement('br'));
+
+	state.engines.forEach(function(columns) {
+		row += 1;
+		columns.forEach(function(entry) {
+			var index = composeIndex(row, col);
+			var elem = createSearchButton(entry, button_func, index);
+			div.appendChild(elem);
+			col += 1;
+		});
+		div.appendChild(document.createElement('br'));
+		col = 0;
+	});	
+	
+	row += 1;
+	
+	return div;
+}
+
+   
+function updateModifyEngines() {
+	var new_content;
+	if (customizeMode == 0) {
+		new_content = createSwapEngineDiv();
+	}
+	else if (customizeMode == 1) {
+		new_content = createToggleEngineDiv(clickToggleDefault);
+	}
+	else if (customizeMode == 2) {
+		new_content = createToggleEngineDiv(clickToggleColor);
+	}
+	
+	var div = document.getElementById('swapEngines');
+	while (div.children.length > 0) {
+		div.removeChild(div.firstChild);
+	}
+	
+	div.appendChild(new_content);
+}
+
+function clickEngineMove() {
+	if (selectedEngine == null) {
+		selectedEngine = this.id;
+	}
+	else if (selectedEngine == this.id) {
+		selectedEngine = null;
+	}
+	else {
+		state.engines = cleanEngines(switchEngines(state.engines, selectedEngine, this.id));
+		selectedEngine = null;
+		smModified(0);
+	}
+
+	updateModifyEngines();
+}
+
+function clickEngineMoveEmpty() {
+	if (selectedEngine != null) {
+		state.engines = cleanEngines(reorderEngines(state.engines, selectedEngine, this.id));
+		selectedEngine = null;
+		updateModifyEngines();
+		smModified(0);
+	}
+}
+
+function clickModifyUndo() {
+	selectedEngine = null;
+	smUndo(0);
+	updateModifyEngines();
+}
+
+
+var selectedEngine = null;
+var customizeMode = 0; 
+   
+updateModifyEngines();
+
+function clickTab(tab_no) {
+	var tab_div = document.getElementById('customize_tab');
+	for (var i = 0; i < tab_div.children.length; i++) {
+		tab_div.children[i].className = (i == tab_no) ? "tablinks active" : "tablinks";
+	}
+	
+	customizeMode = tab_no;
+	updateModifyEngines();
+}
+
+
+// Save/undo management
+// --------------------
+
+function showUndo(section, value) {
+	if (section == 0) {
+		document.getElementById('btnModifyUndo').disabled = value ? false : true;
+	}
+	else {
+		document.getElementById('btnSelectUndo').disabled = value ? false : true;
+	}
+}
+
+// Init undo state:
+var undoState = deepCloneObject(state.engines);
+var undoStateSection = -1;
+
+function smModified(section) {
+	if (undoStateSection == -1) {
+		undoStateSection = section;
+		showUndo(section, true);
+	}
+	else if (undoStateSection != section) {
+		// We are changing section, take new undoState snapshow
+		undoState = deepCloneObject(state.engines);
+		showUndo(1 - section, false); 
+		showUndo(section, true);
+		undoStateSection = section;
+	}
+
+	stateSave(state);
+}
+
+function smUndo() {
+	state.engines = deepCloneObject(undoState);
+	undoStateSection = -1;
+	
+	showUndo(0, false);
+	showUndo(1, false);
+	
+	stateSave(state);
+}
+
+
+// Select and configure engines
+// ----------------------------
+
+function findEngine(key) {
+	var result = null;
+	state.engines.forEach(function(columns, row) {
+		columns.forEach(function(entry, col) {
+			if (entry.key == key) {
+				result = entry;
+			}
+		});
+	});
+	return result;
+}
+  
+function addEngine(key) {
+	var obj = {};
+	obj.key = key;
+	state.engines[state.engines.length - 1].push(obj);
+}
+
+function removeEngine(key) {
+	state.engines.forEach(function(columns) {
+		for (var i = 0; i < columns.length; i++) {
+			if (columns[i].key == key) {
+				columns.removeAt(i);
+				i -= 1;
+			}
+		}
+	});
+}
+
+function removeAllEngines() {
+	state.engines = [[]];
+}
+
+
+function clickDeselectAll() {
+	removeAllEngines();
+	smModified(1);
+	updateModifyEngines();
+	updateSelectedState();
+}
+
+function clickSelectUndo() {
+	smUndo(1);
+	updateModifyEngines();
+	updateSelectedState();
+}
+
+function clickChkEngine() {
+	if (this.checked) {
+		addEngine(this.id);
+	} 
+	else {
+		removeEngine(this.id);
+	}
+	
+	smModified(1);
+	updateModifyEngines();
+	updateSelectedState();
+}
+
+function updateSelectedState() {
+	var chkboxes = document.querySelectorAll(".chkBoxInput");
+	for (var i = 0; i < chkboxes.length; i++) {
+		chkboxes[i].checked = (findEngine(chkboxes[i].id) == null) ? false : true;
+	}
+}
+
+function makeChkBox(text, checked, on_click, id) {
+	var lbl = document.createElement('label');
+	lbl.className = "chkContainer";
+	lbl.innerHtml = text;
+	lbl.appendChild(document.createTextNode(text));
+	
+	var input = document.createElement('input');
+	input.type = "checkbox";
+	input.id = id;
+	input.className = "chkBoxInput";
+	input.checked = checked;
+	input.addEventListener('click', on_click, false);
+	lbl.appendChild(input);
+	
+	var span = document.createElement('span');
+	span.className = "chkMark";
+	lbl.appendChild(span);
+	
+	return lbl;
+}
+
+function createCategoryElements(obj, parent) {
+	var header;
+	header = document.createElement('h3');
+	header.appendChild(document.createTextNode(obj.category));
+	header.style.textAlign = "left";
+	parent.appendChild(header);
+
+	obj.engines.forEach(function(engine) {
+		var name = engine.description ? engine.description : engine.display_name;
+		var entry = findEngine(engine.key);
+		
+		parent.appendChild(makeChkBox(name, entry != null, clickChkEngine, engine.key));
+		
+	});
+	
+	parent.appendChild(document.createElement('br'));
+}
+
+divAllEngines = document.getElementById('allEngines');
+
+searchEngineList.forEach(function(category) {
+	createCategoryElements(category, divAllEngines);
+});
+
+</script>
 </body>	
 </html>
