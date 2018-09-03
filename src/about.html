@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>About Just Search Portal</title> 
+<link rel="shortcut icon" id="link_favicon" type="image/x-icon" href="data:image/png;base64," />
+<meta id="meta_viewport" name="viewport" content="" />
+<script>
+
+// This file with its HTML, CSS and JavaScript is free software under the terms of the following license: https://justsearchportal.com/LICENSE
+
+// Inline favicon inspired by:
+// https://stackoverflow.com/a/5568484
+{% include "favicon.js" %}
+document.getElementById('link_favicon').href = 'data:image/png;base64,'+favIcon;
+
+// Mobile viewport hack, from: 
+// https://stackoverflow.com/a/39642318
+function apply_viewport() {    
+	var ww = window.screen.width;
+	var mw = 450;
+	var viewport_meta_tag = document.getElementById('meta_viewport');
+	if( ww < mw) { 
+		var ratio = ww / mw;
+		viewport_meta_tag.setAttribute('content', 'initial-scale=' + ratio + ', maximum-scale=' + ratio + ', minimum-scale=' + ratio + ', user-scalable=no, width=' + mw);
+	}    
+}
+
+window.addEventListener('resize', function(){ apply_viewport(); });
+apply_viewport();
+
+</script>
+
+<style>
+html, body {
+	height: 100%;
+	margin: 0;
+	font-family: verdana, sans-serif;
+	background-color:#eee;
+}
+
+h1 {
+	font-weight: bold;
+	font-size: 33pt;
+	font-family: helvetica, sans-serif;
+	color: #aaf;
+	margin: 30px 0 22px 0;
+}
+
+h2 {
+	font-size: 20pt;
+	font-weight: bold;
+	font-family: helvetica, sans-serif;
+	margin: 30pt 0 16pt 0;
+	color: #999;
+}
+
+h2:first-of-type {
+	margin-top: 15pt;
+}
+
+a:visited {
+    color: #66e;
+}
+
+a {
+    color: #22f;
+}
+
+h3 {
+	font-size: 12pt;
+	font-weight: bold;
+	margin: 16pt 0 0 0;
+}
+
+p {
+	font-size: 11pt;
+	line-height: 1.5;
+}
+
+p ul ol {
+	margin: 5pt 0 14pt 0;
+}
+
+li {
+	margin-bottom: 6pt;
+	font-size: 11pt;
+}
+
+.container {
+	min-width: 380px;
+	width: auto !important;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+}
+
+.centerContainer {
+	margin: auto 10px auto 10px;
+	text-align: center;
+}
+
+.centerbox {
+	max-width: 55em;
+	margin: 0 auto 80px auto;
+	text-align: center;
+}
+
+.layoutBox {
+	background-color: white;
+	border-radius: 4px;
+	border: 1px solid #aaa;
+	padding: 0 30px 20px 30px;
+	margin-bottom: 25px;
+	overflow:auto;
+}
+
+.leftalign {
+	text-align: left;
+}
+
+.stickyFooter {
+	position: fixed;
+	left: 0;
+	bottom: 0;
+	width: 100%;
+	border-top: 2px solid #a0a0a0;
+	background-color: white;
+}
+
+.stickyFooter p {
+	margin: 9px 0;
+}
+
+.stickyFooterInside {
+	background-color: inherit;
+	margin: 0;
+	padding: 2px;
+	padding-left: 20px;
+}
+
+.btnFooter {    
+	padding: 4px 18px;
+	margin: 3px 10px 5px 15px;
+	cursor: pointer;
+	font-size: 15px;
+}
+
+.buttonsRight {
+	float:right;
+}
+
+code {	
+	padding: 3px;
+	color: #a00;
+	font-family: "Lucida Console", Monaco, monospace;
+	font-size: 11pt;
+}
+
+</style>
+</head>
+
+<body>
+<div class="container">
+	<div class="centerContainer">
+	<div class="centerbox">
+				
+		<h1>About Just Search Portal</h1>
+					
+		<div class="layoutBox leftalign">
+		{% include "about.md" %}
+		</div>
+	</div>
+	</div>
+	<div class="stickyFooter">
+		<div class="stickyFooterInside">
+		<div class="buttonsRight">
+			<button class="btnFooter" onClick="clickGoBack()">Back to Portal</button>
+		</div>
+		<p>About Just Search Portal</p>
+		</div>
+	</div>
+</div>
+
+<script>
+
+function clickGoBack() {
+	window.location.href = "index.html";
+}
+
+</script>
+</body>	
+</html>
