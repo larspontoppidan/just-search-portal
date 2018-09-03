@@ -1,0 +1,27 @@
+#!/bin/bash
+
+if [ ! $# -eq 2 ]
+then 
+  echo "Invoke html-minifier on html file:"
+  echo "  Usage: $0 infile outfile"
+  echo " "
+  echo "To install the minifier tool:"
+  echo "  sudo npm install html-minifier -g"
+  echo " "
+
+  exit 1
+fi
+
+echo "Minifying: $1, writing: $2"
+
+# MINIFY config
+# --------------
+MINIFY=html-minifier
+FLAGS="--minify-js 1 --minify-css 1 --remove-comments --collapse-whitespace --collapse-boolean-attributes --remove-attribute-quotes --remove-empty-attributes --remove-optional-tags --remove-redundant-attributes --remove-tag-whitespace --html5 --decode-entities"
+
+# Flags that breaks website: --remove-empty-elements
+
+
+$MINIFY $FLAGS -o "$2" "$1"
+
+

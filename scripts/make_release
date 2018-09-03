@@ -1,0 +1,18 @@
+#!/bin/bash
+
+# Purge and recreate release folder
+cd ..
+rm -rf release
+mkdir release
+cp LICENSE release/
+cp src/opensearch.xml release/
+
+# Perform js includes on index.html and customize.html to make single file pages:
+cd src
+../scripts/process_html.py index.html ../release/index.html
+../scripts/process_html.py customize.html ../release/customize.html
+../scripts/process_html.py about.html ../release/about.html
+
+# Lets skip the html minify for now..
+# ../scripts/minify_html index_inc.html index.html
+
