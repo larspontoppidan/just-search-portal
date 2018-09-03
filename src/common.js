@@ -16,13 +16,13 @@ var defaultEngines = [[
 function getEngineFromKey(key) {
 	ret = {};
 	searchEngineList.forEach(function (category) {
-    	category.engines.forEach(function (engine) {
-    		if (engine.key == key) {
-    			ret = engine;
-    		}
-    	});
+		category.engines.forEach(function (engine) {
+			if (engine.key == key) {
+				ret = engine;
+			}
+		});
 	});
-   	return ret;
+	return ret;
 }
 
 function createSearchButtonEngine(engine, is_default, color, func, id) {
@@ -32,7 +32,7 @@ function createSearchButtonEngine(engine, is_default, color, func, id) {
 		elem.classList.add('btnDefault');
 	} 
 	if (engine.description) {
-    	elem.title = engine.description;
+		elem.title = engine.description;
 	}
 	if (color) {
 		elem.style.backgroundColor = color;
@@ -53,7 +53,6 @@ function createSearchButton(entry, func, id) {
 
 function stateLoad() {
 	var ret = { };
-	console.log(document.cookie);
 	var result = document.cookie.match(new RegExp('store=([^;]+)'));
 	try {
 		if (result)
@@ -94,7 +93,6 @@ function stateSave(s) {
 		date.setFullYear(date.getFullYear() + 1);
 		var c = "store="+JSON.stringify(s)+"; expires=" + date.toGMTString();
 		document.cookie = c;
-		console.log(c);
 	}
 }
 
@@ -104,5 +102,3 @@ function stateErase() {
 	var c = "store=; expires=Thu, 01 Jan 1970 00:00:00 GMT";
 	document.cookie = c;
 }
-
-

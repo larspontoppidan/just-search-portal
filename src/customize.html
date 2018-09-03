@@ -35,30 +35,56 @@ apply_viewport();
 html, body {
 	height: 100%;
 	margin: 0;
-	font-family: helvetica, sans-serif;
+	font-family: verdana, sans-serif;
 	background-color:#eee;
 }
 
 h1 {
 	font-weight: bold;
-	font-size: 36pt;
-	color: #aaa;
-	margin: 30px 0 25px 0;
+	font-size: 33pt;
+	font-family: helvetica, sans-serif;
+	color: #aaf;
+	margin: 30px 0 22px 0;
 }
 
 h2 {
-	font-size: 15pt;
+	font-size: 20pt;
 	font-weight: bold;
-	margin: 17pt 0;
+	font-family: helvetica, sans-serif;
+	margin: 30pt 0 16pt 0;
+	color: #999;
 }
 
+a:visited {
+    color: #66e;
+}
+
+a {
+    color: #22f;
+}
+
+h2:first-of-type {
+	margin-top: 15pt;
+}
+
+
 h3 {
-	font-size: 13pt;
-	font-weight: normal;
-	margin: 14pt 0;
+	font-size: 12pt;
+	font-weight: bold;
+	margin: 16pt 0 0 0;
 }
 
 p {
+	font-size: 11pt;
+	line-height: 1.5;
+}
+
+p ul ol {
+	margin: 5pt 0 14pt 0;
+}
+
+li {
+	margin-bottom: 6pt;
 	font-size: 11pt;
 }
 
@@ -92,7 +118,7 @@ p {
 	margin: 10px;
 	cursor: pointer;
 	font-size: 11pt;
-   transition-duration: 0.3s;
+	transition-duration: 0.3s;
 }
 
 .btnDefault {
@@ -175,7 +201,8 @@ hr {
 	cursor: pointer;
 	padding: 14px 16px;
 	transition: 0.2s;
-	font-size: 13pt;
+	font-size: 12pt;
+	font-family: verdana, sans-serif;
 	border: 0;
 	border-bottom: 3px solid #d7d7d7;
 	color: #555;
@@ -325,9 +352,9 @@ hr {
 		<div class="buttonsRightTop">
 		<button class="btnFunction" id="btnModifyUndo" onClick="clickModifyUndo()" disabled>Undo changes</button>
 		</div>
-		<h2 class="leftalign">Modify custom search page</h2>
+		<h2 class="leftalign">Modify custom search view</h2>
 			
-		<p class="leftalign">The custom search page is shown when 'Show all engines' is not checked and is intended to provide easy access to favorite search engines. The search buttons can be positioned, colored and made default.</p>
+		<p class="leftalign">The custom search view is shown when 'Show all engines' is not checked and is intended to provide easy access to favorite search engines. The search buttons can be positioned, colored and made default.</p>
 		<p class="leftalign">The default search engines are marked with a thick border and will be searched when pressing Enter from the search query field. If there are more than one default engine, Just Search Portal will open multiple browser tabs with the search results.</p>  
 		<div class="tab" id="customize_tab">
 			<button class="tablinks active" onclick="clickTab(0)">Move buttons</button>
@@ -343,7 +370,7 @@ hr {
 		<button class="btnFunction" onClick="clickDeselectAll()">Deselect all</button>
 		<button class="btnFunction" id="btnSelectUndo" onClick="clickSelectUndo()" disabled>Undo changes</button>
 		</div>
-		<h2 class="leftalign">Select custom search page engines</h2>
+		<h2 class="leftalign">Select custom search view engines</h2>
 		<div class="segment" id="allEngines"></div>
 		</div>
 		
