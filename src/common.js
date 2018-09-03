@@ -3,14 +3,14 @@ var defaultEngines = [[
 	{key:"STARTPAGE", isDefault:true}, 
 	{key:"DUCKDUCKGO"},
 	{key:"BING"}, 
-	{key:"URL"}],[
-	{key:"GOOGLE"},
-	{key:"YOUTUBE"},
+	{key:"QWANT"}],[
+	{key:"GOOGLE"},	
 	{key:"GOOGLE-MAPS"},
-	{key:"GOOGLE-IMAGES"}],[
+	{key:"GOOGLE-IMAGES"},
+	{key:"URL"}],[
 	{key:"GOOGLE-TRANSLATE"},
-	{key:"THESAURUS.COM"}, 
-	{key:"WIKIPEDIA"}
+	{key:"WIKIPEDIA"}, 
+	{key:"MERRIAM-WEBSTERS-THES"}
 ]];
 
 function getEngineFromKey(key) {

@@ -27,11 +27,11 @@ var searchEngineList = [
 			query_url : "https://www.google.com/search?q=$QUERY",
 			about_url : "https://www.google.com/"
 		}, {
-			key : "GOOGLELUCKY",
-			display_name : "Google I feel lucky",
-			description : "Google I feel lucky",
-			query_url : "https://www.google.com/search?q=$QUERY&btnI",
-			about_url : "https://www.google.com/"
+			key : "QWANT",
+			display_name : "Qwant",
+			description : "Qwant web search",
+			query_url : "https://www.qwant.com/?q=$QUERY&t=web",
+			about_url : "https://www.qwant.com/"
 		}, {
 			key : "YAHOO",
 			display_name : "Yahoo",
@@ -126,14 +126,14 @@ var searchEngineList = [
 			display_name : "Twitter",
 			description : "Search Twitter",
 			query_url : "https://twitter.com/search?q=$QUERY",
-			about_url : "https://twitter.com"			
+			about_url : "https://twitter.com"
 		}
 	]
 },
 {
 	category : "Language",
-	engines : [	    			
-		{	
+	engines : [
+		{
 			key : "GOOGLE-TRANSLATE",
 			display_name : "Google Translate",
 			query_url : "https://translate.google.com/#auto/en/$QUERY",
@@ -157,6 +157,6 @@ var searchEngineList = [
 			query_url : "https://www.merriam-webster.com/thesaurus/$QUERY",
 			about_url : "https://www.merriam-webster.com"
 		}
-	]	    		
+	]
 }];
 
