@@ -850,7 +850,7 @@ function createCategoryElements(obj, parent) {
 	parent.appendChild(header);
 
 	obj.engines.forEach(function(engine) {
-		var name = engine.description ? engine.description : engine.display_name;
+		var name = engine.display_name + (engine.description ? " - " + engine.description : "");
 		var entry = findEngine(engine.key);
 		
 		parent.appendChild(makeChkBox(name, entry != null, clickChkEngine, engine.key));
