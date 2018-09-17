@@ -251,9 +251,16 @@ function makeDefaultEngineButtons() {
 	});	
 	return div;
 }
-		
+
 function makeAllEngineButtons() {
 	var div = document.createElement('div');
+	var entries = {};
+	state.engines.forEach(function(columns) {
+		columns.forEach(function(entry) {
+			entries[entry.key] = entry;
+		});
+	});
+
 	searchEngineList.forEach(function(category) {
 		var cat = document.createElement('div');
 		cat.classList.add("categoryBox");
@@ -263,7 +270,12 @@ function makeAllEngineButtons() {
 		cat.appendChild(th);
 		
 		category.engines.forEach(function(engine) {
-			cat.appendChild(createSearchButton(engine, engineClick, engine.key));
+			var entry = engine;
+			if (engine.key in entries)
+			{
+				entry = entries[entry.key];
+			}
+			cat.appendChild(createSearchButton(entry, engineClick, engine.key));
 			cat.appendChild(document.createElement('br'));
 		});
 	});
