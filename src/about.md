@@ -1,6 +1,7 @@
 
 ## Description
 
+
 The Just Search Portal is an open source, distraction free and privacy respecting search portal. Simply type the query and click the desired search engine to submit the query to.
 
 The portal was made with the following goals:
@@ -16,6 +17,8 @@ This makes the portal very well suited as a browser homepage or new-tab page.
 **Without distractions**. The search bar does not show search suggestions while the query is being typed. This lack of a feature is a feature in itself, because it respects the original search intent of the user. When search suggestions are shown it influences the thought process and makes the user more likely to use the terms promoted in the suggestions. With the Just Search Portal, the user gets to type the original query in peace.
 
 The portal has no ads, doodles nor recently visited page suggestions luring the user into procrastination.
+
+Check out this [YouTube video](https://www.youtube.com/watch?v=fASp63eB60Q) about the portal.
 
 **Usability**. The Just Search Portal can be added as a search plugin to the search menu in most browsers. 
 
