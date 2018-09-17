@@ -21,6 +21,12 @@ var searchEngineList = [
 			query_url : "https://www.qwant.com/?q=$QUERY&t=web",
 			about_url : "https://www.qwant.com/"
 		}, {
+			key : "SEARXME",
+			display_name : "searX",
+			description : "Searx is a metasearch engine, aggregating the results of other search engines while not storing information about its users.",
+			query_url : "https://searx.me/?q=$QUERY",
+			about_url : "https://searx.me/about"
+		}, {
 			key : "GOOGLE",
 			display_name : "Google",
 			description : "Web search with Google",
@@ -72,6 +78,12 @@ var searchEngineList = [
 			description : "Search with AllMusic",
 			query_url : "https://www.allmusic.com/search/all/$QUERY",
 			about_url : "https://www.allmusic.com"
+		}, {
+			key : "SOUNDCLOUD",
+			display_name : "SoundCloud",
+			description : "Discover, stream, and share a constantly expanding mix of music from emerging and major artists around the world.",
+			query_url : "https://soundcloud.com/search?q=$QUERY",
+			about_url : "https://soundcloud.com"
 		}
 	]
 },
@@ -177,6 +189,12 @@ var searchEngineList = [
 			description : "Search Merriam Webster's thesaurus",
 			query_url : "https://www.merriam-webster.com/thesaurus/$QUERY",
 			about_url : "https://www.merriam-webster.com"
+		}, {
+			key : "WORDNIK",
+			display_name : "Wordnik",
+			description : "Wordnik is the world's biggest online English dictionary, by number of words.",
+			query_url : "https://www.wordnik.com/words/$QUERY",
+			about_url : "https://www.wordnik.com"
 		}
 	]
 }];
