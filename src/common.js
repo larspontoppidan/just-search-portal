@@ -2,15 +2,15 @@
 var defaultEngines = [[
 	{key:"STARTPAGE", isDefault:true}, 
 	{key:"DUCKDUCKGO"},
-	{key:"BING"}, 
+	{key:"SEARXME"}, 
 	{key:"QWANT"}],[
 	{key:"GOOGLE"},	
 	{key:"GOOGLE-MAPS"},
 	{key:"GOOGLE-IMAGES"},
 	{key:"URL"}],[
 	{key:"GOOGLE-TRANSLATE"},
-	{key:"WIKIPEDIA"}, 
-	{key:"MERRIAM-WEBSTERS-THES"}
+	{key:"WORDNIK"}, 
+	{key:"WIKIPEDIA"}
 ]];
 
 function getEngineFromKey(key) {

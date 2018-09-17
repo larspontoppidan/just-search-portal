@@ -22,7 +22,7 @@ var searchEngineList = [
 			about_url : "https://www.qwant.com/"
 		}, {
 			key : "SEARXME",
-			display_name : "searX",
+			display_name : "searx.me",
 			description : "Searx is a metasearch engine, aggregating the results of other search engines while not storing information about its users.",
 			query_url : "https://searx.me/?q=$QUERY",
 			about_url : "https://searx.me/about"
