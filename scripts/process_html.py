@@ -35,7 +35,7 @@ def includeScript(line, regex):
         with open(filename, 'r') as file:
             subst_str += file.read()
         subst_str += "\n</script>\n"
-        line = regex.sub(line, subst_str)
+        line = regex.sub(subst_str, line)
     return line
 
     
@@ -54,7 +54,7 @@ def includeRaw(line, regex):
         filename = result.group(1)
         print("  Including raw: %s" % filename)        
         with open(filename, 'r') as file:
-            line = file.read()            
+            line = regex.sub(file.read(), line)
     return line
 
     

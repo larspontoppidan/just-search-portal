@@ -97,8 +97,6 @@ function stateSave(s) {
 }
 
 function stateErase() {
-	var date = new Date();
-	date.setFullYear(date.getFullYear() + 1);
 	var c = "store=; expires=Thu, 01 Jan 1970 00:00:00 GMT";
 	document.cookie = c;
 }
